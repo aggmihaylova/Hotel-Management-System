@@ -32,7 +32,6 @@ public class Room {
     }
 
 
-
     public boolean bookRoom() {
         if (this.bookedRoom == true)
             return false;

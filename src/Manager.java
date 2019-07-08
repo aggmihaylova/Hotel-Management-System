@@ -6,7 +6,7 @@ public class Manager {
 
 
     public Manager(String firstName, String lastName) {
-        this.firstName =  firstName;
+        this.firstName = firstName;
         this.lastName = lastName;
         this.hotel = new Hotel();
 
@@ -32,10 +32,9 @@ public class Manager {
         this.lastName = lastName;
     }
 
-    public void setFlower(Hotel hotel) {
+    public void setHotel(Hotel hotel) {
         this.hotel = hotel;
     }
-
 
 
     public void bookRoomNum(int num) {
@@ -45,7 +44,6 @@ public class Manager {
         else
             System.out.printf("Booking is done! ");
     }
-
 
 
     public void getFreeRoom() {

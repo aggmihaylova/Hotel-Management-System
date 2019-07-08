@@ -9,7 +9,7 @@ public class HotelServiceApplication {
         rooms.add(new Room(12, false));
         rooms.add(new Room(32, false));
         Hotel hotel = new Hotel("Rose", rooms);
-        manager.setFlower(hotel); // ?? xxx
+        manager.setHotel(hotel); // ?? xxx
         manager.getFreeRoom();
         manager.clearFreeRooms();
 

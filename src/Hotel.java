@@ -24,14 +24,15 @@ public class Hotel {
     }
 
 
-
     public void getFFreeRoom() {
 
         int i;
         for (i = 0; i < rooms.size(); i++)
-            if (!rooms.get(i).isBooked())
+            if (!rooms.get(i).isBooked()) {
                 rooms.get(i).setBooked(true);
+                break;
 
+            }
     }
 
     public void setName(String name) {
@@ -62,9 +63,12 @@ public class Hotel {
 
         for (int i = 0; i < rooms.size(); i++)
             if (rooms.get(i).getRoomNum() == num) {
-                if (rooms.get(i).bookRoom())
+                if (rooms.get(i).bookRoom()) {
                     rooms.get(i).setBooked(true);
-                return true;
+                    return true;
+
+                } else return false;
+
             }
         return false;
 
