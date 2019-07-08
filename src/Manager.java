@@ -6,7 +6,7 @@ public class Manager {
 
 
     public Manager(String firstName, String lastName) {
-        this.firstName = firstName;
+        this.firstName =  firstName;
         this.lastName = lastName;
         this.hotel = new Hotel();
 
