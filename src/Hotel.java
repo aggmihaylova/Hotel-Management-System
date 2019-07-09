@@ -15,25 +15,14 @@ public class Hotel {
     }
 
     public Hotel() {
-        this.name = null;
-        this.rooms = null;
+
     }
 
     public ArrayList<Room> getRooms() {
+
         return rooms;
     }
 
-
-    public void getFFreeRoom() {
-
-        int i;
-        for (i = 0; i < rooms.size(); i++)
-            if (!rooms.get(i).isBooked()) {
-                rooms.get(i).setBooked(true);
-                break;
-
-            }
-    }
 
     public void setName(String name) {
         this.name = name;
@@ -43,35 +32,65 @@ public class Hotel {
         this.rooms = rooms;
     }
 
+    /**
+     * get all free rooms
+     *
+     * @return ArrayList of fr
+     * ee rooms
+     */
 
     public ArrayList<Room> getAllFreeRooms() {
 
-        ArrayList<Room> freeRoms = new ArrayList<>();
+        ArrayList<Room> freeRooms = new ArrayList<>();
 
         int i;
-        for (i = 0; i < rooms.size(); i++)
-            if (!rooms.get(i).isBooked())
-                freeRoms.add(rooms.get(i));
-
-        return freeRoms;
+        for (i = 0; i < rooms.size(); i++) {
+            if (!rooms.get(i).isBooked()) {
+                freeRooms.add(rooms.get(i));
+            }
+        }
+        return freeRooms;
 
     }
 
+    /**
+     * search for the first free room and try to book it
+     * the loop will continue until the first free room
+     * after that the room is booked
+     */
 
-    public boolean bookRoombyNum(int num) {
+
+    public void bookFirstFreeRoom() {
+
+        int i;
+        for (i = 0; !rooms.get(i).isBooked(); i++)
+            ;
+        rooms.get(i).setBooked(true);
 
 
-        for (int i = 0; i < rooms.size(); i++)
+    }
+
+    /**
+     * book free room
+     * /
+     *
+     * @param num - number of the room which I want to book
+     */
+
+    public void bookRoombyNum(int num) throws Exception {
+
+
+        for (int i = 0; i < rooms.size(); i++) {
             if (rooms.get(i).getRoomNum() == num) {
-                if (rooms.get(i).bookRoom()) {
+                if (rooms.get(i).isBooked()) {
                     rooms.get(i).setBooked(true);
-                    return true;
-
-                } else return false;
-
+                } else {
+                    throw new Exception("The room has already been booked ");
+                }
+            } else {
+                throw new IllegalArgumentException("Invalid room number");
             }
-        return false;
-
+        }
     }
 
 

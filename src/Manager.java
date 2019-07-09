@@ -25,11 +25,15 @@ public class Manager {
     }
 
     public void setFirstName(String firstName) {
+
         this.firstName = firstName;
+
     }
 
     public void setLastName(String lastName) {
+
         this.lastName = lastName;
+
     }
 
     public void setHotel(Hotel hotel) {
@@ -37,21 +41,34 @@ public class Manager {
     }
 
 
+    /**
+     * book room by number
+     *
+     * @param num - number of the room which I want to book
+     */
+
     public void bookRoomNum(int num) {
 
-        if (hotel.bookRoombyNum(num) == false)
-            System.out.printf("Invalid room number !");
-        else
-            System.out.printf("Booking is done! ");
+        try {
+            hotel.bookRoombyNum(num);
+        } catch (Exception exception) {
+            System.out.println(exception.getMessage());
+            bookFreeRoom();
+        }
     }
 
 
-    public void getFreeRoom() {
+    /**
+     * call bookFirstFreeRoom()
+     */
 
-        hotel.getFFreeRoom();
+    public void bookFreeRoom() {
+
+        hotel.bookFirstFreeRoom();
     }
 
     public void clearFreeRooms() {
+
         hotel.clearRooms();
     }
 
