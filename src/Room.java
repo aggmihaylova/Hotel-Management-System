@@ -4,9 +4,7 @@ public class Room {
     private boolean bookedRoom;
 //
 
-    public boolean isBooked()
-
-    {
+    public boolean isBooked() {
         return (bookedRoom == true) ? true : false;
     }
 
@@ -14,7 +12,7 @@ public class Room {
         this.roomNum = roomNum;
         this.bookedRoom = bookedRoom;
     }
-
+//
 
     public Room() {
         this.roomNum = 0;
