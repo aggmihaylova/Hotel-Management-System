@@ -2,7 +2,7 @@ public class Room {
 
     private int roomNum;
     private boolean bookedRoom;
-
+//
 
     public boolean isBooked()
 
