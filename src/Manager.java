@@ -50,7 +50,7 @@ public class Manager {
     public void bookRoomNum(int num) {
 
         try {
-            hotel.bookRoombyNum(num);
+            hotel.bookRoomByNum(num);
         } catch (Exception exception) {
             System.out.println(exception.getMessage());
             bookFreeRoom();
