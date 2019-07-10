@@ -63,10 +63,8 @@ public class Hotel {
     public void bookFirstFreeRoom() {
 
         int i;
-        for (i = 0; !rooms.get(i).isBooked(); i++)
-            ;
+        for (i = 0; rooms.get(i).isBooked(); i++) ;
         rooms.get(i).setBooked(true);
-
 
     }
 
@@ -77,19 +75,22 @@ public class Hotel {
      * @param num - number of the room which I want to book
      */
 
-    public void bookRoombyNum(int num) throws Exception {
+    public void bookRoomByNum(int num) throws Exception {
 
+        char flg = 0;
 
         for (int i = 0; i < rooms.size(); i++) {
             if (rooms.get(i).getRoomNum() == num) {
-                if (rooms.get(i).isBooked()) {
+                if (!rooms.get(i).isBooked()) {
                     rooms.get(i).setBooked(true);
+                    flg = 1;
                 } else {
                     throw new Exception("The room has already been booked ");
                 }
-            } else {
-                throw new IllegalArgumentException("Invalid room number");
             }
+        }
+        if (flg == 0) {
+            throw new IllegalArgumentException("Invalid room number");
         }
     }
 
