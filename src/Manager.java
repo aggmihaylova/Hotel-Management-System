@@ -53,7 +53,7 @@ public class Manager {
             hotel.bookRoomByNum(num);
         } catch (Exception exception) {
             System.out.println(exception.getMessage());
-            bookFreeRoom();
+            bookFreeRoom(); // handled 
         }
     }
 
