@@ -1,17 +1,17 @@
 package tests;
 
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 import project.*;
 
 import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class HotelTest {
+public class HotelTest {
 
     @Test
-    void getAllFreeRooms() {
+    public void getAllFreeRooms() {
 
         ArrayList<Room> freeRoom = new ArrayList<Room>();
         freeRoom.add(new Room(12, true));
@@ -27,7 +27,7 @@ class HotelTest {
     }
 
     @Test
-    void bookFirstFreeRoom() {
+   public void bookFirstFreeRoom() {
         ArrayList<Room> rooms = new ArrayList<Room>();
         rooms.add(new Room(12, true));
         rooms.add(new Room(3, false));
@@ -43,7 +43,7 @@ class HotelTest {
 
 
     @Test
-    void bookRoomByNum() throws IllegalArgumentException {
+    public void bookRoomByNum() throws IllegalArgumentException {
         ArrayList<Room> rooms = new ArrayList<Room>();
         rooms.add(new Room(12, true));
         rooms.add(new Room(3, false));
@@ -55,7 +55,7 @@ class HotelTest {
     }
 
     @Test
-    void clearRooms() {
+    public void clearRooms() {
         ArrayList<Room> rooms = new ArrayList<Room>();
         rooms.add(new Room(12, true));
         rooms.add(new Room(3, false));
