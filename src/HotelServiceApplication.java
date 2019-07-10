@@ -4,6 +4,8 @@ public class HotelServiceApplication {
 
     public static void main(String[] args) {
 
+
+
         Manager manager = new Manager("John", "Miller");
         ArrayList<Room> rooms = new ArrayList<Room>();
         rooms.add(new Room(12, false));
