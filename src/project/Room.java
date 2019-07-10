@@ -1,3 +1,5 @@
+package project;
+
 public class Room {
 
     private int roomNum;

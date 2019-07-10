@@ -1,3 +1,6 @@
+package project;
+
+
 import java.util.ArrayList;
 
 public class Hotel {
@@ -63,6 +66,7 @@ public class Hotel {
     public void bookFirstFreeRoom() {
 
         int i;
+
         for (i = 0; rooms.get(i).isBooked(); i++) ;
         rooms.get(i).setBooked(true);
 
