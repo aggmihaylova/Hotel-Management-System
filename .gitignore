@@ -2,5 +2,7 @@ out/
 
 .idea/
 
+target/
 
-project.Hotel.iml
+Hotel.iml
+

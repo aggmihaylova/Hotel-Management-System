@@ -1,15 +1,23 @@
 package tests;
 
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import project.*;
 
 import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+
 public class HotelTest {
-//
+
+    @BeforeEach
+    void setUp() {
+        System.out.println("Beginning of the test ");
+    }
+
     @Test
     public void getAllFreeRooms() {
 
@@ -27,7 +35,7 @@ public class HotelTest {
     }
 
     @Test
-   public void bookFirstFreeRoom() {
+    public void bookFirstFreeRoom() {
         ArrayList<Room> rooms = new ArrayList<Room>();
         rooms.add(new Room(12, true));
         rooms.add(new Room(3, false));
@@ -69,5 +77,10 @@ public class HotelTest {
             assertEquals(false, room.isBooked());
 
 
+    }
+
+    @AfterEach
+    void tearDown() {
+        System.out.println("End of test");
     }
 }
