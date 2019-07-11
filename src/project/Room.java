@@ -19,7 +19,6 @@ public class Room {
     }
 
     public void setRoomNum(int roomNum) {
-
         this.roomNum = roomNum;
     }
 
@@ -28,7 +27,6 @@ public class Room {
     }
 
     public int getRoomNum() {
-
         return roomNum;
     }
 

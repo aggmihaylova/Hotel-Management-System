@@ -1,5 +1,8 @@
 package tests;
 
+
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import project.*;
 
@@ -9,6 +12,11 @@ import java.util.ArrayList;
 
 
 public class TestUnavailableRooms {
+
+    @BeforeEach
+    void setUp() {
+        System.out.println("Beginning of the test");
+    }
 
     ArrayList<Room> rooms = new ArrayList<Room>();
     Hotel hotel = new Hotel("Rose", rooms);
@@ -31,5 +39,9 @@ public class TestUnavailableRooms {
 
     }
 
+    @AfterEach
+    void tearDown() {
+        System.out.println("End of test");
+    }
 
 }

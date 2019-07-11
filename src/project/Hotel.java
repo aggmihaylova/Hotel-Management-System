@@ -32,14 +32,14 @@ public class Hotel {
     }
 
     public void setRooms(ArrayList<Room> rooms) {
+
         this.rooms = rooms;
     }
 
     /**
      * get all free rooms
      *
-     * @return ArrayList of fr
-     * ee rooms
+     * @return ArrayList of free rooms
      */
 
     public ArrayList<Room> getAllFreeRooms() {
@@ -69,6 +69,7 @@ public class Hotel {
 
         for (i = 0; rooms.get(i).isBooked(); i++) ;
         rooms.get(i).setBooked(true);
+
 
     }
 
@@ -100,8 +101,9 @@ public class Hotel {
 
 
     public void clearRooms() {
-        for (int i = 0; i < rooms.size(); i++)
+        for (int i = 0; i < rooms.size(); i++) {
             rooms.get(i).setBooked(false);
+        }
     }
 
 }
