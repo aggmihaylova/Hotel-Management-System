@@ -12,6 +12,12 @@ import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+
+/**
+ * under construction
+ */
+
+
 public class TestScenario {
 
 
@@ -24,7 +30,7 @@ public class TestScenario {
         Set<Booking> bookingsFirstRoom = new HashSet<>();
         bookingsFirstRoom.add(new Booking(9503123552L, LocalDate.of(2019, 7, 5),
                 LocalDate.of(2019, 7, 6), "John Miller"));
-        bookingsFirstRoom.add(new Booking(9412032156L, LocalDate.of(2019, 7, 7),
+        bookingsFirstRoom.add(new Booking(9412032156L, LocalDate.of(2019, 7, 15),
                 LocalDate.of(2019, 7, 13), "Peter Johnson"));
 
         // bookings for the second room
@@ -90,13 +96,9 @@ public class TestScenario {
                 LocalDate.of(2019, 7, 21), "Peter");
 
 
-        Booking freeInterval = new Booking();
-
-
-        assertEquals(true, manager.makeReservation(firstBookingInterval, 5, 5));
+        assertEquals(true, manager.makeReservation(firstBookingInterval, 2, 5));
         assertEquals(false, manager.makeReservation(secondBookingInterval, 1, 1));
-        assertEquals(false, manager.makeReservation(thirdBookingInterval, 7, 2));
-
+        assertEquals(true, manager.makeReservation(thirdBookingInterval, 2, 15));
 
     }
 

@@ -56,7 +56,7 @@ public class HotelServiceApplication {
         Hotel hotel = new Hotel("Rose", rooms);
         manager.setHotel(hotel);
 
-
+// user interval
         LocalDate fromInterval = LocalDate.of(2019, 5, 3);
         LocalDate toInterval = LocalDate.of(2019, 5, 16);
 

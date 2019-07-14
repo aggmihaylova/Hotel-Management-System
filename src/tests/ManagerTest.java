@@ -1,6 +1,7 @@
 package tests;
 
 import commodities.Booking;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import project.Hotel;
@@ -14,6 +15,11 @@ import static org.junit.jupiter.api.Assertions.*;
 class ManagerTest {
 
     // other are getters and setters
+
+    @BeforeEach
+    void setUp(){
+        System.out.println("Begining of the test");
+    }
 
     @Test
     void makeReservation() {
@@ -29,6 +35,12 @@ class ManagerTest {
 
         assertEquals(null, hotel.bookRoomByDate(newBooking, 5));
 
+
+    }
+
+    @AfterEach
+    void tearDown() {
+        System.out.println("End of the test");
 
     }
 }
