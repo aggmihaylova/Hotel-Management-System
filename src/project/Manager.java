@@ -1,5 +1,7 @@
 package project;
 
+import commodities.Booking;
+
 public class Manager {
 
     private String firstName;
@@ -27,13 +29,11 @@ public class Manager {
     }
 
     public void setFirstName(String firstName) {
-
         this.firstName = firstName;
 
     }
 
     public void setLastName(String lastName) {
-
         this.lastName = lastName;
 
     }
@@ -42,37 +42,31 @@ public class Manager {
         this.hotel = hotel;
     }
 
-
     /**
-     * book room by number
+     * Create new booking
      *
-     * @param num - number of the room which I want to book
+     * @param newBooking booking interval
+     * @param countBeds  the requested number of beds
+     * @param days       number of booked days
+     * @return the result of booking - successful or not
      */
 
-    public void bookRoomNum(int num) {
 
-        try {
-            hotel.bookRoomByNum(num);
-        } catch (Exception exception) {
-            System.out.println(exception.getMessage());
-            bookFreeRoom(); // handled
+    public boolean makeReservation(Booking newBooking, int countBeds, int days) {
+
+        Room searchedRoom = hotel.bookRoomByDate(newBooking, countBeds);
+
+        if (searchedRoom != null) {
+            hotel.addReservation(newBooking, searchedRoom);
+            return true;
+        } else {
+            System.out.println("Unavailable count of beds or the room has already been booked !");
+            return false;
         }
     }
 
-
-    /**
-     * call bookFirstFreeRoom()
-     */
-
-    public void bookFreeRoom() {
-
-        hotel.bookFirstFreeRoom();
-    }
-
-    public void clearFreeRooms() {
-
-        hotel.clearRooms();
-    }
-
 }
+
+
+
 

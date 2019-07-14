@@ -1,73 +1,58 @@
 package tests;
 
-import org.junit.jupiter.api.Assertions;
+import commodities.Booking;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import project.*;
+import project.Hotel;
+import project.Room;
 
+import java.awt.print.Book;
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class HotelTest {
 
-    @Test
-    void getAllFreeRooms() {
+    Set<Booking> bookings;
+    Booking booking;
+    short countBeds;
+    ArrayList<Room> rooms;
 
-        ArrayList<Room> freeRoom = new ArrayList<Room>();
-        freeRoom.add(new Room(12, true));
-        freeRoom.add(new Room(3, false));
-        freeRoom.add(new Room(7, true));
-        freeRoom.add(new Room(37, false));
-        freeRoom.add(new Room(21, false));
-        Hotel hotel = new Hotel("Hotel", freeRoom);
+    // other are getters and setters, addReservation calls another method
 
+    @BeforeEach
+    void setUp() {
+        countBeds = 5;
+        booking = new Booking(9413043456L, LocalDate.of(2019, 05, 23),
+                LocalDate.of(2019, 05, 27), "John");
 
-        assertEquals(3, hotel.getAllFreeRooms().size());
+        bookings = new HashSet<>();
+        bookings.add(booking);
 
-    }
-
-    @Test
-    void bookFirstFreeRoom() {
-        ArrayList<Room> rooms = new ArrayList<Room>();
-        rooms.add(new Room(12, true));
-        rooms.add(new Room(3, false));
-        rooms.add(new Room(7, false));
-        Hotel hotel = new Hotel("Hotel", rooms);
-
-        hotel.bookFirstFreeRoom();
-
-        assertEquals(true, rooms.get(1).isBooked());
-
-
-    }
-
-
-    @Test
-    void bookRoomByNum() throws IllegalArgumentException {
-        ArrayList<Room> rooms = new ArrayList<Room>();
-        rooms.add(new Room(12, true));
-        rooms.add(new Room(3, false));
-        rooms.add(new Room(7, true));
-        Hotel hotel = new Hotel("Hotel", rooms);
-
-        Assertions.assertThrows(IllegalArgumentException.class, () -> hotel.bookRoomByNum(18));
+        rooms = new ArrayList<>();
+        rooms.add(new Room(32, null, null, bookings, (short) countBeds));
 
     }
 
     @Test
-    void clearRooms() {
-        ArrayList<Room> rooms = new ArrayList<Room>();
-        rooms.add(new Room(12, true));
-        rooms.add(new Room(3, false));
-        rooms.add(new Room(7, true));
+    void bookRoomByDate() {
+        Hotel hotel = new Hotel("Bordeaux", rooms);
+        assertEquals(null, hotel.findRoomByBeds(1));
+    }
 
-        Hotel hotel = new Hotel("Hotel", rooms);
+    @Test
+    void findRoomByBeds() {
+        Hotel hotel = new Hotel("Bordeaux", rooms);
+        assertEquals(hotel.getRooms().get(0), hotel.findRoomByBeds(countBeds));
+    }
 
-        hotel.clearRooms();
-
-        for (Room room : rooms)
-            assertEquals(false, room.isBooked());
-
+    @AfterEach
+    void tearDown() {
+        System.out.println("End of the test");
 
     }
 }

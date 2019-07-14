@@ -1,57 +1,46 @@
 package tests;
 
-import org.junit.jupiter.api.Assertions;
+import commodities.Booking;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import project.Hotel;
 import project.Room;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class ManagerTest {
 
-    @Test
-    void bookRoomNum() throws Exception {
-        ArrayList<Room> rooms = new ArrayList<Room>();
-        rooms.add(new Room(12, true));
-        rooms.add(new Room(3, false));
-        rooms.add(new Room(7, true));
-        Hotel hotel = new Hotel("Hotel", rooms);
+    // other are getters and setters
 
-        Assertions.assertThrows(Exception.class, () -> hotel.bookRoomByNum(7));
-
+    @BeforeEach
+    void setUp(){
+        System.out.println("Begining of the test");
     }
 
     @Test
-    void bookFreeRoom() {
+    void makeReservation() {
 
-        ArrayList<Room> rooms = new ArrayList<Room>();
-        rooms.add(new Room(12, true));
-        rooms.add(new Room(3, false));
-        rooms.add(new Room(7, false));
-        Hotel hotel = new Hotel("Hotel", rooms);
+        ArrayList<Room> rooms = new ArrayList<>();
 
-        hotel.bookFirstFreeRoom();
+        rooms.add(new Room(3, null, null, null, (short) 3));
 
-        assertEquals(true, rooms.get(1).isBooked());
+        Booking newBooking = new Booking(123521L, LocalDate.of(2018, 4, 12), LocalDate.of(2018, 4, 16), "Helene Joe");
+
+        Hotel hotel = new Hotel("SomeName", rooms);
+
+
+        assertEquals(null, hotel.bookRoomByDate(newBooking, 5));
+
 
     }
 
-    @Test
-    void clearFreeRooms() {
-
-        ArrayList<Room> rooms = new ArrayList<Room>();
-        rooms.add(new Room(12, true));
-        rooms.add(new Room(3, false));
-        rooms.add(new Room(7, true));
-
-        Hotel hotel = new Hotel("Hotel", rooms);
-
-        hotel.clearRooms();
-
-        for (Room room : rooms)
-            assertEquals(false, room.isBooked());
+    @AfterEach
+    void tearDown() {
+        System.out.println("End of the test");
 
     }
 }
