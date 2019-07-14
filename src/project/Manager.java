@@ -44,9 +44,10 @@ public class Manager {
 
     /**
      * Create new booking
-     * @param newBooking  booking interval
-     * @param countBeds the requested number of beds
-     * @param days  number of booked days
+     *
+     * @param newBooking booking interval
+     * @param countBeds  the requested number of beds
+     * @param days       number of booked days
      * @return the result of booking - successful or not
      */
 
