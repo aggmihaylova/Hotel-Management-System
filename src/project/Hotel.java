@@ -1,7 +1,10 @@
 package project;
 
 
+import commodities.Booking;
+
 import java.util.ArrayList;
+
 
 public class Hotel {
 
@@ -22,7 +25,6 @@ public class Hotel {
     }
 
     public ArrayList<Room> getRooms() {
-
         return rooms;
     }
 
@@ -32,78 +34,57 @@ public class Hotel {
     }
 
     public void setRooms(ArrayList<Room> rooms) {
-
         this.rooms = rooms;
     }
 
     /**
-     * get all free rooms
+     * under construction
      *
-     * @return ArrayList of free rooms
+     * @param newBooking
+     * @param countBeds
+     * @return
      */
+    public Room bookRoomByDate(Booking newBooking, int countBeds) {
 
-    public ArrayList<Room> getAllFreeRooms() {
+        Room targetRoom = new Room();
 
-        ArrayList<Room> freeRooms = new ArrayList<>();
+        targetRoom = findRoomByBeds(countBeds);
 
-        int i;
-        for (i = 0; i < rooms.size(); i++) {
-            if (!rooms.get(i).isBooked()) {
-                freeRooms.add(rooms.get(i));
-            }
+        if (targetRoom != null) {
+            if (targetRoom.checkForAvailability(newBooking))
+                return targetRoom;
         }
-        return freeRooms;
-
+        return null;
     }
 
     /**
-     * search for the first free room and try to book it
-     * the loop will continue until the first free room
-     * after that the room is booked
+     * try to find room by
+     *
+     * @param countBeds the required number of beds
+     * @return the room which provides the required number of beds
+     * @throws Exception if there is no room with countBeds
      */
+    public Room findRoomByBeds(int countBeds) {
 
+        for (Room room : rooms) {
+            if (room.getCountBeds() == countBeds) {
 
-    public void bookFirstFreeRoom() {
+                return room;
+            }
 
-        int i;
-
-        for (i = 0; rooms.get(i).isBooked(); i++) ;
-        rooms.get(i).setBooked(true);
-
-
+        }
+        return null;
     }
 
     /**
-     * book free room
-     * /
+     * create reservation
      *
-     * @param num - number of the room which I want to book
+     * @param newBooking the new reservation
+     * @param room       - the room that will be booked
      */
 
-    public void bookRoomByNum(int num) throws Exception {
 
-        char flg = 0;
-
-        for (int i = 0; i < rooms.size(); i++) {
-            if (rooms.get(i).getRoomNum() == num) {
-                if (!rooms.get(i).isBooked()) {
-                    rooms.get(i).setBooked(true);
-                    flg = 1;
-                } else {
-                    throw new Exception("The room has already been booked ");
-                }
-            }
-        }
-        if (flg == 0) {
-            throw new IllegalArgumentException("Invalid room number");
-        }
+    public void addReservation(Booking newBooking, Room room) {
+        room.createBooking(newBooking);
     }
-
-
-    public void clearRooms() {
-        for (int i = 0; i < rooms.size(); i++) {
-            rooms.get(i).setBooked(false);
-        }
-    }
-
 }
