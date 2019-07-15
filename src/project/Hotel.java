@@ -1,9 +1,12 @@
 package project;
 
 
+import commodities.AbstractCommodity;
+import commodities.Bed;
 import commodities.Booking;
 
 import java.util.ArrayList;
+import java.util.spi.AbstractResourceBundleProvider;
 
 
 public class Hotel {
@@ -41,14 +44,14 @@ public class Hotel {
      * under construction
      *
      * @param newBooking
-     * @param countBeds
+     * @param beds
      * @return
      */
-    public Room bookRoomByDate(Booking newBooking, int countBeds) {
+    public Room bookRoomByDate(Booking newBooking, Bed beds) {
 
         Room targetRoom = new Room();
 
-        targetRoom = findRoomByBeds(countBeds);
+        targetRoom = findRoomByBeds(beds);
 
         if (targetRoom != null) {
             if (targetRoom.checkForAvailability(newBooking))
@@ -57,22 +60,17 @@ public class Hotel {
         return null;
     }
 
-    /**
-     * try to find room by
-     *
-     * @param countBeds the required number of beds
-     * @return the room which provides the required number of beds
-     * @throws Exception if there is no room with countBeds
-     */
-    public Room findRoomByBeds(int countBeds) {
+
+    public Room findRoomByBeds(Bed beds) {
 
         for (Room room : rooms) {
-            if (room.getCountBeds() == countBeds) {
-
-                return room;
+            for (AbstractCommodity abstractCommodity : room.getCommodities()) {
+                if (abstractCommodity instanceof Bed)
+                    if (((Bed) abstractCommodity).getNumberOfPersonas() == beds.getNumberOfPersonas())
+                        return room;
             }
-
         }
+
         return null;
     }
 

@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import static org.junit.jupiter.api.Assertions.*;
 
 class ManagerTest {
-
+/*
     // other are getters and setters
 
     @BeforeEach
@@ -43,4 +43,6 @@ class ManagerTest {
         System.out.println("End of the test");
 
     }
+    */
+
 }

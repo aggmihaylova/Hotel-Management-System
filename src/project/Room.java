@@ -136,10 +136,9 @@ public class Room {
 
 
         for (int i = 0; i < bookedDates.size() - 1; i++) {
-            if (interval.getFrom().compareTo(bookedDates.get(i).getTo()) >= 0) {
+            if (interval.getFrom().compareTo(bookedDates.get(i).getTo()) > 0) {
                 return (new Booking(0L, bookedDates.get(i).getTo(), bookedDates.get(i + 1).getFrom(), null));
-            } else
-                return (new Booking(0L, bookedDates.get(i).getTo(), bookedDates.get(i + 1).getFrom(), null));
+            } else return (new Booking(0L, bookedDates.get(i).getTo(), bookedDates.get(i + 1).getFrom(), null));
 
         }
         return null;

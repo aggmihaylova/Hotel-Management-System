@@ -49,6 +49,7 @@ class RoomTest {
 
         // under construction
     }
+
     @AfterEach
     void tearDown() {
         System.out.println("End of test");

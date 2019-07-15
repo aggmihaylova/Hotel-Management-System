@@ -97,14 +97,12 @@ public class Booking implements Comparable {
                 (from.getDayOfMonth() == book.getFrom().getDayOfMonth())) && ((to.getYear() == book.getTo().getYear() && to.getMonthValue() == book.getTo().getMonthValue()) &&
                 (to.getDayOfMonth() == book.getTo().getDayOfMonth())));
 
-
     }
 
     @Override
     public int hashCode() {
         int hash = 3;
-        hash = 31 * hash + (int) ID;
-        hash = 31 * hash + guestName.hashCode();
+
         hash = 31 * hash + from.hashCode();
         hash = 31 * hash + to.hashCode();
 

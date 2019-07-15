@@ -40,7 +40,7 @@ public class HotelServiceApplication {
         Manager manager = new Manager("John", "Miller");
 
 
-        AbstractCommodity abstractCommodity = new Bed(324, 2.7, 3, 3);
+        AbstractCommodity abstractCommodity = new Bed(324, 2.7, 3, 2);
         Set<AbstractCommodity> abstractCommodities = new HashSet<>();
         abstractCommodities.add(abstractCommodity);
 
@@ -56,44 +56,44 @@ public class HotelServiceApplication {
         Hotel hotel = new Hotel("Rose", rooms);
         manager.setHotel(hotel);
 
-// user interval
-        LocalDate fromInterval = LocalDate.of(2019, 5, 3);
-        LocalDate toInterval = LocalDate.of(2019, 5, 16);
+        // user interval
 
+        Booking interval = new Booking(0L, LocalDate.of(2019, 5, 3),
+                LocalDate.of(2019, 5, 16), "Mariya");
 
-        Booking interval = new Booking(0L, "Mariya");
-        interval.saveDate(fromInterval, toInterval);
-        Booking freeInterval = new Booking();
+        Booking freeInterval;
 
+        Bed bed = new Bed(321, 3.5, 1.4, 1);
 
-        for (Room room : rooms) {
+        Room targetRoom = manager.tryReservation(interval, bed);
 
-            System.out.println("Room with number " + room.getRoomNum() + " has " + room.getCountBeds() + " beds.");
+        if (targetRoom == null)
+            System.out.println("no beds !");
 
-            freeInterval = room.findAvailableDatesForIntervalAndSize(interval);
+        else {
+            freeInterval = targetRoom.findAvailableDatesForIntervalAndSize(interval);
 
             if (freeInterval == null)
-                System.out.println("The room hasn't been booked yet");
+                System.out.println("The room is free for this period !");
+
             else {
                 System.out.println("The room is free from " + freeInterval.getFrom().getYear() + "-" + freeInterval.getFrom().getMonthValue() + "-" + freeInterval.getFrom().getDayOfMonth() +
                         " to " + freeInterval.getTo().getYear() + "-" + freeInterval.getTo().getMonthValue() + "-" + freeInterval.getTo().getDayOfMonth());
+
+
+                Booking newBooking = new Booking(9714044552L, LocalDate.of(2019, 5, 7),
+                        LocalDate.of(2019, 5, 10), "John");
+                int days = 3;
+
+                int differenceInterval = newBooking.getTo().getDayOfMonth() - newBooking.getFrom().getDayOfMonth();
+
+                if (newBooking.getFrom().compareTo(freeInterval.getFrom()) > 0
+                        && newBooking.getTo().compareTo(freeInterval.getTo()) < 0 &&
+                        differenceInterval >= days) {
+                    manager.makeReservation(newBooking, targetRoom);
+
+                }
             }
         }
-
-        Booking newBooking = new Booking(9714044552L, LocalDate.of(2019, 5, 7), LocalDate.of(2019, 5, 10), "John");
-        int days = 3;
-
-        int differenceInterval = newBooking.getTo().getDayOfMonth() - newBooking.getFrom().getDayOfMonth();
-
-        if (newBooking.getFrom().compareTo(freeInterval.getFrom()) > 0
-                && newBooking.getTo().compareTo(freeInterval.getTo()) < 0 &&
-                differenceInterval >= days)
-            if (manager.makeReservation(newBooking, 1, days))
-                System.out.println("Successful booking!");
-
-            else System.out.println("Unsuccessful booking");
     }
 }
-
-
-
