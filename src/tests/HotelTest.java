@@ -1,5 +1,7 @@
 package tests;
 
+import commodities.AbstractCommodity;
+import commodities.Bed;
 import commodities.Booking;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -40,14 +42,18 @@ class HotelTest {
 
     @Test
     void bookRoomByDate() {
+        Bed bed = new Bed(321, 3.5, 2.4, 2);
         Hotel hotel = new Hotel("Bordeaux", rooms);
-        assertEquals(null, hotel.findRoomByBeds(1));
+        for (AbstractCommodity abstractCommodity : rooms.get(0).getCommodities()) {
+            assertEquals(null, hotel.findRoomByBeds(Bed));
+        }
     }
 
     @Test
     void findRoomByBeds() {
         Hotel hotel = new Hotel("Bordeaux", rooms);
-        assertEquals(hotel.getRooms().get(0), hotel.findRoomByBeds(countBeds));
+        Bed bed = new Bed(321, 3.5, 2.4, 2);
+    //    assertEquals(hotel.getRooms().get(0).getCommodities(), hotel.findRoomByBeds(countBeds));
     }
 
     @AfterEach
@@ -55,4 +61,6 @@ class HotelTest {
         System.out.println("End of the test");
 
     }
+
+
 }
