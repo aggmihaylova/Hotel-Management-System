@@ -1,4 +1,11 @@
-package commodities;
+package main.hotel.service.domain.commodities;
+
+/**
+ * Class bed has 3 private members and one inherited from the abstract class AbstractCommodity
+ * <p>
+ * methods - getters,setters and implementation of the base class method prepare()
+ */
+
 
 public class Bed extends AbstractCommodity {
 
@@ -6,6 +13,14 @@ public class Bed extends AbstractCommodity {
     private double width;
     private int numberOfPersonas;
 
+    /**
+     * parameterized constructor
+     *
+     * @param inventoryNumber  - bed's inventory number
+     * @param length           - bed's length
+     * @param width            - bed's width
+     * @param numberOfPersonas - bed's capacity
+     */
     public Bed(int inventoryNumber, double length, double width, int numberOfPersonas) {
         super(inventoryNumber);
         this.length = length;
@@ -38,6 +53,10 @@ public class Bed extends AbstractCommodity {
         this.numberOfPersonas = numberOfPersonas;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public void prepare() {
         System.out.println("Bedsheets are being replaced");
     }

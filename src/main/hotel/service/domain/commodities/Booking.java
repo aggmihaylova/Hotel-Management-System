@@ -1,8 +1,15 @@
-package commodities;
+package main.hotel.service.domain.commodities;
 
-import project.Room;
+import main.java.Room;
 
 import java.time.LocalDate;
+
+/**
+ * The class Booking is consisted of 4 private members,
+ * implements the interface Comparable
+ * has getters,setters
+ * method that removes existing booking
+ */
 
 public class Booking implements Comparable {
 
@@ -12,20 +19,40 @@ public class Booking implements Comparable {
     private LocalDate to;
     private String guestName;
 
+    /**
+     * Default constructor
+     */
+
     public Booking() {
 
     }
+
+    /**
+     * Parameterized constructor
+     *
+     * @param ID        guest ID
+     * @param guestName guest name
+     */
 
     public Booking(long ID, String guestName) {
         this.ID = ID;
         this.guestName = guestName;
     }
 
+    /**
+     * Overloaded Parameterized constructor
+     *
+     * @param ID        guest ID
+     * @param from      from date
+     * @param to        to date
+     * @param guestName guest Name
+     */
+
     public Booking(long ID, LocalDate from, LocalDate to, String guestName) {
-        this.ID = ID;
+        this(ID, guestName);
         this.from = from;
         this.to = to;
-        this.guestName = guestName;
+
     }
 
     public long getID() {
@@ -60,8 +87,15 @@ public class Booking implements Comparable {
         this.guestName = guestName;
     }
 
+    /**
+     * Guarantee that from Date is before to Date
+     *
+     * @param from date
+     * @param to   date
+     */
+
     public void saveDate(LocalDate from, LocalDate to) {
-        if (from.compareTo(to) > 0) {
+        if (from.isAfter(to)) {
             System.out.println("Invalid reservation date ");
         } else {
             setFrom(from);
@@ -69,10 +103,23 @@ public class Booking implements Comparable {
         }
     }
 
+    /**
+     * This method removes some booking and adds new
+     *
+     * @param newBooking - new reservation
+     * @param bookedRoom - room with that booking
+     * @throws Exception - if the removed booking does not exist
+     */
+
 
     public void changeReservationDate(Booking newBooking, Room bookedRoom) throws Exception {
 
-        bookedRoom.removeBooking(this);
+        try {
+            bookedRoom.removeBooking(this);
+        } catch (Exception exception) {
+            System.out.println(exception.getMessage());
+            return;
+        }
 
         this.from = newBooking.from;
         this.to = newBooking.to;

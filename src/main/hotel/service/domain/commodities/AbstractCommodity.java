@@ -1,8 +1,16 @@
-package commodities;
+package main.hotel.service.domain.commodities;
+
+
+/**
+ * This is an abstract class
+ * which has one private member - inventoryNumber
+ * <p>
+ * getters, setters and abstract method prepare()
+ */
 
 abstract public class AbstractCommodity {
 
-    private int inventoryNumber;
+    protected int inventoryNumber;
 
 
     public AbstractCommodity(int inventoryNumber) {
@@ -42,6 +50,10 @@ abstract public class AbstractCommodity {
         return hash;
 
     }
+
+    /**
+     * The room is being prepared !
+     */
 
     abstract public void prepare();
 

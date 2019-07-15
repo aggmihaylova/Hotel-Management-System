@@ -1,8 +1,14 @@
-package project;
+package main.java;
 
-import commodities.AbstractCommodity;
-import commodities.Booking;
+import main.hotel.service.domain.commodities.AbstractCommodity;
+import main.hotel.service.domain.commodities.Booking;
 
+/**
+ * Class Room has 5 private members
+ *
+ * methods - setters, getters, constructors and others
+ *
+ */
 
 import java.time.LocalDate;
 import java.util.*;
@@ -15,6 +21,16 @@ public class Room {
     Set<LocalDate> maintenanceDates;
     Set<Booking> bookings;
 
+    /**
+     * Paramterized constructor
+     *
+     * @param roomNum - room's number
+     * @param commodities - set of commodities
+     * @param maintenanceDates - set of
+     * @param bookings - set of bookings
+     * @param countBeds - total number of beds
+     */
+
     public Room(int roomNum, Set<AbstractCommodity> commodities, Set<LocalDate> maintenanceDates, Set<Booking> bookings, short countBeds) {
         this.roomNum = roomNum;
         this.commodities = commodities;
@@ -23,6 +39,9 @@ public class Room {
         this.countBeds = countBeds;
     }
 
+    /**
+     * Default constructor
+     */
     public Room() {
 
     }
@@ -93,7 +112,7 @@ public class Room {
      * Remove booking
      *
      * @param removeBooking the booking which should be removed
-     * @throws Exception - if the there is not such booking
+     * @throws Exception - if the there is no such booking
      */
 
     public void removeBooking(Booking removeBooking) throws Exception {
@@ -105,9 +124,9 @@ public class Room {
     }
 
     /**
-     * check if there is a booking in the set of bookings
+     * check if booking exists in the set of bookings
      *
-     * @param newBooking the new booking a customer wants to make
+     * @param newBooking requested booking
      * @return true if the booking can be made
      */
 
@@ -123,10 +142,10 @@ public class Room {
     }
 
     /**
-     * under construction
+     * return the free interval
      *
      * @param interval
-     * @return
+     * @return null or the free interval
      */
 
     public Booking findAvailableDatesForIntervalAndSize(Booking interval) {
@@ -136,7 +155,7 @@ public class Room {
 
 
         for (int i = 0; i < bookedDates.size() - 1; i++) {
-            if (interval.getFrom().compareTo(bookedDates.get(i).getTo()) > 0) {
+            if (interval.getFrom().isAfter(bookedDates.get(i).getTo())) {
                 return (new Booking(0L, bookedDates.get(i).getTo(), bookedDates.get(i + 1).getFrom(), null));
             } else return (new Booking(0L, bookedDates.get(i).getTo(), bookedDates.get(i + 1).getFrom(), null));
 

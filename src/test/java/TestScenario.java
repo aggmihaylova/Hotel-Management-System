@@ -1,36 +1,35 @@
-package tests;
+package test.java;
 
+import main.java.Hotel;
+import main.java.Manager;
+import main.java.Room;
 import org.junit.jupiter.api.Test;
-import project.*;
-import commodities.*;
+import main.hotel.service.domain.commodities.*;
 
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
-import static org.junit.jupiter.api.Assertions.*;
-
-
-/**
- * under construction
- */
+import static org.junit.Assert.*;
 
 
 public class TestScenario {
 
 
     @Test
-    public void test() {
+    public void test() throws Exception {
+
+        // given
 
         // bookings for the first room
 
-
         Set<Booking> bookingsFirstRoom = new HashSet<>();
         bookingsFirstRoom.add(new Booking(9503123552L, LocalDate.of(2019, 5, 17),
-                LocalDate.of(2019, 7, 6), "John Miller"));
-        bookingsFirstRoom.add(new Booking(9412032156L, LocalDate.of(2019, 5, 25),
+                LocalDate.of(2019, 6, 6), "John Miller"));
+        bookingsFirstRoom.add(new Booking(9412032156L, LocalDate.of(2019, 6, 25),
                 LocalDate.of(2019, 7, 13), "Peter Johnson"));
 
         // bookings for the second room
@@ -43,8 +42,8 @@ public class TestScenario {
         //bookings the third room
 
         Set<Booking> bookingsThirdRoom = new HashSet<>();
-        bookingsThirdRoom.add(new Booking(0L, LocalDate.of(2019, 7, 20),
-                LocalDate.of(2019, 7, 25), " "));
+        bookingsThirdRoom.add(new Booking(0L, LocalDate.of(2019, 7, 19),
+                LocalDate.of(2019, 7, 21), " "));
 
 
         Manager manager = new Manager("Pete", "Hennessy");
@@ -59,9 +58,9 @@ public class TestScenario {
         // commodities for the first room
 
         Set<AbstractCommodity> secondRoom = new HashSet<>();
-        secondRoom.add(new Bed(921, 2.5, 2.2, 1));
+        secondRoom.add(new Bed(921, 2.5, 2.2, 3));
         secondRoom.add(new Bed(563, 3.5, 2.4, 2));
-        secondRoom.add(new Bed(755, 2.5, 2.2, 1));
+        secondRoom.add(new Bed(755, 2.5, 2.2, 5));
         secondRoom.add(new Toilet(342, false, "Blue"));
         secondRoom.add(new Toilet(281, true, "Red"));
         secondRoom.add(new Shower(444, true));
@@ -69,8 +68,8 @@ public class TestScenario {
         // commodities for the third room
 
         Set<AbstractCommodity> thirdRoom = new HashSet<>();
-        thirdRoom.add(new Bed(121, 2.5, 2.2, 1));
-        thirdRoom.add(new Bed(654, 3.5, 2.4, 2));
+        thirdRoom.add(new Bed(121, 2.5, 2.2, 4));
+        thirdRoom.add(new Bed(654, 3.5, 2.4, 7));
         thirdRoom.add(new Toilet(383, false, "Yellow"));
         thirdRoom.add(new Shower(434, true));
 
@@ -79,14 +78,16 @@ public class TestScenario {
         maintenanceDatesSet.add(LocalDate.of(2019, 04, 06));
 
 
-        ArrayList<Room> rooms = new ArrayList<>();
+        List<Room> rooms = new ArrayList<>();
         rooms.add(new Room(1, firstRoom, maintenanceDatesSet, bookingsFirstRoom, (short) 1));
         rooms.add(new Room(2, secondRoom, maintenanceDatesSet, bookingsSecondRoom, (short) 3));
         rooms.add(new Room(3, thirdRoom, maintenanceDatesSet, bookingsThirdRoom, (short) 2));
 
 
-        Hotel hotel = new Hotel("Rose", rooms);
+        Hotel hotel = new Hotel("Rose", (ArrayList<Room>) rooms);
         manager.setHotel(hotel);
+
+        // required intervals
 
         Booking firstBookingInterval = new Booking(0L, LocalDate.of(2019, 7, 20),
                 LocalDate.of(2019, 7, 25), "Mariya");
@@ -95,10 +96,28 @@ public class TestScenario {
         Booking thirdBookingInterval = new Booking(0L, LocalDate.of(2019, 7, 19),
                 LocalDate.of(2019, 7, 21), "Peter");
 
+        // requested beds
 
- //       assertEquals(false, manager.makeReservation(firstBookingInterval, 2, 5));
-   //     assertEquals(true, manager.makeReservation(secondBookingInterval, 1, 1));
-     //   assertEquals(true, manager.makeReservation(thirdBookingInterval, 2, 15));
+        Bed firstRoomBed = new Bed(213, 3.5, 2.5, 2);
+        Bed secondRoomBed = new Bed(326, 4.5, 3.5, 10);
+        Bed thirdRoomBed = new Bed(381, 4.5, 3.5, 4);
+
+        //  when 1
+        Room room = manager.tryReservation(firstBookingInterval, firstRoomBed);
+
+        // then
+        assertNotNull(room);
+        room.createBooking(firstBookingInterval); // available room with bed for 2
+
+        // when 2
+        room = manager.tryReservation(secondBookingInterval, secondRoomBed);
+
+        // then
+        assertEquals(null, room); // not enough beds
+
+
+        room = manager.tryReservation(thirdBookingInterval, thirdRoomBed);
+        assertNull(room);  // busy date
 
     }
 
