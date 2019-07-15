@@ -24,7 +24,7 @@ public class Hotel {
      * parameterized constructor
      */
 
-    public Hotel(String name, ArrayList<Room> rooms) {
+    public Hotel(String name, List<Room> rooms) {
         this.name = name;
         this.rooms = rooms;
     }
@@ -61,7 +61,7 @@ public class Hotel {
      */
     public Room bookRoomByDate(Booking newBooking, Bed beds) throws Exception {
 
-        Room targetRoom = new Room();
+        Room targetRoom;
 
         try {
             targetRoom = findRoomByBeds(beds);

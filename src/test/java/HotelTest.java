@@ -46,7 +46,7 @@ class HotelTest {
         rooms = new ArrayList<>();
         rooms.add(new Room(32, abstractCommoditySet, null, bookings, (short) 1));
 
-        hotel = new Hotel("Rose", (ArrayList<Room>) rooms);
+        hotel = new Hotel("Rose", rooms);
     }
 
     @Test
@@ -57,12 +57,11 @@ class HotelTest {
                 LocalDate.of(2019, 5, 27), "Peter");
 
         // when
-        Room room = new Room();
-        room = hotel.bookRoomByDate(booking, bed);
+        Room room = hotel.bookRoomByDate(newBooking, bed);
 
 
-       //  then
-           assertEquals(null,room);
+        //  then
+        assertEquals(null, room);
 
     }
 
@@ -75,8 +74,8 @@ class HotelTest {
         //when
         Room target = hotel.bookRoomByDate(book, bed);
 
-     // then
-          assertEquals(null, target);
+        // then
+        assertEquals(null, target);
 
     }
 

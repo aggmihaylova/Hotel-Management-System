@@ -14,7 +14,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 class ManagerTest {
@@ -45,7 +44,7 @@ class ManagerTest {
         rooms = new ArrayList<>();
         rooms.add(new Room(32, abstractCommoditySet, null, bookings, (short) 5));
 
-         hotel = new Hotel("Bordeaux", (ArrayList<Room>) rooms);
+        hotel = new Hotel("Bordeaux", rooms);
     }
 
     @Test
@@ -57,7 +56,7 @@ class ManagerTest {
                 LocalDate.of(2019, 5, 14), "David");
 
         // when
-        Room targetRoom = new Room();
+        Room targetRoom ;
         targetRoom = hotel.bookRoomByDate(newBooking, bed);
 
         // then
