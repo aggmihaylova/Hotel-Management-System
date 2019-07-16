@@ -24,11 +24,11 @@ public class Room {
     /**
      * Paramterized constructor
      *
-     * @param roomNum - room's number
-     * @param commodities - set of commodities
+     * @param roomNum          - room's number
+     * @param commodities      - set of commodities
      * @param maintenanceDates - set of
-     * @param bookings - set of bookings
-     * @param countBeds - total number of beds
+     * @param bookings         - set of bookings
+     * @param countBeds        - total number of beds
      */
 
     public Room(int roomNum, Set<AbstractCommodity> commodities, Set<LocalDate> maintenanceDates, Set<Booking> bookings, short countBeds) {
@@ -115,9 +115,11 @@ public class Room {
      * @throws Exception - if the there is no such booking
      */
 
-    public void removeBooking(Booking removeBooking) throws Exception {
+
+    public boolean removeBooking(Booking removeBooking) throws Exception {
         if (!checkForAvailability(removeBooking)) {
             bookings.remove(removeBooking);
+            return true;
         }
         throw new Exception("Such booking does not exist!");
 
@@ -133,12 +135,11 @@ public class Room {
 
     public boolean checkForAvailability(Booking newBooking) {
 
-        for (Booking book : bookings) {
-            if (!newBooking.equals(book))
-                return true;
-        }
+        if (bookings.contains(newBooking))
+            return false;
+        else
+            return true;
 
-        return false;
     }
 
     /**
@@ -163,21 +164,6 @@ public class Room {
         return null;
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

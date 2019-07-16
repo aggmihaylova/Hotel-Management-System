@@ -9,7 +9,10 @@ import org.junit.jupiter.api.Test;
 import main.java.Hotel;
 import main.java.Room;
 
-import static org.junit.jupiter.api.Assertions.*;
+
+import static org.hamcrest.CoreMatchers.*;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.core.IsEqual.equalTo;
 
 
 import java.time.LocalDate;
@@ -22,11 +25,11 @@ class HotelTest {
 
     Set<AbstractCommodity> abstractCommoditySet;
     Set<Booking> bookings;
-    Booking booking;
-    short countBeds;
     List<Room> rooms;
     Hotel hotel;
+    Room targetRoom;
     Bed bed;
+
 
     @BeforeEach
     void setUp() {
@@ -52,16 +55,17 @@ class HotelTest {
     @Test
     void bookRoomByDate() throws Exception {
 
-//given
+        //given
         Booking newBooking = new Booking(9312043211L, LocalDate.of(2019, 5, 23),
                 LocalDate.of(2019, 5, 27), "Peter");
 
         // when
-        Room room = hotel.bookRoomByDate(newBooking, bed);
+        targetRoom = hotel.bookRoomByDate(newBooking, bed);
 
 
-        //  then
-        assertEquals(null, room);
+        //then
+        assertThat(targetRoom, is(equalTo(null)));
+
 
     }
 
@@ -75,7 +79,7 @@ class HotelTest {
         Room target = hotel.bookRoomByDate(book, bed);
 
         // then
-        assertEquals(null, target);
+        assertThat(target, is(equalTo(null)));
 
     }
 

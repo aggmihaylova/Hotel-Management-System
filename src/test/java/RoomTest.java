@@ -12,7 +12,9 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.hamcrest.CoreMatchers.*;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.core.IsEqual.equalTo;
 
 class RoomTest {
 
@@ -37,36 +39,34 @@ class RoomTest {
         bookings.add(secondBooking);
 
         rooms = new ArrayList<>();
-        rooms.add(new Room(543,null,null,bookings,(short)5));
+        rooms.add(new Room(543, null, null, bookings, (short) 5));
 
     }
 
     @Test
-    void removeBooking() {
+    void removeBooking() throws Exception {
 
         // given
 
-        Booking removeBooking = new Booking(9413043436L, LocalDate.of(2019, 04, 15),
-                LocalDate.of(2019, 04, 27), "Joe");
+        Booking removeBooking = secondBooking;
 
         // when
-        boolean check = bookings.remove(removeBooking);
+        boolean check = rooms.get(0).removeBooking(secondBooking);
 
         //then
-        assertEquals(false, check);
+        assertThat(check, is(equalTo(true)));
     }
 
     @Test
     void checkForAvailability() {
         // given
-             Booking booking = new Booking(9405124582L,LocalDate.of(2019,03,12),
-                     LocalDate.of(2019,03,15),"John");
-
+        Booking booking = firstBooking;
 
         // when and then
-         boolean check=bookings.equals(firstBooking);
 
-            assertEquals(false, check);
+        boolean check = rooms.get(0).checkForAvailability(firstBooking);
+
+        assertThat(check, is(equalTo(false)));
 
     }
 
@@ -81,7 +81,8 @@ class RoomTest {
         Booking free = rooms.get(0).findAvailableDatesForIntervalAndSize(userInterval);
 
         // then
-       assertNotNull(free);
+        //   assertNotNull(free);
+        assertThat(free, is(not(equalTo(null))));
 
 
     }

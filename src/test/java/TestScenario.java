@@ -13,7 +13,10 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import static org.junit.Assert.*;
+
+import static org.hamcrest.CoreMatchers.*;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.core.IsEqual.equalTo;
 
 
 public class TestScenario {
@@ -106,18 +109,18 @@ public class TestScenario {
         Room room = manager.tryReservation(firstBookingInterval, firstRoomBed);
 
         // then
-        assertNotNull(room);
+        assertThat(room, is(not(equalTo(null))));
         room.createBooking(firstBookingInterval); // available room with bed for 2
 
         // when 2
         room = manager.tryReservation(secondBookingInterval, secondRoomBed);
 
         // then
-        assertEquals(null, room); // not enough beds
+        assertThat(room, is(equalTo(null))); // not enough beds
 
 
         room = manager.tryReservation(thirdBookingInterval, thirdRoomBed);
-        assertNull(room);  // busy date
+        assertThat(room, is(equalTo(null))); // busy date
 
     }
 
