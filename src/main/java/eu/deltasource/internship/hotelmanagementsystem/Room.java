@@ -1,14 +1,15 @@
-package main.java;
+package eu.deltasource.internship.hotelmanagementsystem;
 
-import main.hotel.service.domain.commodities.AbstractCommodity;
-import main.hotel.service.domain.commodities.Booking;
 
 /**
  * Class Room has 5 private members
- *
- * methods - setters, getters, constructors and others
- *
+ * <p>
+ * methods - setters, getters, constructors and other methods
  */
+
+import eu.deltasource.internship.hotelmanagementsystem.hotel.service.domain.commodities.AbstractCommodity;
+import eu.deltasource.internship.hotelmanagementsystem.hotel.service.domain.commodities.Booking;
+
 
 import java.time.LocalDate;
 import java.util.*;
@@ -22,7 +23,7 @@ public class Room {
     Set<Booking> bookings;
 
     /**
-     * Paramterized constructor
+     * Parametrized constructor
      *
      * @param roomNum          - room's number
      * @param commodities      - set of commodities
@@ -31,7 +32,8 @@ public class Room {
      * @param countBeds        - total number of beds
      */
 
-    public Room(int roomNum, Set<AbstractCommodity> commodities, Set<LocalDate> maintenanceDates, Set<Booking> bookings, short countBeds) {
+    public Room(int roomNum, Set<AbstractCommodity> commodities,
+                Set<LocalDate> maintenanceDates, Set<Booking> bookings, short countBeds) {
         this.roomNum = roomNum;
         this.commodities = commodities;
         this.maintenanceDates = maintenanceDates;
@@ -42,6 +44,8 @@ public class Room {
     /**
      * Default constructor
      */
+
+
     public Room() {
 
     }
@@ -89,23 +93,22 @@ public class Room {
     /**
      * prepare room
      *
-     * @param date - the date on which the room is available
+     * @param date - the date on which the room is ready to be booked
      */
     public void prepareRoom(LocalDate date) {
 
-        for (int i = 0; i < commodities.size(); i++) ;
+        for (int i = 0; i < maintenanceDates.size(); i++) ;
         maintenanceDates.add(date);
     }
 
     /**
-     * Create new booking
-     *
-     * @param newBooking - new booking
+     * @param newBooking new reservation
+     * @return the number of the room that has been booked
      */
 
-    public void createBooking(Booking newBooking) {
-        prepareRoom(newBooking.getFrom());
+    public int createBooking(Booking newBooking) {
         bookings.add(newBooking);
+        return roomNum;
     }
 
     /**
@@ -119,7 +122,9 @@ public class Room {
     public boolean removeBooking(Booking removeBooking) throws Exception {
         if (!checkForAvailability(removeBooking)) {
             bookings.remove(removeBooking);
+            prepareRoom(removeBooking.getFrom());
             return true;
+
         }
         throw new Exception("Such booking does not exist!");
 
@@ -135,38 +140,36 @@ public class Room {
 
     public boolean checkForAvailability(Booking newBooking) {
 
-        if (bookings.contains(newBooking))
-            return false;
-        else
-            return true;
+        for (Booking book : bookings) {
+            if (book.equals(newBooking))
+                return false;
+        }
+        return true;
 
     }
 
-    /**
-     * return the free interval
-     *
-     * @param interval
-     * @return null or the free interval
-     */
 
-    public Booking findAvailableDatesForIntervalAndSize(Booking interval) {
+    public Set<Booking> findAvailableDatesForIntervalAndSize(LocalDate fromDate, LocalDate toDate) {
 
         List<Booking> bookedDates = new ArrayList<>(bookings);
         Collections.sort(bookedDates);
 
+        Set<Booking> freeDates = new HashSet<>();
+
 
         for (int i = 0; i < bookedDates.size() - 1; i++) {
-            if (interval.getFrom().isAfter(bookedDates.get(i).getTo())) {
-                return (new Booking(0L, bookedDates.get(i).getTo(), bookedDates.get(i + 1).getFrom(), null));
-            } else return (new Booking(0L, bookedDates.get(i).getTo(), bookedDates.get(i + 1).getFrom(), null));
+            if (fromDate.isAfter(bookedDates.get(i).getTo()) && toDate.isBefore(bookedDates.get(i + 1).getFrom())) {
+                freeDates.add(new Booking(0L, bookedDates.get(i).getTo(), (bookedDates.get(i + 1).getFrom())));
+            }
 
         }
-        return null;
+
+        return freeDates;
+
     }
+
+
 }
-
-
-
 
 
 

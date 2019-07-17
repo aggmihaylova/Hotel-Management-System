@@ -4,14 +4,14 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>edeltasourceinternship.eu</groupId>
+    <groupId>eu.deltasource.internship</groupId>
     <artifactId>HotelManagementSystem</artifactId>
     <version>1.0-SNAPSHOT</version>
 
 
     <properties>
-        <version>5.4.2</version>
-        <version>1.3</version>
+        <junit.version>5.4.2</junit.version>
+        <hamcrest.version>2.1</hamcrest.version>
     </properties>
 
     <dependencies>
@@ -21,9 +21,11 @@
             <version>5.4.2</version>
             <scope>test</scope>
         </dependency>
+
         <dependency>
             <groupId>org.hamcrest</groupId>
-            <artifactId>hamcrest-all</artifactId>
+            <artifactId>hamcrest-library</artifactId>
+            <version>${hamcrest.version}</version>
             <scope>test</scope>
         </dependency>
     </dependencies>

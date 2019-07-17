@@ -1,4 +1,4 @@
-package main.hotel.service.domain.commodities;
+package eu.deltasource.internship.hotelmanagementsystem.hotel.service.domain.commodities;
 
 /**
  * Class bed has 2 private members and one inherited from the abstract class AbstractCommodity

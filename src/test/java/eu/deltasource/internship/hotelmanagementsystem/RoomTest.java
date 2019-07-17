@@ -1,7 +1,7 @@
-package test.java;
+package eu.deltasource.internship.hotelmanagementsystem;
 
-import main.hotel.service.domain.commodities.Booking;
-import main.java.Room;
+import eu.deltasource.internship.hotelmanagementsystem.hotel.service.domain.commodities.Booking;
+
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -18,28 +18,34 @@ import static org.hamcrest.core.IsEqual.equalTo;
 
 class RoomTest {
 
+    // others are getters and setters
 
-    List<Room> rooms;
-    Booking firstBooking;
-    Booking secondBooking;
-    Set<Booking> bookings;
+    private List<Room> rooms;
+    private Booking firstBooking;
+    private Booking secondBooking;
+    private Set<Booking> bookings;
 
     @BeforeEach
-    void setUp() {
+    public void setUp() {
 
         firstBooking = new Booking(9413043456L, LocalDate.of(2019, 05, 23),
-                LocalDate.of(2019, 05, 25), "John");
+                LocalDate.of(2019, 05, 25));
 
 
         secondBooking = new Booking(9413043456L, LocalDate.of(2019, 05, 30),
-                LocalDate.of(2019, 06, 5), "John");
+                LocalDate.of(2019, 06, 5));
+
 
         bookings = new HashSet<>();
         bookings.add(firstBooking);
         bookings.add(secondBooking);
 
+
+        Set<LocalDate> maintenanceDates = new HashSet<>();
+        maintenanceDates.add(LocalDate.of(2019, 5, 26));
+
         rooms = new ArrayList<>();
-        rooms.add(new Room(543, null, null, bookings, (short) 5));
+        rooms.add(new Room(543, null, maintenanceDates, bookings, (short) 0));
 
     }
 
@@ -53,6 +59,7 @@ class RoomTest {
         // when
         boolean check = rooms.get(0).removeBooking(secondBooking);
 
+
         //then
         assertThat(check, is(equalTo(true)));
     }
@@ -60,13 +67,16 @@ class RoomTest {
     @Test
     void checkForAvailability() {
         // given
-        Booking booking = firstBooking;
+        Booking newBooking = new Booking(127L, LocalDate.of(2019, 3, 16),
+                LocalDate.of(2019, 3, 25));
 
-        // when and then
+        // when
 
-        boolean check = rooms.get(0).checkForAvailability(firstBooking);
+        boolean check = rooms.get(0).checkForAvailability(newBooking);
 
-        assertThat(check, is(equalTo(false)));
+
+        // then
+        assertThat(check, is(equalTo(true)));
 
     }
 
@@ -75,20 +85,20 @@ class RoomTest {
 
         // given
         Booking userInterval = new Booking(9403211345L, LocalDate.of(2019, 05, 27),
-                LocalDate.of(2019, 05, 28), "Ivan");
+                LocalDate.of(2019, 05, 28));
+        Set<Booking> freeInterval = new HashSet<>();
 
         // when
-        Booking free = rooms.get(0).findAvailableDatesForIntervalAndSize(userInterval);
+        freeInterval = rooms.get(0).findAvailableDatesForIntervalAndSize(userInterval.getFrom(), userInterval.getTo());
 
         // then
-        //   assertNotNull(free);
-        assertThat(free, is(not(equalTo(null))));
+        assertThat(freeInterval, is(not(equalTo(null))));
 
 
     }
 
     @AfterEach
     void tearDown() {
-        System.out.println("End of test");
+        System.out.println("End of the test");
     }
 }

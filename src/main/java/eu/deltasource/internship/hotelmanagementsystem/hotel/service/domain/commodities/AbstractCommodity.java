@@ -1,5 +1,4 @@
-package main.hotel.service.domain.commodities;
-
+package eu.deltasource.internship.hotelmanagementsystem.hotel.service.domain.commodities;
 
 /**
  * This is an abstract class
@@ -27,8 +26,7 @@ abstract public class AbstractCommodity {
 
     @Override
     public boolean equals(Object obj) {
-        if (obj == null)
-            return false;
+
         if (!(obj instanceof Booking))
             return false;
 
@@ -37,7 +35,7 @@ abstract public class AbstractCommodity {
 
         AbstractCommodity abstractCommodity = (AbstractCommodity) obj;
 
-        return this.inventoryNumber == abstractCommodity.getInventoryNumber();
+        return this.inventoryNumber == abstractCommodity.inventoryNumber;
 
     }
 
@@ -45,7 +43,7 @@ abstract public class AbstractCommodity {
     public int hashCode() {
         int hash = 3;
 
-        hash *= this.inventoryNumber;
+        hash *= inventoryNumber;
 
         return hash;
 
