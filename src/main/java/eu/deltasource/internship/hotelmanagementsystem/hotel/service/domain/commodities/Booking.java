@@ -1,26 +1,19 @@
 package eu.deltasource.internship.hotelmanagementsystem.hotel.service.domain.commodities;
 
-
 import java.time.LocalDate;
 
 /**
- * Class booking has 3 private members
- * getters,setters, constructors
- * overridden hashCode(),equals(), compareTo()
+ * Represents a Booking for a room
  */
-
 public class Booking implements Comparable {
-
 
     private long guestID;
     private LocalDate from;
     private LocalDate to;
 
-
     /**
      * Default constructor
      */
-
     public Booking() {
 
     }
@@ -30,7 +23,6 @@ public class Booking implements Comparable {
      *
      * @param guestID guest ID
      */
-
     public Booking(long guestID) {
         this.guestID = guestID;
     }
@@ -42,7 +34,6 @@ public class Booking implements Comparable {
      * @param from date
      * @param to   date
      */
-
     public Booking(long ID, LocalDate from, LocalDate to) {
         this(ID);
         this.from = from;
@@ -50,14 +41,12 @@ public class Booking implements Comparable {
 
     }
 
-
     /**
      * Guarantee that from date is before to date
      *
      * @param from date
      * @param to   date
      */
-
     public void saveDate(LocalDate from, LocalDate to) {
         if (from.isAfter(to)) {
             System.out.println("Invalid reservation date ");
@@ -120,7 +109,6 @@ public class Booking implements Comparable {
 
     }
 
-
     @Override
     public int compareTo(Object other) {
 
@@ -134,7 +122,6 @@ public class Booking implements Comparable {
             }
         }
         return cmp;
-
 
     }
 

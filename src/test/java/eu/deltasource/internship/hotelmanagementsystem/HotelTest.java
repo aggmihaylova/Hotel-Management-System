@@ -2,7 +2,7 @@ package eu.deltasource.internship.hotelmanagementsystem;
 
 import eu.deltasource.internship.hotelmanagementsystem.hotel.service.domain.commodities.AbstractCommodity;
 import eu.deltasource.internship.hotelmanagementsystem.hotel.service.domain.commodities.Bed;
-import eu.deltasource.internship.hotelmanagementsystem.hotel.service.domain.commodities.BedSize;
+import eu.deltasource.internship.hotelmanagementsystem.hotel.service.domain.commodities.BedType;
 import eu.deltasource.internship.hotelmanagementsystem.hotel.service.domain.commodities.Booking;
 import org.junit.jupiter.api.Test;
 
@@ -34,7 +34,7 @@ class HotelTest {
                 LocalDate.of(2019, 05, 27)));
 
         // set of commodities
-        commodities.add(new Bed(BedSize.TRIPLE));
+        commodities.add(new Bed(BedType.TRIPLE));
 
 
         // array list of rooms

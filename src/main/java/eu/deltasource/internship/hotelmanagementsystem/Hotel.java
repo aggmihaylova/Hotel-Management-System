@@ -4,7 +4,6 @@ import eu.deltasource.internship.hotelmanagementsystem.hotel.service.domain.comm
 import eu.deltasource.internship.hotelmanagementsystem.hotel.service.domain.commodities.Bed;
 import eu.deltasource.internship.hotelmanagementsystem.hotel.service.domain.commodities.Booking;
 
-
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -12,11 +11,8 @@ import java.util.List;
 import java.util.Set;
 
 /**
- * Class hotel has 2 private members - name and rooms
- * methods - getters, setters, constructors and others
+ * Represents a hotel with rooms
  */
-
-
 public class Hotel {
 
     private String name;
@@ -25,17 +21,14 @@ public class Hotel {
     /**
      * Parameterized constructor
      */
-
     public Hotel(String name, List<Room> rooms) {
         this.name = name;
         this.rooms = rooms;
     }
 
-
     /**
      * Default constructor
      */
-
     public Hotel() {
 
     }
@@ -56,7 +49,6 @@ public class Hotel {
         this.rooms = rooms;
     }
 
-
     /**
      * Search for available rooms by checking:
      * - if a room has beds
@@ -68,7 +60,6 @@ public class Hotel {
      * @param numOfPeople number of people
      * @return list of available rooms
      */
-
     public List<Room> findAvailableRooms(LocalDate fromDate, LocalDate toDate, int numOfPeople) {
 
         List<Room> availableRooms = new ArrayList<>();
@@ -76,23 +67,22 @@ public class Hotel {
 
         for (Room room : rooms) {
             for (AbstractCommodity commodity : room.getCommodities()) {
-                if (commodity instanceof Bed) {
-                    if (((Bed) commodity).getNumberOfPersonas() == numOfPeople) {
-                        availableBookings = room.findAvailableDatesForIntervalAndSize(fromDate, toDate);
-                        if (room.getBookings().size() == 0 || availableBookings != null) {
-                            availableRooms.add(new Room(room.getRoomNum(), room.getCommodities(), room.getMaintenanceDates(),
-                                    availableBookings));
-                        }
-                    }
+                if (!(commodity instanceof Bed)) {
+                    continue;
                 }
-
+                if (((Bed) commodity).getBedType().getSize() != numOfPeople) {
+                    continue;
+                }
+                availableBookings = room.findAvailableDatesForIntervalAndSize(fromDate, toDate);
+                if (room.getBookings().size() == 0 || availableBookings != null) {
+                    availableRooms.add(new Room(room.getRoomNum(), room.getCommodities(), room.getMaintenanceDates(),
+                            availableBookings));
+                }
             }
+
         }
-
         return availableRooms;
-
     }
-
 
     /**
      * calls createBooking()
@@ -101,8 +91,6 @@ public class Hotel {
      * @param room       the room that will be booked
      * @return the number of the room that has been booked
      */
-
-
     public int createReservation(Booking newBooking, Room room) {
         return room.createBooking(newBooking);
     }

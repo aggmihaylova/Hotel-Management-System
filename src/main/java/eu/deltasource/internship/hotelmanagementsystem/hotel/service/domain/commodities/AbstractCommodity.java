@@ -1,31 +1,19 @@
 package eu.deltasource.internship.hotelmanagementsystem.hotel.service.domain.commodities;
 
 /**
- * This is an abstract class
- * which has one private member - inventoryNumber
- * getters, setters, abstract method prepare() and overridden equals() and hashcode()
+ * The class AbstractCommodity represents set of commodities in each room
  */
-
 abstract public class AbstractCommodity {
 
-    private static int inventoryNum;
-    protected int inventoryNumber;
+    private static int COUNTER;
+    protected int globalInventoryCounter;
 
     /**
      * Default constructor
      * assigns value to the inventory number
      */
-
     public AbstractCommodity() {
-        inventoryNumber = ++inventoryNum;
-    }
-
-    public int getInventoryNumber() {
-        return inventoryNumber;
-    }
-
-    public void setInventoryNumber(int inventoryNumber) {
-        this.inventoryNumber = inventoryNumber;
+        globalInventoryCounter = ++COUNTER;
     }
 
     @Override
@@ -39,15 +27,14 @@ abstract public class AbstractCommodity {
 
         AbstractCommodity abstractCommodity = (AbstractCommodity) obj;
 
-        return this.inventoryNumber == abstractCommodity.inventoryNumber;
-
+        return this.globalInventoryCounter == abstractCommodity.globalInventoryCounter;
     }
 
     @Override
     public int hashCode() {
         int hash = 3;
 
-        hash *= inventoryNumber;
+        hash *= globalInventoryCounter;
 
         return hash;
 
@@ -56,8 +43,5 @@ abstract public class AbstractCommodity {
     /**
      * The room is being prepared !
      */
-
     abstract public void prepare();
-
-
 }

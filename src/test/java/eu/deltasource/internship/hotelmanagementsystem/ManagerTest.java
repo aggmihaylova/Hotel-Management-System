@@ -2,7 +2,7 @@ package eu.deltasource.internship.hotelmanagementsystem;
 
 import eu.deltasource.internship.hotelmanagementsystem.hotel.service.domain.commodities.AbstractCommodity;
 import eu.deltasource.internship.hotelmanagementsystem.hotel.service.domain.commodities.Bed;
-import eu.deltasource.internship.hotelmanagementsystem.hotel.service.domain.commodities.BedSize;
+import eu.deltasource.internship.hotelmanagementsystem.hotel.service.domain.commodities.BedType;
 import eu.deltasource.internship.hotelmanagementsystem.hotel.service.domain.commodities.Booking;
 
 
@@ -40,7 +40,7 @@ class ManagerTest {
 
         // create HashSet of commodities (in this case - only one bed)
         commodities = new HashSet<>();
-        AbstractCommodity bed = new Bed(BedSize.DOUBLE);
+        AbstractCommodity bed = new Bed(BedType.DOUBLE);
         commodities.add(bed);
 
         // create HashSet of bookings
@@ -62,7 +62,7 @@ class ManagerTest {
     }
 
     @Test
-    void createBooking() throws UnavailableRooms {
+    void createBooking() throws NoRoomsAvailableException {
 
         // given
         Booking interval = new Booking(9505124521L, LocalDate.of(2019, 10, 3),

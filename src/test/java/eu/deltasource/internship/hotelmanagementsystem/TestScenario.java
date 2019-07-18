@@ -18,44 +18,38 @@ import static org.hamcrest.core.IsEqual.equalTo;
 
 
 /**
- *
- *    UNDER CONSTRUCTION
- *
- *
- *
+ * UNDER CONSTRUCTION
  */
-
 
 
 public class TestScenario {
 
 
-
     @Test
-    public void test() throws UnavailableRooms {
-/*
+    public void test() throws NoRoomsAvailableException {
+
         // given
 
         // bookings for the first room
 
         Set<Booking> bookingsFirstRoom = new HashSet<>();
         bookingsFirstRoom.add(new Booking(9503123552L, LocalDate.of(2019, 5, 17),
-                LocalDate.of(2019, 6, 6), "John Miller"));
+                LocalDate.of(2019, 6, 6)));
         bookingsFirstRoom.add(new Booking(9412032156L, LocalDate.of(2019, 6, 25),
-                LocalDate.of(2019, 7, 13), "Peter Johnson"));
+                LocalDate.of(2019, 7, 13)));
 
         // bookings for the second room
 
         Set<Booking> bookingsSecondRoom = new HashSet<>();
         bookingsSecondRoom.add(new Booking(9621123421L, LocalDate.of(2019, 7, 22),
-                LocalDate.of(2019, 7, 23), "Maya Mayova"));
+                LocalDate.of(2019, 7, 23)));
 
 
         //bookings the third room
 
         Set<Booking> bookingsThirdRoom = new HashSet<>();
         bookingsThirdRoom.add(new Booking(0L, LocalDate.of(2019, 7, 19),
-                LocalDate.of(2019, 7, 21), " "));
+                LocalDate.of(2019, 7, 21)));
 
 
         Manager manager = new Manager("Pete", "Hennessy");
@@ -63,27 +57,27 @@ public class TestScenario {
         // commodities for the first room
 
         Set<AbstractCommodity> firstRoom = new HashSet<>();
-        firstRoom.add(new Bed(563,  2));
-        firstRoom.add(new Toilet(385, true, "Green"));
-        firstRoom.add(new Shower(375, true));
+        firstRoom.add(new Bed(BedType.DOUBLE));
+        firstRoom.add(new Toilet(true, "Green"));
+        firstRoom.add(new Shower(true));
 
         // commodities for the first room
 
         Set<AbstractCommodity> secondRoom = new HashSet<>();
-        secondRoom.add(new Bed(921,  3));
-        secondRoom.add(new Bed(563,  2));
-        secondRoom.add(new Bed(755,  5));
-        secondRoom.add(new Toilet(342, false, "Blue"));
-        secondRoom.add(new Toilet(281, true, "Red"));
-        secondRoom.add(new Shower(444, true));
+        secondRoom.add(new Bed(BedType.SINGLE));
+        secondRoom.add(new Bed(BedType.SINGLE));
+        secondRoom.add(new Bed(BedType.DOUBLE));
+        secondRoom.add(new Toilet(false, "Blue"));
+        secondRoom.add(new Toilet(true, "Red"));
+        secondRoom.add(new Shower(true));
 
         // commodities for the third room
 
         Set<AbstractCommodity> thirdRoom = new HashSet<>();
-        thirdRoom.add(new Bed(121,  4));
-        thirdRoom.add(new Bed(654, 7));
-        thirdRoom.add(new Toilet(383, false, "Yellow"));
-        thirdRoom.add(new Shower(434, true));
+        thirdRoom.add(new Bed(BedType.TRIPLE));
+        thirdRoom.add(new Bed(BedType.QUAD));
+        thirdRoom.add(new Toilet(false, "Yellow"));
+        thirdRoom.add(new Shower(true));
 
 
         Set<LocalDate> maintenanceDatesSet = new HashSet<>();
@@ -91,52 +85,52 @@ public class TestScenario {
 
 
         List<Room> rooms = new ArrayList<>();
-        rooms.add(new Room(1, firstRoom, maintenanceDatesSet, bookingsFirstRoom, (short) 1));
-        rooms.add(new Room(2, secondRoom, maintenanceDatesSet, bookingsSecondRoom, (short) 3));
-        rooms.add(new Room(3, thirdRoom, maintenanceDatesSet, bookingsThirdRoom, (short) 2));
+        rooms.add(new Room(1, firstRoom, maintenanceDatesSet, bookingsFirstRoom));
+        rooms.add(new Room(2, secondRoom, maintenanceDatesSet, bookingsSecondRoom));
+        rooms.add(new Room(3, thirdRoom, maintenanceDatesSet, bookingsThirdRoom));
 
 
-        Hotel hotel = new Hotel("Rose", (ArrayList<Room>) rooms);
+        Hotel hotel = new Hotel("Rose", rooms);
         manager.setHotel(hotel);
 
         // required intervals
 
         Booking firstBookingInterval = new Booking(0L, LocalDate.of(2019, 7, 20),
-                LocalDate.of(2019, 7, 25), "Mariya");
+                LocalDate.of(2019, 7, 25));
         Booking secondBookingInterval = new Booking(0L, LocalDate.of(2019, 7, 22),
-                LocalDate.of(2019, 7, 23), "Ivan");
+                LocalDate.of(2019, 7, 23));
         Booking thirdBookingInterval = new Booking(0L, LocalDate.of(2019, 7, 19),
-                LocalDate.of(2019, 7, 21), "Peter");
+                LocalDate.of(2019, 7, 21));
 
         // requested beds
 
-        Bed firstRoomBed = new Bed(213, 2);
-        Bed secondRoomBed = new Bed(326,  10);
-        Bed thirdRoomBed = new Bed(381, 4);
+        Bed firstRoomBed = new Bed(BedType.DOUBLE);
+        Bed secondRoomBed = new Bed(BedType.KING);
+        Bed thirdRoomBed = new Bed(BedType.QUAD);
 
-        //  when 1
- //       Room room = manager.tryReservation(firstBookingInterval, firstRoomBed);
+        // when 1
+        int roomID = manager.createBooking(firstBookingInterval.getFrom(), firstBookingInterval.getTo(),
+                2, 567);
 
         // then
-    //    assertThat("Unavailable room with bed for 2", room, is(not(equalTo(null))));
-      //  room.createBooking(firstBookingInterval);
+        assertThat("Unavailable room with bed for 2", roomID, is(equalTo(1)));
 
 
         // when 2
-     //   room = manager.tryReservation(secondBookingInterval, secondRoomBed);
+        //    roomID = manager.createBooking(secondBookingInterval.getFrom(), secondBookingInterval.getTo(),
+        //              1, 482);
 
         // then
-        //assertThat("Available room for n ", room, is(equalTo(null)));
+//        assertThat("Available rooms ", roomID, is(equalTo(null)));
 
 
         // when 3
-       // room = manager.tryReservation(thirdBookingInterval, thirdRoomBed);
+        // room = manager.tryReservation(thirdBookingInterval, thirdRoomBed);
 
         //then
-      //  assertThat("Free date", room, is(equalTo(null))); // busy date
+        //  assertThat("Free date", room, is(equalTo(null))); // busy date
 
-    }
-*/
+
     }
 }
 

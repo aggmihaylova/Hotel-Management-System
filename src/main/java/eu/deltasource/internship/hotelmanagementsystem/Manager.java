@@ -1,23 +1,18 @@
 package eu.deltasource.internship.hotelmanagementsystem;
 
-
 import eu.deltasource.internship.hotelmanagementsystem.hotel.service.domain.commodities.Booking;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Class Manger has 3 private members
- * methods - getters, setters, constructors and others
+ * Represents a manger who manages a hotel
  */
-
 public class Manager {
 
     private String firstName;
     private String lastName;
     private Hotel hotel;
-
 
     /**
      * Parametrized constructor
@@ -26,8 +21,6 @@ public class Manager {
      * @param lastName  manager's last name
      * @param hotel     the hotel managed by the manager
      */
-
-
     public Manager(String firstName, String lastName, Hotel hotel) {
         this(firstName, lastName);
         this.hotel = hotel;
@@ -39,7 +32,6 @@ public class Manager {
      * @param firstName manager's first name
      * @param lastName  manager's last name
      */
-
     public Manager(String firstName, String lastName) {
         this.firstName = firstName;
         this.lastName = lastName;
@@ -71,7 +63,6 @@ public class Manager {
         this.hotel = hotel;
     }
 
-
     /**
      * Creates bookings
      *
@@ -80,16 +71,14 @@ public class Manager {
      * @param numberOfPeople number of people
      * @param reserveID      ID of the booking
      * @return the number of the room that has beed booked
-     * @throws UnavailableRooms if there is no appropriate room
+     * @throws NoRoomsAvailableException if there is no appropriate room
      */
+    public int createBooking(LocalDate fromDate, LocalDate toDate, int numberOfPeople, int reserveID) throws NoRoomsAvailableException {
 
-    public int createBooking(LocalDate fromDate, LocalDate toDate, int numberOfPeople, int reserveID) throws UnavailableRooms {
-
-        List<Room> freeRooms = new ArrayList<>();
-        freeRooms = hotel.findAvailableRooms(fromDate, toDate, numberOfPeople);
+        List<Room> freeRooms = hotel.findAvailableRooms(fromDate, toDate, numberOfPeople);
 
         if (freeRooms.size() == 0) {
-            throw new UnavailableRooms("There is no appropriate room for you! ");
+            throw new NoRoomsAvailableException("There is no appropriate room for you! ");
         } else {
             return hotel.createReservation((new Booking(reserveID, fromDate, toDate)), freeRooms.get(0));
 
@@ -97,5 +86,3 @@ public class Manager {
     }
 
 }
-
-

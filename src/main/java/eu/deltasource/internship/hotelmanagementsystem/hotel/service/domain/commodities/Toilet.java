@@ -1,21 +1,19 @@
 package eu.deltasource.internship.hotelmanagementsystem.hotel.service.domain.commodities;
 
 /**
- * Class bed has 2 private members and one inherited from the abstract class AbstractCommodity
- * methods - getters,setters,constructor and implemented method prepare()
+ * Toilet is part of the set of commodities
  */
-
 public class Toilet extends AbstractCommodity {
 
     private boolean hasWaterSavingTechnology;
     private String color;
 
     /**
+     * Parametrized constructor
      *
      * @param hasWaterSavingTechnology toilet's extra
-     * @param color toilet's color
+     * @param color                    toilet's color
      */
-
     public Toilet(boolean hasWaterSavingTechnology, String color) {
         super();
         this.hasWaterSavingTechnology = hasWaterSavingTechnology;
@@ -34,17 +32,10 @@ public class Toilet extends AbstractCommodity {
         this.hasWaterSavingTechnology = hasWaterSavingTechnology;
     }
 
-    public void setColor(String color) {
-        this.color = color;
-    }
-
-
     /**
      * {@inheritDoc}
      */
     public void prepare() {
         System.out.println("The toilet is being cleaned");
     }
-
-
 }

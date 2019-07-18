@@ -1,30 +1,32 @@
 package eu.deltasource.internship.hotelmanagementsystem.hotel.service.domain.commodities;
 
 /**
- * Class bed has 2 private members and one inherited from the abstract class AbstractCommodity
- * methods - getters,setters,constructor and implemented method prepare()
+ * Shower is part of the set of commodities
  */
-
-
 public class Shower extends AbstractCommodity {
 
-    private boolean isFloorHeating;
+    private boolean hasFloorHeating;
 
     /**
-     * @param isFloorHeating shower's extra
+     * Parametrized constructor
+     *
+     * @param hasFloorHeating shower's extra
      */
-
-    public Shower(boolean isFloorHeating) {
+    public Shower(boolean hasFloorHeating) {
         super();
-        this.isFloorHeating = isFloorHeating;
+        this.hasFloorHeating = hasFloorHeating;
     }
 
-    public boolean isFloorHeating() {
-        return isFloorHeating;
+    public boolean HasFloorHeating() {
+        return hasFloorHeating;
     }
 
-    public void setFloorHeating(boolean floorHeating) {
-        isFloorHeating = floorHeating;
+    public void turnOffFloorHeating() {
+        hasFloorHeating = false;
+    }
+
+    public void turnOnFloorHeating() {
+        hasFloorHeating = true;
     }
 
     /**
@@ -33,6 +35,4 @@ public class Shower extends AbstractCommodity {
     public void prepare() {
         System.out.println("The shower is being cleaned");
     }
-
-
 }

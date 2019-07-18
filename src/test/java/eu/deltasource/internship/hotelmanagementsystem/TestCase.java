@@ -2,7 +2,7 @@ package eu.deltasource.internship.hotelmanagementsystem;
 
 import eu.deltasource.internship.hotelmanagementsystem.hotel.service.domain.commodities.AbstractCommodity;
 import eu.deltasource.internship.hotelmanagementsystem.hotel.service.domain.commodities.Bed;
-import eu.deltasource.internship.hotelmanagementsystem.hotel.service.domain.commodities.BedSize;
+import eu.deltasource.internship.hotelmanagementsystem.hotel.service.domain.commodities.BedType;
 import eu.deltasource.internship.hotelmanagementsystem.hotel.service.domain.commodities.Booking;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -60,51 +60,46 @@ public class TestCase {
     }
 
     @Test
-    void createBookingCaseOne() throws UnavailableRooms {
+    void createBookingCaseOne() throws NoRoomsAvailableException {
 
         // given
-        AbstractCommodity commodity = new Bed(BedSize.DOUBLE);
+        AbstractCommodity commodity = new Bed(BedType.DOUBLE);
         commodities.add(commodity);
         rooms.add(new Room(101, commodities, null, bookings));
         manager.setHotel(hotel);
-
 
         // when
         roomID = manager.createBooking(interval.getFrom(), interval.getTo(), 2, 586);
 
         //then
         assertEquals(101, roomID);
-
     }
 
     @Test
-    void createBookingCaseTwo() throws UnavailableRooms {
+    void createBookingCaseTwo() throws NoRoomsAvailableException {
 
         // given
         hotel = new Hotel("Bordeaux", rooms);
         manager.setHotel(hotel);
 
         // when and then
-        UnavailableRooms unavailableRooms = assertThrows(UnavailableRooms.class,
+        NoRoomsAvailableException unavailableRooms = assertThrows(NoRoomsAvailableException.class,
                 () -> manager.createBooking(interval.getFrom(), interval.getTo(), 2, 586));
-
-
     }
 
     @Test
-    void createBookingCaseThree() throws UnavailableRooms {
+    void createBookingCaseThree() throws NoRoomsAvailableException {
 
         // given and when
-        AbstractCommodity commodity = new Bed(BedSize.SINGLE);
+        AbstractCommodity commodity = new Bed(BedType.SINGLE);
         commodities.add(commodity);
         rooms.add(new Room(101, commodities, null, bookings));
         hotel = new Hotel("Bordeaux", rooms);
         manager.setHotel(hotel);
 
         // when and then
-        assertThrows(UnavailableRooms.class,
+        assertThrows(NoRoomsAvailableException.class,
                 () -> manager.createBooking(interval.getFrom(), interval.getTo(), 2, 586));
-
     }
 
     @AfterEach

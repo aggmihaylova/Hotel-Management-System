@@ -1,6 +1,5 @@
 package eu.deltasource.internship.hotelmanagementsystem;
 
-
 /**
  * Class Room has 5 private members
  * methods - setters, getters, constructors and other methods
@@ -10,17 +9,19 @@ import eu.deltasource.internship.hotelmanagementsystem.hotel.service.domain.comm
 import eu.deltasource.internship.hotelmanagementsystem.hotel.service.domain.commodities.Bed;
 import eu.deltasource.internship.hotelmanagementsystem.hotel.service.domain.commodities.Booking;
 
-
 import java.time.LocalDate;
 import java.util.*;
 
+/**
+ * Represents a room in a hotel
+ */
 public class Room {
 
     private int roomNum;
     private short capacity;
-    Set<AbstractCommodity> commodities;
-    Set<LocalDate> maintenanceDates;
-    Set<Booking> bookings;
+    private Set<AbstractCommodity> commodities;
+    private Set<LocalDate> maintenanceDates;
+    private Set<Booking> bookings;
 
     /**
      * Parametrized constructor
@@ -30,22 +31,12 @@ public class Room {
      * @param maintenanceDates set of
      * @param bookings         set of bookings
      */
-
     public Room(int roomNum, Set<AbstractCommodity> commodities,
                 Set<LocalDate> maintenanceDates, Set<Booking> bookings) {
         this.roomNum = roomNum;
         this.commodities = commodities;
         this.maintenanceDates = maintenanceDates;
         this.bookings = bookings;
-    }
-
-    /**
-     * Default constructor
-     */
-
-
-    public Room() {
-
     }
 
     public int getRoomNum() {
@@ -80,10 +71,6 @@ public class Room {
         this.commodities = commodities;
     }
 
-    public void setMaintenanceDates(Set<LocalDate> maintenanceDates) {
-        this.maintenanceDates = maintenanceDates;
-    }
-
     public void setBookings(Set<Booking> bookings) {
         this.bookings = bookings;
     }
@@ -92,7 +79,7 @@ public class Room {
 
         for (AbstractCommodity commodity : commodities)
             if (commodity instanceof Bed)
-                capacity += ((Bed) commodity).getNumberOfPersonas();
+                capacity += ((Bed) commodity).getBedType().getSize();
 
     }
 
@@ -113,7 +100,6 @@ public class Room {
      * @param newBooking new reservation
      * @return the number of the room that has been booked
      */
-
     public int createBooking(Booking newBooking) {
         bookings.add(newBooking);
         return roomNum;
@@ -125,8 +111,6 @@ public class Room {
      * @param removeBooking the booking that will be removed
      * @throws Exception - if the there is no such booking
      */
-
-
     public boolean removeBooking(Booking removeBooking) throws Exception {
         if (!checkForAvailability(removeBooking)) {
             bookings.remove(removeBooking);
@@ -144,8 +128,6 @@ public class Room {
      * @param newBooking requested booking
      * @return true if the booking can be made
      */
-
-
     public boolean checkForAvailability(Booking newBooking) {
 
         for (Booking book : bookings) {
@@ -163,8 +145,6 @@ public class Room {
      * @param toDate   date
      * @return available dates
      */
-
-
     public Set<Booking> findAvailableDatesForIntervalAndSize(LocalDate fromDate, LocalDate toDate) {
 
         List<Booking> bookedDates = new ArrayList<>(bookings);
@@ -183,7 +163,6 @@ public class Room {
         return freeDates;
 
     }
-
 
 }
 
