@@ -9,7 +9,6 @@ import java.util.List;
 
 /**
  * Class Manger has 3 private members
- * <p>
  * methods - getters, setters, constructors and others
  */
 
@@ -19,11 +18,13 @@ public class Manager {
     private String lastName;
     private Hotel hotel;
 
+
     /**
      * Parametrized constructor
      *
      * @param firstName manager's first name
      * @param lastName  manager's last name
+     * @param hotel     the hotel managed by the manager
      */
 
 
@@ -31,6 +32,13 @@ public class Manager {
         this(firstName, lastName);
         this.hotel = hotel;
     }
+
+    /**
+     * Parametrized constructor
+     *
+     * @param firstName manager's first name
+     * @param lastName  manager's last name
+     */
 
     public Manager(String firstName, String lastName) {
         this.firstName = firstName;
@@ -63,7 +71,19 @@ public class Manager {
         this.hotel = hotel;
     }
 
-    public int createBooking(LocalDate fromDate, LocalDate toDate, int numberOfPeople, int resereveID) throws UnavailableRooms {
+
+    /**
+     * Creates bookings
+     *
+     * @param fromDate       date
+     * @param toDate         date
+     * @param numberOfPeople number of people
+     * @param reserveID      ID of the booking
+     * @return the number of the room that has beed booked
+     * @throws UnavailableRooms if there is no appropriate room
+     */
+
+    public int createBooking(LocalDate fromDate, LocalDate toDate, int numberOfPeople, int reserveID) throws UnavailableRooms {
 
         List<Room> freeRooms = new ArrayList<>();
         freeRooms = hotel.findAvailableRooms(fromDate, toDate, numberOfPeople);
@@ -71,7 +91,7 @@ public class Manager {
         if (freeRooms.size() == 0) {
             throw new UnavailableRooms("There is no appropriate room for you! ");
         } else {
-            return hotel.createReservation((new Booking(resereveID, fromDate, toDate)), freeRooms.get(0));
+            return hotel.createReservation((new Booking(reserveID, fromDate, toDate)), freeRooms.get(0));
 
         }
     }

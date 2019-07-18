@@ -40,7 +40,7 @@ class ManagerTest {
 
         // create HashSet of commodities (in this case - only one bed)
         commodities = new HashSet<>();
-        AbstractCommodity bed = new Bed(123, BedSize.DOUBLE);
+        AbstractCommodity bed = new Bed(BedSize.DOUBLE);
         commodities.add(bed);
 
         // create HashSet of bookings
@@ -52,7 +52,7 @@ class ManagerTest {
                 LocalDate.of(2019, 05, 20)));
 
         // add room in the arraylist of rooms
-        rooms.add(new Room(100, commodities, null, bookings, (short) 1));
+        rooms.add(new Room(100, commodities, null, bookings));
 
 
         hotel = new Hotel("Bordeaux", rooms);

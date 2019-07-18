@@ -34,11 +34,11 @@ class HotelTest {
                 LocalDate.of(2019, 05, 27)));
 
         // set of commodities
-        commodities.add(new Bed(321, BedSize.TRIPLE));
+        commodities.add(new Bed(BedSize.TRIPLE));
 
 
         // array list of rooms
-        rooms.add(new Room(32, commodities, null, bookings, (short) 1));
+        rooms.add(new Room(32, commodities, null, bookings));
 
 
         Hotel hotel = new Hotel("Bordeaux", rooms);

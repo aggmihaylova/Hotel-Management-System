@@ -32,7 +32,7 @@ public class TestScenario {
 
 
     @Test
-    public void test() throws Exception {
+    public void test() throws UnavailableRooms {
 /*
         // given
 

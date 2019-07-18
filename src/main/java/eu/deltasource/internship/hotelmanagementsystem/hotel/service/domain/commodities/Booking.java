@@ -4,10 +4,9 @@ package eu.deltasource.internship.hotelmanagementsystem.hotel.service.domain.com
 import java.time.LocalDate;
 
 /**
- * The class Booking is consisted of 4 private members,
- * implements the interface Comparable
- * has getters,setters
- * method that removes existing booking
+ * Class booking has 3 private members
+ * getters,setters, constructors
+ * overridden hashCode(),equals(), compareTo()
  */
 
 public class Booking implements Comparable {
@@ -37,11 +36,11 @@ public class Booking implements Comparable {
     }
 
     /**
-     * Overloaded Parameterized constructor
+     * Parameterized constructor
      *
      * @param ID   guest ID
-     * @param from from date
-     * @param to   to date
+     * @param from date
+     * @param to   date
      */
 
     public Booking(long ID, LocalDate from, LocalDate to) {
@@ -53,7 +52,7 @@ public class Booking implements Comparable {
 
 
     /**
-     * Guarantee that from Date is before to Date
+     * Guarantee that from date is before to date
      *
      * @param from date
      * @param to   date

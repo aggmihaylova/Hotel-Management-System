@@ -63,9 +63,9 @@ public class TestCase {
     void createBookingCaseOne() throws UnavailableRooms {
 
         // given
-        AbstractCommodity commodity = new Bed(123, BedSize.DOUBLE);
+        AbstractCommodity commodity = new Bed(BedSize.DOUBLE);
         commodities.add(commodity);
-        rooms.add(new Room(101, commodities, null, bookings, (short) 1));
+        rooms.add(new Room(101, commodities, null, bookings));
         manager.setHotel(hotel);
 
 
@@ -95,9 +95,9 @@ public class TestCase {
     void createBookingCaseThree() throws UnavailableRooms {
 
         // given and when
-        AbstractCommodity commodity = new Bed(482, BedSize.SINGLE);
+        AbstractCommodity commodity = new Bed(BedSize.SINGLE);
         commodities.add(commodity);
-        rooms.add(new Room(101, commodities, null, bookings, (short) 1));
+        rooms.add(new Room(101, commodities, null, bookings));
         hotel = new Hotel("Bordeaux", rooms);
         manager.setHotel(hotel);
 

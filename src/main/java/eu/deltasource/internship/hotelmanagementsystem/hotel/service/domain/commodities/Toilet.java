@@ -2,8 +2,7 @@ package eu.deltasource.internship.hotelmanagementsystem.hotel.service.domain.com
 
 /**
  * Class bed has 2 private members and one inherited from the abstract class AbstractCommodity
- * <p>
- * as methods - getters,setters and implementation of the base class method prepare()
+ * methods - getters,setters,constructor and implemented method prepare()
  */
 
 public class Toilet extends AbstractCommodity {
@@ -12,24 +11,15 @@ public class Toilet extends AbstractCommodity {
     private String color;
 
     /**
-     * Parametrized constructor
      *
-     * @param inventoryNumber          Toilet's inventory number
-     * @param hasWaterSavingTechnology Toilet's extra feature
-     * @param color                    Toilet's color
+     * @param hasWaterSavingTechnology toilet's extra
+     * @param color toilet's color
      */
 
-    public Toilet(int inventoryNumber, boolean hasWaterSavingTechnology, String color) {
-        super(inventoryNumber);
+    public Toilet(boolean hasWaterSavingTechnology, String color) {
+        super();
         this.hasWaterSavingTechnology = hasWaterSavingTechnology;
         this.color = color;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public void prepare() {
-        System.out.println("The toilet is being cleaned");
     }
 
     public boolean isHasWaterSavingTechnology() {
@@ -47,4 +37,14 @@ public class Toilet extends AbstractCommodity {
     public void setColor(String color) {
         this.color = color;
     }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public void prepare() {
+        System.out.println("The toilet is being cleaned");
+    }
+
+
 }

@@ -13,7 +13,6 @@ import java.util.Set;
 
 /**
  * Class hotel has 2 private members - name and rooms
- * <p>
  * methods - getters, setters, constructors and others
  */
 
@@ -24,7 +23,7 @@ public class Hotel {
     private List<Room> rooms;
 
     /**
-     * parameterized constructor
+     * Parameterized constructor
      */
 
     public Hotel(String name, List<Room> rooms) {
@@ -53,10 +52,22 @@ public class Hotel {
         this.name = name;
     }
 
-    public void setRooms(ArrayList<Room> rooms) {
+    public void setRooms(List<Room> rooms) {
         this.rooms = rooms;
     }
 
+
+    /**
+     * Search for available rooms by checking:
+     * - if a room has beds
+     * - if at least one of the beds is appropriate for numOfPeople
+     * - for that room - free dates
+     *
+     * @param fromDate    date
+     * @param toDate      date
+     * @param numOfPeople number of people
+     * @return list of available rooms
+     */
 
     public List<Room> findAvailableRooms(LocalDate fromDate, LocalDate toDate, int numOfPeople) {
 
@@ -66,11 +77,11 @@ public class Hotel {
         for (Room room : rooms) {
             for (AbstractCommodity commodity : room.getCommodities()) {
                 if (commodity instanceof Bed) {
-                    if (findAppropriateBedSize(((Bed) commodity), numOfPeople)) {
+                    if (((Bed) commodity).getNumberOfPersonas() == numOfPeople) {
                         availableBookings = room.findAvailableDatesForIntervalAndSize(fromDate, toDate);
                         if (room.getBookings().size() == 0 || availableBookings != null) {
                             availableRooms.add(new Room(room.getRoomNum(), room.getCommodities(), room.getMaintenanceDates(),
-                                    availableBookings, room.getCountBeds()));
+                                    availableBookings));
                         }
                     }
                 }
@@ -84,23 +95,7 @@ public class Hotel {
 
 
     /**
-     * check if there is a bed in current room that can
-     *
-     * @param bed
-     * @param numOfPeople
-     * @return
-     */
-
-    private boolean findAppropriateBedSize(Bed bed, int numOfPeople) {
-
-        if (bed.getNumberOfPersonas() >= numOfPeople)
-            return true;
-        return false;
-
-    }
-
-    /**
-     * calls createBooking() because doesn't have direct access to the room method
+     * calls createBooking()
      *
      * @param newBooking the new booking
      * @param room       the room that will be booked

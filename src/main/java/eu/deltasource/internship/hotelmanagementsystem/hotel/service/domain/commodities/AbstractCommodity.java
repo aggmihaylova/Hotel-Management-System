@@ -3,17 +3,21 @@ package eu.deltasource.internship.hotelmanagementsystem.hotel.service.domain.com
 /**
  * This is an abstract class
  * which has one private member - inventoryNumber
- * <p>
- * getters, setters and abstract method prepare()
+ * getters, setters, abstract method prepare() and overridden equals() and hashcode()
  */
 
 abstract public class AbstractCommodity {
 
+    private static int inventoryNum;
     protected int inventoryNumber;
 
+    /**
+     * Default constructor
+     * assigns value to the inventory number
+     */
 
-    public AbstractCommodity(int inventoryNumber) {
-        this.inventoryNumber = inventoryNumber;
+    public AbstractCommodity() {
+        inventoryNumber = ++inventoryNum;
     }
 
     public int getInventoryNumber() {

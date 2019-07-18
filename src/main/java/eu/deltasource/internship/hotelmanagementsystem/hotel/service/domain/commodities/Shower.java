@@ -1,9 +1,8 @@
 package eu.deltasource.internship.hotelmanagementsystem.hotel.service.domain.commodities;
 
 /**
- * Class bed has 1 private member and one inherited from the abstract class AbstractCommodity
- * <p>
- * as methods - getters,setters and implementation of the base class method prepare()
+ * Class bed has 2 private members and one inherited from the abstract class AbstractCommodity
+ * methods - getters,setters,constructor and implemented method prepare()
  */
 
 
@@ -12,14 +11,11 @@ public class Shower extends AbstractCommodity {
     private boolean isFloorHeating;
 
     /**
-     * Parametrized constructor
-     *
-     * @param inventoryNumber shower's inventory number
-     * @param isFloorHeating  shower's extra feature
+     * @param isFloorHeating shower's extra
      */
 
-    public Shower(int inventoryNumber, boolean isFloorHeating) {
-        super(inventoryNumber);
+    public Shower(boolean isFloorHeating) {
+        super();
         this.isFloorHeating = isFloorHeating;
     }
 

@@ -1,9 +1,8 @@
 package eu.deltasource.internship.hotelmanagementsystem.hotel.service.domain.commodities;
 
 /**
- * Class bed has 3 private members and one inherited from the abstract class AbstractCommodity
- * <p>
- * methods - getters,setters and implementation of the base class method prepare()
+ * Class bed has 1 private member and one inherited from the abstract class AbstractCommodity
+ * methods - getters,setters,constructor and implemented method prepare()
  */
 
 
@@ -11,8 +10,15 @@ public class Bed extends AbstractCommodity {
 
     private BedSize numberOfPersonas;
 
-    public Bed(int inventoryNumber, BedSize numberOfPersonas) {
-        super(inventoryNumber);
+
+    /**
+     * Parametrized constructor
+     *
+     * @param numberOfPersonas bed capacity
+     */
+
+    public Bed(BedSize numberOfPersonas) {
+        super();
         this.numberOfPersonas = numberOfPersonas;
     }
 

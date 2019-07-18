@@ -45,7 +45,7 @@ class RoomTest {
         maintenanceDates.add(LocalDate.of(2019, 5, 26));
 
         rooms = new ArrayList<>();
-        rooms.add(new Room(543, null, maintenanceDates, bookings, (short) 0));
+        rooms.add(new Room(543, null, maintenanceDates, bookings));
 
     }
 

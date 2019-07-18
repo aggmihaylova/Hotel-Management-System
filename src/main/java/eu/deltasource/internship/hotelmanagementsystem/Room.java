@@ -3,11 +3,11 @@ package eu.deltasource.internship.hotelmanagementsystem;
 
 /**
  * Class Room has 5 private members
- * <p>
  * methods - setters, getters, constructors and other methods
  */
 
 import eu.deltasource.internship.hotelmanagementsystem.hotel.service.domain.commodities.AbstractCommodity;
+import eu.deltasource.internship.hotelmanagementsystem.hotel.service.domain.commodities.Bed;
 import eu.deltasource.internship.hotelmanagementsystem.hotel.service.domain.commodities.Booking;
 
 
@@ -17,7 +17,7 @@ import java.util.*;
 public class Room {
 
     private int roomNum;
-    private short countBeds;
+    private short capacity;
     Set<AbstractCommodity> commodities;
     Set<LocalDate> maintenanceDates;
     Set<Booking> bookings;
@@ -25,20 +25,18 @@ public class Room {
     /**
      * Parametrized constructor
      *
-     * @param roomNum          - room's number
-     * @param commodities      - set of commodities
-     * @param maintenanceDates - set of
-     * @param bookings         - set of bookings
-     * @param countBeds        - total number of beds
+     * @param roomNum          ID of the room
+     * @param commodities      set of commodities
+     * @param maintenanceDates set of
+     * @param bookings         set of bookings
      */
 
     public Room(int roomNum, Set<AbstractCommodity> commodities,
-                Set<LocalDate> maintenanceDates, Set<Booking> bookings, short countBeds) {
+                Set<LocalDate> maintenanceDates, Set<Booking> bookings) {
         this.roomNum = roomNum;
         this.commodities = commodities;
         this.maintenanceDates = maintenanceDates;
         this.bookings = bookings;
-        this.countBeds = countBeds;
     }
 
     /**
@@ -54,8 +52,8 @@ public class Room {
         return roomNum;
     }
 
-    public short getCountBeds() {
-        return countBeds;
+    public short getCapacity() {
+        return capacity;
     }
 
     public Set<AbstractCommodity> getCommodities() {
@@ -74,8 +72,8 @@ public class Room {
         this.roomNum = roomNum;
     }
 
-    public void setCountBeds(short countBeds) {
-        this.countBeds = countBeds;
+    public void setCapacity(short capacity) {
+        this.capacity = capacity;
     }
 
     public void setCommodities(Set<AbstractCommodity> commodities) {
@@ -90,6 +88,14 @@ public class Room {
         this.bookings = bookings;
     }
 
+    public void saveCapacity() {
+
+        for (AbstractCommodity commodity : commodities)
+            if (commodity instanceof Bed)
+                capacity += ((Bed) commodity).getNumberOfPersonas();
+
+    }
+
     /**
      * prepare room
      *
@@ -102,6 +108,8 @@ public class Room {
     }
 
     /**
+     * Adds new booking to the set of bookings
+     *
      * @param newBooking new reservation
      * @return the number of the room that has been booked
      */
@@ -112,9 +120,9 @@ public class Room {
     }
 
     /**
-     * Remove booking
+     * Removes booking
      *
-     * @param removeBooking the booking which should be removed
+     * @param removeBooking the booking that will be removed
      * @throws Exception - if the there is no such booking
      */
 
@@ -131,7 +139,7 @@ public class Room {
     }
 
     /**
-     * check if booking exists in the set of bookings
+     * Checks if the booking exists in the set of bookings
      *
      * @param newBooking requested booking
      * @return true if the booking can be made
@@ -147,6 +155,14 @@ public class Room {
         return true;
 
     }
+
+    /**
+     * Searches for free dates
+     *
+     * @param fromDate date
+     * @param toDate   date
+     * @return available dates
+     */
 
 
     public Set<Booking> findAvailableDatesForIntervalAndSize(LocalDate fromDate, LocalDate toDate) {
