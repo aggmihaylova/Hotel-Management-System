@@ -6,7 +6,6 @@ import eu.deltasource.internship.hotelmanagementsystem.hotel.service.domain.comm
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -19,11 +18,16 @@ public class Hotel {
     private List<Room> rooms;
 
     /**
-     * Parameterized constructor
+     * @param name  hotel's name
+     * @param rooms hotel's rooms
      */
     public Hotel(String name, List<Room> rooms) {
         this.name = name;
-        this.rooms = rooms;
+        this.rooms = new ArrayList<>(rooms);
+    }
+
+    public Hotel(String name) {
+        this.name = name;
     }
 
     /**
@@ -41,19 +45,12 @@ public class Hotel {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public void setRooms(List<Room> rooms) {
-        this.rooms = rooms;
+        this.rooms = new ArrayList<>(rooms);
     }
 
     /**
-     * Search for available rooms by checking:
-     * - if a room has beds
-     * - if at least one of the beds is appropriate for numOfPeople
-     * - for that room - free dates
+     * Searches for available rooms
      *
      * @param fromDate    date
      * @param toDate      date
@@ -63,25 +60,47 @@ public class Hotel {
     public List<Room> findAvailableRooms(LocalDate fromDate, LocalDate toDate, int numOfPeople) {
 
         List<Room> availableRooms = new ArrayList<>();
-        Set<Booking> availableBookings = new HashSet<>();
+        Set<Booking> availableBookings;
 
         for (Room room : rooms) {
-            for (AbstractCommodity commodity : room.getCommodities()) {
-                if (!(commodity instanceof Bed)) {
-                    continue;
-                }
-                if (((Bed) commodity).getBedType().getSize() != numOfPeople) {
-                    continue;
-                }
+            if ((findCommoditiesRooms(room.getCommodities(), numOfPeople))) {
                 availableBookings = room.findAvailableDatesForIntervalAndSize(fromDate, toDate);
-                if (room.getBookings().size() == 0 || availableBookings != null) {
-                    availableRooms.add(new Room(room.getRoomNum(), room.getCommodities(), room.getMaintenanceDates(),
-                            availableBookings));
-                }
+                addAvailableRoom(availableBookings, availableRooms, room);
             }
-
         }
         return availableRooms;
+    }
+
+    /**
+     * Checks if the room has bed/beds
+     *
+     * @param commodities all commodities that the room has
+     * @param numOfPeople number of people
+     * @return true/false for having/not having beds
+     */
+    private boolean findCommoditiesRooms(Set<AbstractCommodity> commodities, int numOfPeople) {
+        for (AbstractCommodity commodity : commodities) {
+            if ((commodity instanceof Bed)) {
+                if (((Bed) commodity).getBedType().getSize() == numOfPeople) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Adds room to the array list of available rooms
+     *
+     * @param availableBookings free dates for the room
+     * @param availableRooms    list of available rooms
+     * @param room              added room
+     */
+    private void addAvailableRoom(Set<Booking> availableBookings, List<Room> availableRooms, Room room) {
+        if (room.getBookings().size() == 0 || availableBookings != null) {
+            availableRooms.add(new Room(room.getID(), room.getCommodities(), room.getMaintenanceDates(),
+                    availableBookings));
+        }
     }
 
     /**
@@ -89,7 +108,7 @@ public class Hotel {
      *
      * @param newBooking the new booking
      * @param room       the room that will be booked
-     * @return the number of the room that has been booked
+     * @return ID of the room that has been booked
      */
     public int createReservation(Booking newBooking, Room room) {
         return room.createBooking(newBooking);

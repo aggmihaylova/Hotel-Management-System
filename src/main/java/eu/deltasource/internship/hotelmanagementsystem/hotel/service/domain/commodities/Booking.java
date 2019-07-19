@@ -1,5 +1,7 @@
 package eu.deltasource.internship.hotelmanagementsystem.hotel.service.domain.commodities;
 
+import eu.deltasource.internship.hotelmanagementsystem.InvalidBookingException;
+
 import java.time.LocalDate;
 
 /**
@@ -12,15 +14,6 @@ public class Booking implements Comparable {
     private LocalDate to;
 
     /**
-     * Default constructor
-     */
-    public Booking() {
-
-    }
-
-    /**
-     * Parameterized constructor
-     *
      * @param guestID guest ID
      */
     public Booking(long guestID) {
@@ -28,8 +21,6 @@ public class Booking implements Comparable {
     }
 
     /**
-     * Parameterized constructor
-     *
      * @param ID   guest ID
      * @param from date
      * @param to   date
@@ -38,18 +29,17 @@ public class Booking implements Comparable {
         this(ID);
         this.from = from;
         this.to = to;
-
     }
 
     /**
-     * Guarantee that from date is before to date
+     * Guarantees that from date is before to date
      *
      * @param from date
      * @param to   date
      */
-    public void saveDate(LocalDate from, LocalDate to) {
+    public void saveDate(LocalDate from, LocalDate to) throws InvalidBookingException {
         if (from.isAfter(to)) {
-            System.out.println("Invalid reservation date ");
+            throw new InvalidBookingException("Invalid reservation date");
         } else {
             setFrom(from);
             setTo(to);
@@ -95,7 +85,6 @@ public class Booking implements Comparable {
         return (((from.getYear() == book.from.getYear()) && (from.getMonthValue() == book.from.getMonthValue()) &&
                 (from.getDayOfMonth() == book.from.getDayOfMonth())) && ((to.getYear() == book.to.getYear()
                 && to.getMonthValue() == book.to.getMonthValue()) && (to.getDayOfMonth() == book.to.getDayOfMonth())));
-
     }
 
     @Override
@@ -103,10 +92,9 @@ public class Booking implements Comparable {
         int hash = 3;
 
         hash = 31 * hash + from.hashCode();
-        hash = 31 * hash + to.hashCode();
+        hash += 31 * hash + to.hashCode();
 
         return hash;
-
     }
 
     @Override
@@ -124,5 +112,4 @@ public class Booking implements Comparable {
         return cmp;
 
     }
-
 }

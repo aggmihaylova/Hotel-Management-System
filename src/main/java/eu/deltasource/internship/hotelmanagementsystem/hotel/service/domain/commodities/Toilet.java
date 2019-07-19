@@ -5,31 +5,18 @@ package eu.deltasource.internship.hotelmanagementsystem.hotel.service.domain.com
  */
 public class Toilet extends AbstractCommodity {
 
-    private boolean hasWaterSavingTechnology;
     private String color;
 
     /**
-     * Parametrized constructor
-     *
-     * @param hasWaterSavingTechnology toilet's extra
-     * @param color                    toilet's color
+     * * @param color toilet's color
      */
-    public Toilet(boolean hasWaterSavingTechnology, String color) {
+    public Toilet(String color) {
         super();
-        this.hasWaterSavingTechnology = hasWaterSavingTechnology;
         this.color = color;
-    }
-
-    public boolean isHasWaterSavingTechnology() {
-        return hasWaterSavingTechnology;
     }
 
     public String getColor() {
         return color;
-    }
-
-    public void setHasWaterSavingTechnology(boolean hasWaterSavingTechnology) {
-        this.hasWaterSavingTechnology = hasWaterSavingTechnology;
     }
 
     /**

@@ -6,7 +6,6 @@ import eu.deltasource.internship.hotelmanagementsystem.hotel.service.domain.comm
 import eu.deltasource.internship.hotelmanagementsystem.hotel.service.domain.commodities.Booking;
 
 
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -24,8 +23,6 @@ import static org.hamcrest.core.IsEqual.equalTo;
 
 class ManagerTest {
 
-    // others are getters and setters
-
     private List<Room> rooms;
     private Set<AbstractCommodity> commodities;
     private Set<Booking> bookings;
@@ -35,25 +32,32 @@ class ManagerTest {
 
     @BeforeEach
     public void SetUp() {
-        // create ArrayList of rooms
-        rooms = new ArrayList<>();
 
-        // create HashSet of commodities (in this case - only one bed)
+        //  set of commodities
         commodities = new HashSet<>();
         AbstractCommodity bed = new Bed(BedType.DOUBLE);
         commodities.add(bed);
 
-        // create HashSet of bookings
+        //  set of bookings
+        LocalDate firstFromDate = LocalDate.of(2019, 04, 30);
+        LocalDate firstToDate = LocalDate.of(2019, 05, 6);
+        LocalDate secondFromDate = LocalDate.of(2019, 05, 15);
+        LocalDate secondToDate = LocalDate.of(2019, 05, 20);
+
+
         bookings = new HashSet<>();
+        bookings.add(new Booking(0L, firstFromDate, firstToDate));
+        bookings.add(new Booking(1L, secondFromDate, secondToDate));
 
-        bookings.add(new Booking(0L, LocalDate.of(2019, 04, 30),
-                LocalDate.of(2019, 05, 6)));
-        bookings.add(new Booking(1L, LocalDate.of(2019, 05, 15),
-                LocalDate.of(2019, 05, 20)));
+        // set of maintenance dates
+        Set<LocalDate> maintenanceDates = new HashSet<>();
+        LocalDate maintenanceDate = LocalDate.of(2019, 5, 21);
+        maintenanceDates.add(maintenanceDate);
 
-        // add room in the arraylist of rooms
-        rooms.add(new Room(100, commodities, null, bookings));
 
+        //  array list of rooms
+        rooms = new ArrayList<>();
+        rooms.add(new Room(commodities, maintenanceDates, bookings));
 
         hotel = new Hotel("Bordeaux", rooms);
 
@@ -62,24 +66,17 @@ class ManagerTest {
     }
 
     @Test
-    void createBooking() throws NoRoomsAvailableException {
+    void createBooking() {
 
         // given
-        Booking interval = new Booking(9505124521L, LocalDate.of(2019, 10, 3),
-                LocalDate.of(2019, 5, 14));
-
+        LocalDate fromDate = LocalDate.of(2019, 10, 3);
+        LocalDate toDate = LocalDate.of(2019, 5, 14);
 
         // when
-        int roomID = manager.createBooking(interval.getFrom(), interval.getTo(), 2, 586);
+        int roomID = manager.createBooking(fromDate, toDate, 2, 586);
 
         //then
-        assertThat("The booking was successfull", roomID, is(equalTo(100)));
+        assertThat("The Booking was successful", roomID, is(equalTo(1)));
 
     }
-
-    @AfterEach
-    public void TearDown() {
-        System.out.println("End of the test");
-    }
-
 }

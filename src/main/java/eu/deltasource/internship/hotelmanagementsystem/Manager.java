@@ -15,8 +15,6 @@ public class Manager {
     private Hotel hotel;
 
     /**
-     * Parametrized constructor
-     *
      * @param firstName manager's first name
      * @param lastName  manager's last name
      * @param hotel     the hotel managed by the manager
@@ -27,15 +25,12 @@ public class Manager {
     }
 
     /**
-     * Parametrized constructor
-     *
      * @param firstName manager's first name
      * @param lastName  manager's last name
      */
     public Manager(String firstName, String lastName) {
         this.firstName = firstName;
         this.lastName = lastName;
-
     }
 
     public String getFirstName() {
@@ -56,7 +51,6 @@ public class Manager {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
-
     }
 
     public void setHotel(Hotel hotel) {
@@ -64,7 +58,7 @@ public class Manager {
     }
 
     /**
-     * Creates bookings
+     * Creates booking
      *
      * @param fromDate       date
      * @param toDate         date
@@ -73,16 +67,13 @@ public class Manager {
      * @return the number of the room that has beed booked
      * @throws NoRoomsAvailableException if there is no appropriate room
      */
-    public int createBooking(LocalDate fromDate, LocalDate toDate, int numberOfPeople, int reserveID) throws NoRoomsAvailableException {
+    public int createBooking(LocalDate fromDate, LocalDate toDate, int numberOfPeople, int reserveID) {
 
         List<Room> freeRooms = hotel.findAvailableRooms(fromDate, toDate, numberOfPeople);
 
         if (freeRooms.size() == 0) {
             throw new NoRoomsAvailableException("There is no appropriate room for you! ");
-        } else {
+        } else
             return hotel.createReservation((new Booking(reserveID, fromDate, toDate)), freeRooms.get(0));
-
-        }
     }
-
 }

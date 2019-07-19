@@ -8,8 +8,6 @@ public class Bed extends AbstractCommodity {
     private BedType bedType;
 
     /**
-     * Parametrized constructor
-     *
      * @param bedType bed type
      */
     public Bed(BedType bedType) {

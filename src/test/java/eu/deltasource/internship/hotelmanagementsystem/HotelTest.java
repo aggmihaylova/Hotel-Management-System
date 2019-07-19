@@ -19,8 +19,6 @@ import java.util.Set;
 
 class HotelTest {
 
-    // other are getters, setters and createReservation(..) just calls another method
-
     @Test
     void findAvailableRooms() {
 
@@ -28,31 +26,35 @@ class HotelTest {
         Set<Booking> bookings = new HashSet<>();
         List<Room> rooms = new ArrayList<>();
 
-
         // set of bookings
-        bookings.add(new Booking(9413043456L, LocalDate.of(2019, 05, 23),
-                LocalDate.of(2019, 05, 27)));
+        LocalDate fromDate = LocalDate.of(2019, 05, 23);
+        LocalDate toDate = LocalDate.of(2019, 05, 27);
+
+        bookings.add(new Booking(9413043456L, fromDate, toDate));
 
         // set of commodities
         commodities.add(new Bed(BedType.TRIPLE));
 
+        // set of maintenance dates
+        Set<LocalDate> maintenanceDates = new HashSet<>();
+        LocalDate maintenanceDate = LocalDate.of(2019, 5, 21);
+        maintenanceDates.add(maintenanceDate);
 
         // array list of rooms
-        rooms.add(new Room(32, commodities, null, bookings));
+        rooms.add(new Room(commodities, maintenanceDates, bookings));
 
 
         Hotel hotel = new Hotel("Bordeaux", rooms);
-
-        Manager manager = new Manager("John", "Tale", hotel);
 
         // given
         LocalDate from = LocalDate.of(2019, 7, 3);
         LocalDate to = LocalDate.of(2019, 7, 12);
         int numberOfPeople = 3;
 
-        // when and then
-        assertThat("There are available rooms", hotel.findAvailableRooms(from, to, numberOfPeople), is(not(equalTo(null))));
+        // when
+        List<Room> freeRoom = hotel.findAvailableRooms(from, to, numberOfPeople);
 
-
+        // then
+        assertThat("There are available rooms", freeRoom, is(not(equalTo(null))));
     }
 }

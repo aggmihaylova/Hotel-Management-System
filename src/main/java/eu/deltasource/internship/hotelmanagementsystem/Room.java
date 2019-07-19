@@ -1,49 +1,44 @@
 package eu.deltasource.internship.hotelmanagementsystem;
 
-/**
- * Class Room has 5 private members
- * methods - setters, getters, constructors and other methods
- */
-
 import eu.deltasource.internship.hotelmanagementsystem.hotel.service.domain.commodities.AbstractCommodity;
 import eu.deltasource.internship.hotelmanagementsystem.hotel.service.domain.commodities.Bed;
 import eu.deltasource.internship.hotelmanagementsystem.hotel.service.domain.commodities.Booking;
+import eu.deltasource.internship.hotelmanagementsystem.hotel.service.domain.commodities.Utility;
 
 import java.time.LocalDate;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * Represents a room in a hotel
  */
 public class Room {
 
-    private int roomNum;
-    private short capacity;
+    private int ID;
+    private int capacity;
     private Set<AbstractCommodity> commodities;
     private Set<LocalDate> maintenanceDates;
     private Set<Booking> bookings;
 
-    /**
-     * Parametrized constructor
-     *
-     * @param roomNum          ID of the room
-     * @param commodities      set of commodities
-     * @param maintenanceDates set of
-     * @param bookings         set of bookings
-     */
-    public Room(int roomNum, Set<AbstractCommodity> commodities,
-                Set<LocalDate> maintenanceDates, Set<Booking> bookings) {
-        this.roomNum = roomNum;
-        this.commodities = commodities;
-        this.maintenanceDates = maintenanceDates;
-        this.bookings = bookings;
+    public Room(int ID, Set<AbstractCommodity> commodities, Set<LocalDate> maintenanceDates, Set<Booking> bookings) {
+        this.commodities = new HashSet<>(commodities);
+        this.maintenanceDates = new HashSet<>(maintenanceDates);
+        this.bookings = new HashSet<>(bookings);
+        this.ID = ID;
     }
 
-    public int getRoomNum() {
-        return roomNum;
+    public Room(Set<AbstractCommodity> commodities, Set<LocalDate> maintenanceDates, Set<Booking> bookings) {
+        this.commodities = new HashSet<>(commodities);
+        this.maintenanceDates = new HashSet<>(maintenanceDates);
+        this.bookings = new HashSet<>(bookings);
+        this.ID = Utility.GLOBAL_ROOM_ID_COUNTER++;
     }
 
-    public short getCapacity() {
+    public int getID() {
+        return ID;
+    }
+
+    public int getCapacity() {
         return capacity;
     }
 
@@ -57,30 +52,6 @@ public class Room {
 
     public Set<Booking> getBookings() {
         return bookings;
-    }
-
-    public void setRoomNum(int roomNum) {
-        this.roomNum = roomNum;
-    }
-
-    public void setCapacity(short capacity) {
-        this.capacity = capacity;
-    }
-
-    public void setCommodities(Set<AbstractCommodity> commodities) {
-        this.commodities = commodities;
-    }
-
-    public void setBookings(Set<Booking> bookings) {
-        this.bookings = bookings;
-    }
-
-    public void saveCapacity() {
-
-        for (AbstractCommodity commodity : commodities)
-            if (commodity instanceof Bed)
-                capacity += ((Bed) commodity).getBedType().getSize();
-
     }
 
     /**
@@ -102,7 +73,7 @@ public class Room {
      */
     public int createBooking(Booking newBooking) {
         bookings.add(newBooking);
-        return roomNum;
+        return ID;
     }
 
     /**
@@ -111,15 +82,13 @@ public class Room {
      * @param removeBooking the booking that will be removed
      * @throws Exception - if the there is no such booking
      */
-    public boolean removeBooking(Booking removeBooking) throws Exception {
+    public boolean removeBooking(Booking removeBooking) {
         if (!checkForAvailability(removeBooking)) {
             bookings.remove(removeBooking);
             prepareRoom(removeBooking.getFrom());
             return true;
-
         }
-        throw new Exception("Such booking does not exist!");
-
+        throw new InvalidBookingException("Such booking does not exist!");
     }
 
     /**
@@ -135,7 +104,6 @@ public class Room {
                 return false;
         }
         return true;
-
     }
 
     /**
@@ -152,40 +120,11 @@ public class Room {
 
         Set<Booking> freeDates = new HashSet<>();
 
-
         for (int i = 0; i < bookedDates.size() - 1; i++) {
             if (fromDate.isAfter(bookedDates.get(i).getTo()) && toDate.isBefore(bookedDates.get(i + 1).getFrom())) {
                 freeDates.add(new Booking(0L, bookedDates.get(i).getTo(), (bookedDates.get(i + 1).getFrom())));
             }
-
         }
-
         return freeDates;
-
     }
-
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

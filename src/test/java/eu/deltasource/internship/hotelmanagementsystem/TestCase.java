@@ -1,9 +1,6 @@
 package eu.deltasource.internship.hotelmanagementsystem;
 
-import eu.deltasource.internship.hotelmanagementsystem.hotel.service.domain.commodities.AbstractCommodity;
-import eu.deltasource.internship.hotelmanagementsystem.hotel.service.domain.commodities.Bed;
-import eu.deltasource.internship.hotelmanagementsystem.hotel.service.domain.commodities.BedType;
-import eu.deltasource.internship.hotelmanagementsystem.hotel.service.domain.commodities.Booking;
+import eu.deltasource.internship.hotelmanagementsystem.hotel.service.domain.commodities.*;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -18,98 +15,84 @@ import java.util.Set;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-
 public class TestCase {
 
-
+    private Set<LocalDate> maintenanceDates;
     private List<Room> rooms;
     private Set<AbstractCommodity> commodities;
     private Set<Booking> bookings;
     private Hotel hotel;
     private Manager manager;
-    private Booking interval;
+    private LocalDate intervalFrom;
+    private LocalDate intervalTo;
     private int roomID;
-
 
     @BeforeEach
     public void SetUp() {
 
-        // create HashSet of commodities (in this case - only one bed)
+        // set of commodities
         commodities = new HashSet<>();
 
-
-        // create HashSet of bookings
+        // set of bookings
         bookings = new HashSet<>();
 
-        // add bookings
-        bookings.add(new Booking(0L, LocalDate.of(2019, 04, 30),
-                LocalDate.of(2019, 05, 6)));
-        bookings.add(new Booking(1L, LocalDate.of(2019, 05, 15),
-                LocalDate.of(2019, 05, 20)));
+        LocalDate firstFromDate = LocalDate.of(2019, 04, 30);
+        LocalDate firstToDate = LocalDate.of(2019, 05, 6);
 
-        // user interval
-        interval = new Booking(9505124521L, LocalDate.of(2019, 1, 1),
-                LocalDate.of(2019, 1, 1));
+        bookings.add(new Booking(0L, firstFromDate, firstToDate));
+
+        // requested interval
+        intervalFrom = LocalDate.of(2019, 1, 1);
+        intervalTo = LocalDate.of(2019, 1, 2);
+
+        // set of maintenance dates
+        maintenanceDates = new HashSet<>();
+        LocalDate maintenanceDate = LocalDate.of(2019, 5, 21);
+        maintenanceDates.add(maintenanceDate);
 
         rooms = new ArrayList<>();
 
-        hotel = new Hotel("Bordeaux", rooms);
+        hotel = new Hotel("Bordeaux");
 
-        manager = new Manager("John", "Johnson");
-
+        manager = new Manager("John", "Johnson", hotel);
     }
 
     @Test
-    void createBookingCaseOne() throws NoRoomsAvailableException {
-
+    void createBookingCaseOne() {
         // given
         AbstractCommodity commodity = new Bed(BedType.DOUBLE);
         commodities.add(commodity);
-        rooms.add(new Room(101, commodities, null, bookings));
+        rooms.add(new Room(commodities, maintenanceDates, bookings));
+        hotel.setRooms(rooms);
         manager.setHotel(hotel);
 
         // when
-        roomID = manager.createBooking(interval.getFrom(), interval.getTo(), 2, 586);
+        roomID = manager.createBooking(intervalFrom, intervalTo, 2, 586);
 
         //then
-        assertEquals(101, roomID);
+        assertEquals(rooms.get(0).getID(), roomID);
     }
 
     @Test
-    void createBookingCaseTwo() throws NoRoomsAvailableException {
-
+    void createBookingCaseTwo() {
         // given
-        hotel = new Hotel("Bordeaux", rooms);
+        hotel.setRooms(rooms);
         manager.setHotel(hotel);
 
         // when and then
-        NoRoomsAvailableException unavailableRooms = assertThrows(NoRoomsAvailableException.class,
-                () -> manager.createBooking(interval.getFrom(), interval.getTo(), 2, 586));
+        assertThrows(NoRoomsAvailableException.class, () -> manager.createBooking(intervalFrom, intervalTo, 2, 586));
     }
 
     @Test
-    void createBookingCaseThree() throws NoRoomsAvailableException {
-
-        // given and when
+    void createBookingCaseThree() {
+        // given
         AbstractCommodity commodity = new Bed(BedType.SINGLE);
         commodities.add(commodity);
-        rooms.add(new Room(101, commodities, null, bookings));
-        hotel = new Hotel("Bordeaux", rooms);
+        rooms.add(new Room(101, commodities, maintenanceDates, bookings));
+        hotel.setRooms(rooms);
         manager.setHotel(hotel);
 
         // when and then
-        assertThrows(NoRoomsAvailableException.class,
-                () -> manager.createBooking(interval.getFrom(), interval.getTo(), 2, 586));
+        assertThrows(NoRoomsAvailableException.class, () -> manager.createBooking(intervalFrom, intervalTo, 2, 586));
     }
-
-    @AfterEach
-    public void TearDown() {
-        System.out.println("End of the test");
-    }
-
 }
-
-
-
-
-

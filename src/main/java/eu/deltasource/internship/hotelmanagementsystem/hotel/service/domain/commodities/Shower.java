@@ -8,8 +8,6 @@ public class Shower extends AbstractCommodity {
     private boolean hasFloorHeating;
 
     /**
-     * Parametrized constructor
-     *
      * @param hasFloorHeating shower's extra
      */
     public Shower(boolean hasFloorHeating) {
@@ -17,7 +15,7 @@ public class Shower extends AbstractCommodity {
         this.hasFloorHeating = hasFloorHeating;
     }
 
-    public boolean HasFloorHeating() {
+    public boolean hasFloorHeating() {
         return hasFloorHeating;
     }
 

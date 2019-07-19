@@ -5,7 +5,7 @@ package eu.deltasource.internship.hotelmanagementsystem.hotel.service.domain.com
  */
 public enum BedType {
 
-    SINGLE(1), DOUBLE(2), TRIPLE(3), QUAD(4), KING(5);
+    SINGLE(1), DOUBLE(2), TRIPLE(3), QUAD(4), QUEEN(2), KING(2);
 
     private int size;
 

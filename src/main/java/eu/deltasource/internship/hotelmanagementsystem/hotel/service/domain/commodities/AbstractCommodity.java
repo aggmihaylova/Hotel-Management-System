@@ -5,15 +5,14 @@ package eu.deltasource.internship.hotelmanagementsystem.hotel.service.domain.com
  */
 abstract public class AbstractCommodity {
 
-    private static int COUNTER;
-    protected int globalInventoryCounter;
+    protected int inventoryNumber;
 
     /**
      * Default constructor
      * assigns value to the inventory number
      */
     public AbstractCommodity() {
-        globalInventoryCounter = ++COUNTER;
+        inventoryNumber = Utility.GLOBAL_INVENTORY_COUNTER++;
     }
 
     @Override
@@ -27,17 +26,12 @@ abstract public class AbstractCommodity {
 
         AbstractCommodity abstractCommodity = (AbstractCommodity) obj;
 
-        return this.globalInventoryCounter == abstractCommodity.globalInventoryCounter;
+        return this.inventoryNumber == abstractCommodity.inventoryNumber;
     }
 
     @Override
     public int hashCode() {
-        int hash = 3;
-
-        hash *= globalInventoryCounter;
-
-        return hash;
-
+        return inventoryNumber;
     }
 
     /**
