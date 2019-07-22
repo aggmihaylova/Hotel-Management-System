@@ -10,8 +10,8 @@ public class Bed extends AbstractCommodity {
     /**
      * @param bedType bed type
      */
-    public Bed(BedType bedType) {
-        super();
+    public Bed(int inventoryNumber, BedType bedType) {
+        super(inventoryNumber);
         this.bedType = bedType;
     }
 

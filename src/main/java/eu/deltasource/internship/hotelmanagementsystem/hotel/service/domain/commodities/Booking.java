@@ -1,6 +1,7 @@
 package eu.deltasource.internship.hotelmanagementsystem.hotel.service.domain.commodities;
 
 import eu.deltasource.internship.hotelmanagementsystem.InvalidBookingException;
+import eu.deltasource.internship.hotelmanagementsystem.InvalidIDException;
 
 import java.time.LocalDate;
 
@@ -9,24 +10,32 @@ import java.time.LocalDate;
  */
 public class Booking implements Comparable {
 
+    private long ID;
     private long guestID;
     private LocalDate from;
     private LocalDate to;
 
+
     /**
-     * @param guestID guest ID
+     * Default constructor
+     */
+    public Booking() {
+    }
+
+    /**
+     * @param guestID
      */
     public Booking(long guestID) {
         this.guestID = guestID;
     }
 
     /**
-     * @param ID   guest ID
-     * @param from date
-     * @param to   date
+     * @param guestID guest's ID
+     * @param from    date
+     * @param to      date
      */
-    public Booking(long ID, LocalDate from, LocalDate to) {
-        this(ID);
+    public Booking(long guestID, LocalDate from, LocalDate to) {
+        this(guestID);
         this.from = from;
         this.to = to;
     }
@@ -37,12 +46,27 @@ public class Booking implements Comparable {
      * @param from date
      * @param to   date
      */
-    public void saveDate(LocalDate from, LocalDate to) throws InvalidBookingException {
+    public boolean saveDate(LocalDate from, LocalDate to) {
         if (from.isAfter(to)) {
             throw new InvalidBookingException("Invalid reservation date");
         } else {
             setFrom(from);
             setTo(to);
+        }
+        return true;
+    }
+
+    /**
+     * @param guestID guest's ID
+     * @return true if ID is valid
+     */
+    public boolean saveGuestID(long guestID) {
+
+        if (guestID % 100000000L != 0) {
+            this.guestID = guestID;
+            return true;
+        } else {
+            throw new InvalidIDException("Invalid ID !");
         }
     }
 
@@ -56,10 +80,6 @@ public class Booking implements Comparable {
 
     public LocalDate getTo() {
         return to;
-    }
-
-    public void setGuestID(long guestID) {
-        this.guestID = guestID;
     }
 
     public void setFrom(LocalDate from) {

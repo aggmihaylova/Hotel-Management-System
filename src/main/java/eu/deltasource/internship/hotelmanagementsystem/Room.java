@@ -3,11 +3,9 @@ package eu.deltasource.internship.hotelmanagementsystem;
 import eu.deltasource.internship.hotelmanagementsystem.hotel.service.domain.commodities.AbstractCommodity;
 import eu.deltasource.internship.hotelmanagementsystem.hotel.service.domain.commodities.Bed;
 import eu.deltasource.internship.hotelmanagementsystem.hotel.service.domain.commodities.Booking;
-import eu.deltasource.internship.hotelmanagementsystem.hotel.service.domain.commodities.Utility;
 
 import java.time.LocalDate;
 import java.util.*;
-import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * Represents a room in a hotel
@@ -20,18 +18,18 @@ public class Room {
     private Set<LocalDate> maintenanceDates;
     private Set<Booking> bookings;
 
+    /**
+     * @param ID               room's ID
+     * @param commodities      room commodities
+     * @param maintenanceDates room maintenance dates
+     * @param bookings         room bookings
+     */
+
     public Room(int ID, Set<AbstractCommodity> commodities, Set<LocalDate> maintenanceDates, Set<Booking> bookings) {
         this.commodities = new HashSet<>(commodities);
         this.maintenanceDates = new HashSet<>(maintenanceDates);
         this.bookings = new HashSet<>(bookings);
         this.ID = ID;
-    }
-
-    public Room(Set<AbstractCommodity> commodities, Set<LocalDate> maintenanceDates, Set<Booking> bookings) {
-        this.commodities = new HashSet<>(commodities);
-        this.maintenanceDates = new HashSet<>(maintenanceDates);
-        this.bookings = new HashSet<>(bookings);
-        this.ID = Utility.GLOBAL_ROOM_ID_COUNTER++;
     }
 
     public int getID() {
@@ -54,6 +52,13 @@ public class Room {
         return bookings;
     }
 
+
+    public void saveCapacity(AbstractCommodity commodity) {
+
+        if (commodity instanceof Bed)
+            capacity += ((Bed) commodity).getBedType().getSize();
+    }
+
     /**
      * prepare room
      *
@@ -61,7 +66,7 @@ public class Room {
      */
     public void prepareRoom(LocalDate date) {
 
-        for (int i = 0; i < maintenanceDates.size(); i++) ;
+        for (LocalDate maintenanceDate : maintenanceDates) ;
         maintenanceDates.add(date);
     }
 
@@ -72,7 +77,9 @@ public class Room {
      * @return the number of the room that has been booked
      */
     public int createBooking(Booking newBooking) {
+
         bookings.add(newBooking);
+        prepareRoom(newBooking.getFrom());
         return ID;
     }
 
@@ -83,9 +90,9 @@ public class Room {
      * @throws Exception - if the there is no such booking
      */
     public boolean removeBooking(Booking removeBooking) {
+
         if (!checkForAvailability(removeBooking)) {
             bookings.remove(removeBooking);
-            prepareRoom(removeBooking.getFrom());
             return true;
         }
         throw new InvalidBookingException("Such booking does not exist!");

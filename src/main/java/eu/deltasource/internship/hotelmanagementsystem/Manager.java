@@ -14,15 +14,6 @@ public class Manager {
     private String lastName;
     private Hotel hotel;
 
-    /**
-     * @param firstName manager's first name
-     * @param lastName  manager's last name
-     * @param hotel     the hotel managed by the manager
-     */
-    public Manager(String firstName, String lastName, Hotel hotel) {
-        this(firstName, lastName);
-        this.hotel = hotel;
-    }
 
     /**
      * @param firstName manager's first name
@@ -31,6 +22,16 @@ public class Manager {
     public Manager(String firstName, String lastName) {
         this.firstName = firstName;
         this.lastName = lastName;
+    }
+
+    /**
+     * @param firstName manager's first name
+     * @param lastName  manager's last name
+     * @param hotel     the hotel managed by the manager
+     */
+    public Manager(String firstName, String lastName, Hotel hotel) {
+        this(firstName, lastName);
+        this.hotel = hotel;
     }
 
     public String getFirstName() {

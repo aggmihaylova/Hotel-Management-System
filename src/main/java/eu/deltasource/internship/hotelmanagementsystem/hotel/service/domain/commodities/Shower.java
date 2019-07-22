@@ -10,8 +10,8 @@ public class Shower extends AbstractCommodity {
     /**
      * @param hasFloorHeating shower's extra
      */
-    public Shower(boolean hasFloorHeating) {
-        super();
+    public Shower(int inventoryNumber, boolean hasFloorHeating) {
+        super(inventoryNumber);
         this.hasFloorHeating = hasFloorHeating;
     }
 

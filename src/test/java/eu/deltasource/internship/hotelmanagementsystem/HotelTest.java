@@ -4,6 +4,7 @@ import eu.deltasource.internship.hotelmanagementsystem.hotel.service.domain.comm
 import eu.deltasource.internship.hotelmanagementsystem.hotel.service.domain.commodities.Bed;
 import eu.deltasource.internship.hotelmanagementsystem.hotel.service.domain.commodities.BedType;
 import eu.deltasource.internship.hotelmanagementsystem.hotel.service.domain.commodities.Booking;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 
@@ -19,21 +20,30 @@ import java.util.Set;
 
 class HotelTest {
 
-    @Test
-    void findAvailableRooms() {
+    private Hotel hotel;
+    private Set<AbstractCommodity> commodities;
+    private Set<Booking> bookings;
+    private List<Room> room;
+
+    @BeforeEach
+    void setUp() {
 
         Set<AbstractCommodity> commodities = new HashSet<>();
         Set<Booking> bookings = new HashSet<>();
         List<Room> rooms = new ArrayList<>();
 
         // set of bookings
+        long guestID = 9504124582L;
+        Booking newBooking = new Booking(guestID);
         LocalDate fromDate = LocalDate.of(2019, 05, 23);
         LocalDate toDate = LocalDate.of(2019, 05, 27);
+        newBooking.saveDate(fromDate, toDate);
 
-        bookings.add(new Booking(9413043456L, fromDate, toDate));
+        bookings.add(newBooking);
 
         // set of commodities
-        commodities.add(new Bed(BedType.TRIPLE));
+        Bed bed = new Bed(commodities.size() + 1, BedType.TRIPLE);
+        commodities.add(bed);
 
         // set of maintenance dates
         Set<LocalDate> maintenanceDates = new HashSet<>();
@@ -41,11 +51,14 @@ class HotelTest {
         maintenanceDates.add(maintenanceDate);
 
         // array list of rooms
-        rooms.add(new Room(commodities, maintenanceDates, bookings));
+        rooms.add(new Room(rooms.size() + 1, commodities, maintenanceDates, bookings));
+        rooms.get(0).saveCapacity(bed);
 
+        hotel = new Hotel("Bordeaux", rooms);
+    }
 
-        Hotel hotel = new Hotel("Bordeaux", rooms);
-
+    @Test
+    public void checkAndFindAvailableRooms() {
         // given
         LocalDate from = LocalDate.of(2019, 7, 3);
         LocalDate to = LocalDate.of(2019, 7, 12);
@@ -55,6 +68,21 @@ class HotelTest {
         List<Room> freeRoom = hotel.findAvailableRooms(from, to, numberOfPeople);
 
         // then
-        assertThat("There are available rooms", freeRoom, is(not(equalTo(null))));
+        assertThat("There are no available rooms", freeRoom, is(not(equalTo(null))));
+    }
+
+    @Test
+    public void checkAndFindUnavailableRooms() {
+        LocalDate from = LocalDate.of(2019, 3, 3);
+        LocalDate to = LocalDate.of(2019, 3, 12);
+        int numberOfPeople = 12;
+        int size = 0;
+
+        // when
+        List<Room> freeRoom = hotel.findAvailableRooms(from, to, numberOfPeople);
+
+
+        // then
+        assertThat("There are available rooms", freeRoom.size(), is((equalTo(size))));
     }
 }

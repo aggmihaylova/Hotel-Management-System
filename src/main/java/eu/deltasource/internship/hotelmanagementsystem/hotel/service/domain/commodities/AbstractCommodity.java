@@ -11,8 +11,8 @@ abstract public class AbstractCommodity {
      * Default constructor
      * assigns value to the inventory number
      */
-    public AbstractCommodity() {
-        inventoryNumber = Utility.GLOBAL_INVENTORY_COUNTER++;
+    public AbstractCommodity(int inventoryNumber) {
+        this.inventoryNumber = inventoryNumber;
     }
 
     @Override

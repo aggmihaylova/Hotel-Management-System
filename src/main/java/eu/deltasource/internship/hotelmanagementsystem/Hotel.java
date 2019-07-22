@@ -19,7 +19,7 @@ public class Hotel {
 
     /**
      * @param name  hotel's name
-     * @param rooms hotel's rooms
+     * @param rooms hotel rooms
      */
     public Hotel(String name, List<Room> rooms) {
         this.name = name;
@@ -72,9 +72,9 @@ public class Hotel {
     }
 
     /**
-     * Checks if the room has bed/beds
+     * Checks if the room has bed/beds with certain capacity
      *
-     * @param commodities all commodities that the room has
+     * @param commodities all commodities in a room
      * @param numOfPeople number of people
      * @return true/false for having/not having beds
      */
@@ -104,7 +104,7 @@ public class Hotel {
     }
 
     /**
-     * calls createBooking()
+     * calls createBooking() method
      *
      * @param newBooking the new booking
      * @param room       the room that will be booked

@@ -43,7 +43,6 @@ public class TestScenario {
         Set<Booking> bookingsSecondRoom = new HashSet<>();
         bookingsSecondRoom.add(new Booking(0L, secondRoomFromDate, secondRoomToDate));
 
-
         //bookings the third room
 
         LocalDate thirdRoomFromDate = LocalDate.of(2019, 7, 25);
@@ -56,27 +55,27 @@ public class TestScenario {
         // commodities for the first room
 
         Set<AbstractCommodity> firstRoom = new HashSet<>();
-        firstRoom.add(new Bed(BedType.DOUBLE));
-        firstRoom.add(new Toilet("Green"));
-        firstRoom.add(new Shower(true));
+        firstRoom.add(new Bed(firstRoom.size() + 1, BedType.DOUBLE));
+        firstRoom.add(new Toilet(firstRoom.size() + 1, "Green"));
+        firstRoom.add(new Shower(firstRoom.size() + 1, true));
 
         // commodities for the second room
 
         Set<AbstractCommodity> secondRoom = new HashSet<>();
-        secondRoom.add(new Bed(BedType.SINGLE));
-        secondRoom.add(new Bed(BedType.SINGLE));
-        secondRoom.add(new Bed(BedType.DOUBLE));
-        secondRoom.add(new Toilet("Blue"));
-        secondRoom.add(new Toilet("Red"));
-        secondRoom.add(new Shower(true));
+        secondRoom.add(new Bed(secondRoom.size() + 1, BedType.SINGLE));
+        secondRoom.add(new Bed(secondRoom.size() + 1, BedType.SINGLE));
+        secondRoom.add(new Bed(secondRoom.size() + 1, BedType.DOUBLE));
+        secondRoom.add(new Toilet(secondRoom.size() + 1, "Blue"));
+        secondRoom.add(new Toilet(secondRoom.size() + 1, "Red"));
+        secondRoom.add(new Shower(secondRoom.size() + 1, true));
 
         // commodities for the third room
 
         Set<AbstractCommodity> thirdRoom = new HashSet<>();
-        thirdRoom.add(new Bed(BedType.TRIPLE));
-        thirdRoom.add(new Bed(BedType.QUAD));
-        thirdRoom.add(new Toilet("Yellow"));
-        thirdRoom.add(new Shower(true));
+        thirdRoom.add(new Bed(thirdRoom.size() + 1, BedType.TRIPLE));
+        thirdRoom.add(new Bed(thirdRoom.size() + 1, BedType.QUAD));
+        thirdRoom.add(new Toilet(thirdRoom.size() + 1, "Yellow"));
+        thirdRoom.add(new Shower(thirdRoom.size() + 1, true));
 
 
         Set<LocalDate> maintenanceDatesSet = new HashSet<>();
@@ -84,10 +83,9 @@ public class TestScenario {
 
 
         List<Room> rooms = new ArrayList<>();
-        rooms.add(new Room(firstRoom, maintenanceDatesSet, bookingsFirstRoom));
-        rooms.add(new Room(secondRoom, maintenanceDatesSet, bookingsSecondRoom));
-        rooms.add(new Room(thirdRoom, maintenanceDatesSet, bookingsThirdRoom));
-
+        rooms.add(new Room(rooms.size() + 1, firstRoom, maintenanceDatesSet, bookingsFirstRoom));
+        rooms.add(new Room(rooms.size() + 1, secondRoom, maintenanceDatesSet, bookingsSecondRoom));
+        rooms.add(new Room(rooms.size() + 1, thirdRoom, maintenanceDatesSet, bookingsThirdRoom));
 
         Manager manager = new Manager("Pete", "Hennessy");
         Hotel hotel = new Hotel("Rose", rooms);

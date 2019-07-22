@@ -1,7 +1,6 @@
 package eu.deltasource.internship.hotelmanagementsystem;
 
 import eu.deltasource.internship.hotelmanagementsystem.hotel.service.domain.commodities.*;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -60,14 +59,17 @@ public class TestCase {
     @Test
     void createBookingCaseOne() {
         // given
-        AbstractCommodity commodity = new Bed(BedType.DOUBLE);
+        AbstractCommodity commodity = new Bed(commodities.size() + 1, BedType.DOUBLE);
         commodities.add(commodity);
-        rooms.add(new Room(commodities, maintenanceDates, bookings));
+        rooms.add(new Room(rooms.size() + 1, commodities, maintenanceDates, bookings));
+        rooms.get(0).saveCapacity(commodity);
         hotel.setRooms(rooms);
         manager.setHotel(hotel);
+        int numberOfPeople = 2;
+        int reserveID = 586;
 
         // when
-        roomID = manager.createBooking(intervalFrom, intervalTo, 2, 586);
+        roomID = manager.createBooking(intervalFrom, intervalTo, numberOfPeople, reserveID);
 
         //then
         assertEquals(rooms.get(0).getID(), roomID);
@@ -78,21 +80,25 @@ public class TestCase {
         // given
         hotel.setRooms(rooms);
         manager.setHotel(hotel);
+        int numberOfPeople = 2;
+        int reserveID = 586;
 
         // when and then
-        assertThrows(NoRoomsAvailableException.class, () -> manager.createBooking(intervalFrom, intervalTo, 2, 586));
+        assertThrows(NoRoomsAvailableException.class, () -> manager.createBooking(intervalFrom, intervalTo, numberOfPeople, reserveID));
     }
 
     @Test
     void createBookingCaseThree() {
         // given
-        AbstractCommodity commodity = new Bed(BedType.SINGLE);
+        AbstractCommodity commodity = new Bed(commodities.size() + 1, BedType.SINGLE);
         commodities.add(commodity);
-        rooms.add(new Room(101, commodities, maintenanceDates, bookings));
+        rooms.add(new Room(rooms.size() + 1, commodities, maintenanceDates, bookings));
+        rooms.get(0).saveCapacity(commodity);
         hotel.setRooms(rooms);
         manager.setHotel(hotel);
-
+        int numberOfPeople = 7;
+        int reserveID = 324;
         // when and then
-        assertThrows(NoRoomsAvailableException.class, () -> manager.createBooking(intervalFrom, intervalTo, 2, 586));
+        assertThrows(NoRoomsAvailableException.class, () -> manager.createBooking(intervalFrom, intervalTo, numberOfPeople, reserveID));
     }
 }

@@ -10,8 +10,8 @@ public class Toilet extends AbstractCommodity {
     /**
      * * @param color toilet's color
      */
-    public Toilet(String color) {
-        super();
+    public Toilet(int inventoryNumber, String color) {
+        super(inventoryNumber);
         this.color = color;
     }
 
