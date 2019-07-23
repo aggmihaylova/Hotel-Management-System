@@ -1,6 +1,13 @@
-package eu.deltasource.internship.hotelmanagementsystem;
+package eu.deltasource.internship.hotelmanagementsystem.hotel.othertests;
 
-import eu.deltasource.internship.hotelmanagementsystem.hotel.service.domain.commodities.*;
+import eu.deltasource.internship.hotelmanagementsystem.hotel.domain.Hotel;
+import eu.deltasource.internship.hotelmanagementsystem.hotel.domain.Manager;
+import eu.deltasource.internship.hotelmanagementsystem.hotel.exceptions.NoRoomsAvailableException;
+import eu.deltasource.internship.hotelmanagementsystem.hotel.domain.Room;
+import eu.deltasource.internship.hotelmanagementsystem.hotel.domain.commodities.AbstractCommodity;
+import eu.deltasource.internship.hotelmanagementsystem.hotel.domain.commodities.Bed;
+import eu.deltasource.internship.hotelmanagementsystem.hotel.domain.commodities.BedType;
+import eu.deltasource.internship.hotelmanagementsystem.hotel.domain.Booking;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -14,8 +21,8 @@ import java.util.Set;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-public class TestCase {
-
+public class CaseTest {
+/*
     private Set<LocalDate> maintenanceDates;
     private List<Room> rooms;
     private Set<AbstractCommodity> commodities;
@@ -38,7 +45,9 @@ public class TestCase {
         LocalDate firstFromDate = LocalDate.of(2019, 04, 30);
         LocalDate firstToDate = LocalDate.of(2019, 05, 6);
 
-        bookings.add(new Booking(0L, firstFromDate, firstToDate));
+        long guestID = 9405123453L;
+        Booking booking = new Booking(guestID, firstFromDate, firstToDate);
+        bookings.add(booking);
 
         // requested interval
         intervalFrom = LocalDate.of(2019, 1, 1);
@@ -101,4 +110,5 @@ public class TestCase {
         // when and then
         assertThrows(NoRoomsAvailableException.class, () -> manager.createBooking(intervalFrom, intervalTo, numberOfPeople, reserveID));
     }
+}*/
 }

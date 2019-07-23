@@ -1,4 +1,4 @@
-package eu.deltasource.internship.hotelmanagementsystem;
+package eu.deltasource.internship.hotelmanagementsystem.hotel.exceptions;
 
 public class InvalidIDException extends RuntimeException {
 

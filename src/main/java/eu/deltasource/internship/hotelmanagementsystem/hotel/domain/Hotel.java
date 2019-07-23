@@ -1,8 +1,8 @@
-package eu.deltasource.internship.hotelmanagementsystem;
+package eu.deltasource.internship.hotelmanagementsystem.hotel.domain;
 
-import eu.deltasource.internship.hotelmanagementsystem.hotel.service.domain.commodities.AbstractCommodity;
-import eu.deltasource.internship.hotelmanagementsystem.hotel.service.domain.commodities.Bed;
-import eu.deltasource.internship.hotelmanagementsystem.hotel.service.domain.commodities.Booking;
+import eu.deltasource.internship.hotelmanagementsystem.hotel.domain.commodities.AbstractCommodity;
+import eu.deltasource.internship.hotelmanagementsystem.hotel.domain.commodities.Bed;
+import eu.deltasource.internship.hotelmanagementsystem.hotel.exceptions.MissingArgumentException;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -18,23 +18,23 @@ public class Hotel {
     private List<Room> rooms;
 
     /**
+     * This is a constructor
+     *
      * @param name  hotel's name
      * @param rooms hotel rooms
      */
     public Hotel(String name, List<Room> rooms) {
-        this.name = name;
-        this.rooms = new ArrayList<>(rooms);
-    }
-
-    public Hotel(String name) {
-        this.name = name;
+        setName(name);
+        setRooms(rooms);
     }
 
     /**
-     * Default constructor
+     * This is constructor
+     *
+     * @param name hotel's name
      */
-    public Hotel() {
-
+    public Hotel(String name) {
+        setName(name);
     }
 
     public List<Room> getRooms() {
@@ -45,8 +45,28 @@ public class Hotel {
         return name;
     }
 
+    /**
+     * Checks if the rooms are valid
+     *
+     * @param rooms hotel rooms
+     */
     public void setRooms(List<Room> rooms) {
+        if (rooms == null) {
+            throw new MissingArgumentException("Invalid rooms !");
+        }
         this.rooms = new ArrayList<>(rooms);
+    }
+
+    /**
+     * Checks if the name is valid
+     *
+     * @param name hotel's name
+     */
+    public void setName(String name) {
+        if (name == null || name.isEmpty())  {
+            throw new MissingArgumentException("Invalid name !");
+        }
+        this.name = name;
     }
 
     /**
@@ -98,8 +118,7 @@ public class Hotel {
      */
     private void addAvailableRoom(Set<Booking> availableBookings, List<Room> availableRooms, Room room) {
         if (room.getBookings().size() == 0 || availableBookings != null) {
-            availableRooms.add(new Room(room.getID(), room.getCommodities(), room.getMaintenanceDates(),
-                    availableBookings));
+            availableRooms.add(room);
         }
     }
 

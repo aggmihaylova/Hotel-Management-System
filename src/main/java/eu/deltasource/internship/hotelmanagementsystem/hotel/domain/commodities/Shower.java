@@ -1,4 +1,4 @@
-package eu.deltasource.internship.hotelmanagementsystem.hotel.service.domain.commodities;
+package eu.deltasource.internship.hotelmanagementsystem.hotel.domain.commodities;
 
 /**
  * Shower is part of the set of commodities
@@ -8,6 +8,8 @@ public class Shower extends AbstractCommodity {
     private boolean hasFloorHeating;
 
     /**
+     * This is a constructor
+     *
      * @param hasFloorHeating shower's extra
      */
     public Shower(int inventoryNumber, boolean hasFloorHeating) {

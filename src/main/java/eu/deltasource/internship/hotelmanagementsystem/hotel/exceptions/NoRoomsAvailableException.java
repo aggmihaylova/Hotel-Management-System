@@ -1,11 +1,11 @@
-package eu.deltasource.internship.hotelmanagementsystem;
+package eu.deltasource.internship.hotelmanagementsystem.hotel.exceptions;
 
 /**
  * Exception when no available rooms are found in the Hotel
  */
 public class NoRoomsAvailableException extends RuntimeException {
 
-    NoRoomsAvailableException(String exceptionMessage) {
+    public NoRoomsAvailableException(String exceptionMessage) {
         super(exceptionMessage);
     }
 }

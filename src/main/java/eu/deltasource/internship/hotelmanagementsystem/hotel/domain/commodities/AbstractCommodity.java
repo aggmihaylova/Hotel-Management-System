@@ -1,4 +1,6 @@
-package eu.deltasource.internship.hotelmanagementsystem.hotel.service.domain.commodities;
+package eu.deltasource.internship.hotelmanagementsystem.hotel.domain.commodities;
+
+import eu.deltasource.internship.hotelmanagementsystem.hotel.domain.Booking;
 
 /**
  * The class AbstractCommodity represents set of commodities in each room
@@ -8,7 +10,7 @@ abstract public class AbstractCommodity {
     protected int inventoryNumber;
 
     /**
-     * Default constructor
+     * This is a default constructor
      * assigns value to the inventory number
      */
     public AbstractCommodity(int inventoryNumber) {

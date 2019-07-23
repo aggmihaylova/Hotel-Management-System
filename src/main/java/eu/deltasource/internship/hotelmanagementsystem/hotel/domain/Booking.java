@@ -1,73 +1,29 @@
-package eu.deltasource.internship.hotelmanagementsystem.hotel.service.domain.commodities;
+package eu.deltasource.internship.hotelmanagementsystem.hotel.domain;
 
-import eu.deltasource.internship.hotelmanagementsystem.InvalidBookingException;
-import eu.deltasource.internship.hotelmanagementsystem.InvalidIDException;
+import eu.deltasource.internship.hotelmanagementsystem.hotel.exceptions.InvalidBookingException;
 
 import java.time.LocalDate;
 
 /**
- * Represents a Booking for a room
+ * Represents booking for a room
  */
 public class Booking implements Comparable {
 
-    private long ID;
+    //  private long ID;
     private long guestID;
     private LocalDate from;
     private LocalDate to;
 
-
     /**
-     * Default constructor
-     */
-    public Booking() {
-    }
-
-    /**
-     * @param guestID
-     */
-    public Booking(long guestID) {
-        this.guestID = guestID;
-    }
-
-    /**
+     * This is a constructor
+     *
      * @param guestID guest's ID
      * @param from    date
      * @param to      date
      */
     public Booking(long guestID, LocalDate from, LocalDate to) {
-        this(guestID);
-        this.from = from;
-        this.to = to;
-    }
-
-    /**
-     * Guarantees that from date is before to date
-     *
-     * @param from date
-     * @param to   date
-     */
-    public boolean saveDate(LocalDate from, LocalDate to) {
-        if (from.isAfter(to)) {
-            throw new InvalidBookingException("Invalid reservation date");
-        } else {
-            setFrom(from);
-            setTo(to);
-        }
-        return true;
-    }
-
-    /**
-     * @param guestID guest's ID
-     * @return true if ID is valid
-     */
-    public boolean saveGuestID(long guestID) {
-
-        if (guestID % 100000000L != 0) {
-            this.guestID = guestID;
-            return true;
-        } else {
-            throw new InvalidIDException("Invalid ID !");
-        }
+        this.guestID = guestID;
+        saveDate(from, to);
     }
 
     public long getGuestID() {
@@ -82,18 +38,48 @@ public class Booking implements Comparable {
         return to;
     }
 
+
+    /**
+     * Checks if from date is null
+     *
+     * @param from starting date
+     */
     public void setFrom(LocalDate from) {
+        if (from == null)
+            throw new InvalidBookingException("Invalid date !");
         this.from = from;
     }
 
+    /**
+     * Checks if to date is null
+     *
+     * @param to ending date
+     */
     public void setTo(LocalDate to) {
+        if (to == null)
+            throw new InvalidBookingException("Invalid date !");
         this.to = to;
+    }
+
+    /**
+     * Guarantees that starting date is before ending date
+     *
+     * @param from date
+     * @param to   date
+     */
+    public void saveDate(LocalDate from, LocalDate to) {
+        setFrom(from);
+        setTo(to);
+        if (from.isAfter(to)) {
+            throw new InvalidBookingException("Invalid reservation date");
+        }
     }
 
     @Override
     public boolean equals(Object obj) {
         if (obj == null)
             return false;
+
         if (!(obj instanceof Booking))
             return false;
 
@@ -130,6 +116,5 @@ public class Booking implements Comparable {
             }
         }
         return cmp;
-
     }
 }

@@ -1,4 +1,4 @@
-package eu.deltasource.internship.hotelmanagementsystem.hotel.service.domain.commodities;
+package eu.deltasource.internship.hotelmanagementsystem.hotel.domain.commodities;
 
 /**
  * Declaring new enum type used to define different types of beds

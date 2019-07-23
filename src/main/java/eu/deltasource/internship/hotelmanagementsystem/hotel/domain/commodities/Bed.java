@@ -1,4 +1,4 @@
-package eu.deltasource.internship.hotelmanagementsystem.hotel.service.domain.commodities;
+package eu.deltasource.internship.hotelmanagementsystem.hotel.domain.commodities;
 
 /**
  * Bed is part of the set of commodities
@@ -8,6 +8,8 @@ public class Bed extends AbstractCommodity {
     private BedType bedType;
 
     /**
+     * This ia a constructor
+     *
      * @param bedType bed type
      */
     public Bed(int inventoryNumber, BedType bedType) {

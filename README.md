@@ -1,1 +1,1 @@
-"# main.java.eu.deltasource.internship.hotelmanagementsystem.Hotel-Management-System"
+"# main.java.Hotel-Management-System"
