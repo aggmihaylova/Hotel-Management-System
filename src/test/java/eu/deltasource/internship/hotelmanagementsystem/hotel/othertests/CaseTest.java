@@ -1,16 +1,15 @@
 package eu.deltasource.internship.hotelmanagementsystem.hotel.othertests;
 
+import eu.deltasource.internship.hotelmanagementsystem.hotel.domain.Booking;
 import eu.deltasource.internship.hotelmanagementsystem.hotel.domain.Hotel;
 import eu.deltasource.internship.hotelmanagementsystem.hotel.domain.Manager;
-import eu.deltasource.internship.hotelmanagementsystem.hotel.exceptions.NoRoomsAvailableException;
 import eu.deltasource.internship.hotelmanagementsystem.hotel.domain.Room;
 import eu.deltasource.internship.hotelmanagementsystem.hotel.domain.commodities.AbstractCommodity;
 import eu.deltasource.internship.hotelmanagementsystem.hotel.domain.commodities.Bed;
 import eu.deltasource.internship.hotelmanagementsystem.hotel.domain.commodities.BedType;
-import eu.deltasource.internship.hotelmanagementsystem.hotel.domain.Booking;
+import eu.deltasource.internship.hotelmanagementsystem.hotel.exceptions.NoRoomsAvailableException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -22,7 +21,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class CaseTest {
-/*
+
     private Set<LocalDate> maintenanceDates;
     private List<Room> rooms;
     private Set<AbstractCommodity> commodities;
@@ -66,7 +65,7 @@ public class CaseTest {
     }
 
     @Test
-    void createBookingCaseOne() {
+    public void createBookingCaseOne() {
         // given
         AbstractCommodity commodity = new Bed(commodities.size() + 1, BedType.DOUBLE);
         commodities.add(commodity);
@@ -78,14 +77,14 @@ public class CaseTest {
         int reserveID = 586;
 
         // when
-        roomID = manager.createBooking(intervalFrom, intervalTo, numberOfPeople, reserveID);
+        roomID = manager.createBooking(intervalFrom, intervalTo, numberOfPeople, reserveID, 2);
 
         //then
         assertEquals(rooms.get(0).getID(), roomID);
     }
 
     @Test
-    void createBookingCaseTwo() {
+    public void createBookingCaseTwo() {
         // given
         hotel.setRooms(rooms);
         manager.setHotel(hotel);
@@ -93,11 +92,11 @@ public class CaseTest {
         int reserveID = 586;
 
         // when and then
-        assertThrows(NoRoomsAvailableException.class, () -> manager.createBooking(intervalFrom, intervalTo, numberOfPeople, reserveID));
+        assertThrows(NoRoomsAvailableException.class, () -> manager.createBooking(intervalFrom, intervalTo, numberOfPeople, reserveID, 2));
     }
 
     @Test
-    void createBookingCaseThree() {
+    public void createBookingCaseThree() {
         // given
         AbstractCommodity commodity = new Bed(commodities.size() + 1, BedType.SINGLE);
         commodities.add(commodity);
@@ -107,8 +106,8 @@ public class CaseTest {
         manager.setHotel(hotel);
         int numberOfPeople = 7;
         int reserveID = 324;
+
         // when and then
-        assertThrows(NoRoomsAvailableException.class, () -> manager.createBooking(intervalFrom, intervalTo, numberOfPeople, reserveID));
+        assertThrows(NoRoomsAvailableException.class, () -> manager.createBooking(intervalFrom, intervalTo, numberOfPeople, reserveID, 1));
     }
-}*/
 }

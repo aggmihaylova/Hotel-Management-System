@@ -7,7 +7,7 @@ import java.time.LocalDate;
 /**
  * Represents booking for a room
  */
-public class Booking implements Comparable {
+public class Booking {
 
     //  private long ID;
     private long guestID;
@@ -23,6 +23,10 @@ public class Booking implements Comparable {
      */
     public Booking(long guestID, LocalDate from, LocalDate to) {
         this.guestID = guestID;
+        saveDate(from, to);
+    }
+
+    public Booking(LocalDate from, LocalDate to) {
         saveDate(from, to);
     }
 
@@ -101,20 +105,5 @@ public class Booking implements Comparable {
         hash += 31 * hash + to.hashCode();
 
         return hash;
-    }
-
-    @Override
-    public int compareTo(Object other) {
-
-        Booking otherDate = (Booking) other;
-
-        int cmp = (from.getYear() - otherDate.getFrom().getYear());
-        if (cmp == 0) {
-            cmp = (from.getMonthValue() - otherDate.from.getMonthValue());
-            if (cmp == 0) {
-                cmp = (from.getDayOfMonth() - otherDate.getFrom().getDayOfMonth());
-            }
-        }
-        return cmp;
     }
 }

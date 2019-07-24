@@ -25,7 +25,6 @@ public class ScenarioTest {
 
     @Test
     public void test() {
-/*
         // given
 
         // bookings for the first room
@@ -110,7 +109,7 @@ public class ScenarioTest {
 
 
         // when 1
-        int roomID = manager.createBooking(firstBookingInterval.getFrom(), firstBookingInterval.getTo(), 2, 567);
+        int roomID = manager.createBooking(firstBookingInterval.getFrom(), firstBookingInterval.getTo(), 2, 567, 5);
 
         // then 1
         assertThat("Unavailable room with bed for 2", roomID, is(equalTo(1)));
@@ -118,7 +117,7 @@ public class ScenarioTest {
 
         // when 2
         roomID = manager.createBooking(secondBookingInterval.getFrom(), secondBookingInterval.getTo(),
-                1, 482);
+                1, 482, 1);
 
         // then 2
         assertThat("Available rooms ", roomID, is(equalTo(2)));
@@ -126,11 +125,11 @@ public class ScenarioTest {
 
         // when
         roomID = manager.createBooking(thirdBookingInterval.getFrom(), thirdBookingInterval.getTo(),
-                1, 482);
+                1, 482, 1);
 
         // then 3
         assertThat("Available rooms ", roomID, is(equalTo(2)));
 
-    }*/
     }
+
 }

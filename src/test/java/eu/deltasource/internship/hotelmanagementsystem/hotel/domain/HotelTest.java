@@ -13,29 +13,29 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.IsEqual.equalTo;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class HotelTest {
 
     private Hotel hotel;
-    private Set<AbstractCommodity> commodities;
-    private Set<Booking> bookings;
-    private List<Room> rooms;
+    private Set<AbstractCommodity> commodities = new HashSet<>();
+    private Set<Booking> bookings = new HashSet<>();
+    private List<Room> rooms = new ArrayList<>();
+    private Set<LocalDate> maintenanceDates = new HashSet<>();
 
     @BeforeEach
-    void setUp() {
-        commodities = new HashSet<>();
-        bookings = new HashSet<>();
-        rooms = new ArrayList<>();
-        Set<LocalDate> maintenanceDates = new HashSet<>();
-
+    public void setUp() {
         // set of bookings
         long guestID = 9504124582L;
         LocalDate fromDate = LocalDate.of(2019, 05, 23);
         LocalDate toDate = LocalDate.of(2019, 05, 27);
         Booking newBooking = new Booking(guestID, fromDate, toDate);
+
+        Bed bed = new Bed(commodities.size() + 1, BedType.TRIPLE);
+        commodities.add(bed);
 
         bookings.add(newBooking);
 
@@ -45,7 +45,7 @@ public class HotelTest {
     }
 
     @Test
-    public void checkAndFindAvailableRooms() {
+    public void checkForAvailableRooms() {
         // given
         LocalDate from = LocalDate.of(2019, 7, 3);
         LocalDate to = LocalDate.of(2019, 7, 12);
@@ -54,14 +54,14 @@ public class HotelTest {
         List<Room> freeRooms;
 
         // when
-        freeRooms = hotel.findAvailableRooms(from, to, numberOfPeople);
+        freeRooms = hotel.findAvailableRooms(from, to, numberOfPeople, 5);
 
         // then
-     //   assertThat("There are no available rooms", freeRooms.size(), equalTo(sizeOfFreeRooms));
+        assertThat("There is no available room", freeRooms.size(), is(equalTo(sizeOfFreeRooms)));
     }
 
     @Test
-    public void checkAndFindUnavailableRooms() {
+    public void checkUnavailableRooms() {
         // given
         LocalDate from = LocalDate.of(2019, 3, 3);
         LocalDate to = LocalDate.of(2019, 3, 12);
@@ -69,14 +69,14 @@ public class HotelTest {
         int size = 0;
 
         // when
-        List<Room> freeRoom = hotel.findAvailableRooms(from, to, numberOfPeople);
+        List<Room> freeRoom = hotel.findAvailableRooms(from, to, numberOfPeople, 6);
 
         // then
-        assertThat("There are available rooms", freeRoom.size(), equalTo(size));
+        assertThat("There are available room", freeRoom.size(), is(equalTo(size)));
     }
 
     @Test
-    public void checkIfRoomsAreNull() {
+    public void checkRoomsNull() {
         //given
         List<Room> newRooms = null;
 
@@ -85,29 +85,7 @@ public class HotelTest {
     }
 
     @Test
-    public void checkIfRoomsAreNotNull() {
-        // given and when
-        hotel.setRooms(rooms);
-        int minValue = 1;
-
-        //then
-        assertTrue(hotel.getRooms().size() >= minValue);
-    }
-
-    @Test
-    public void checkIfHotelNameValid() {
-        //given
-        String hotelName = "Rose";
-
-        //when
-        hotel.setName(hotelName);
-
-        //then
-        assertTrue(hotel.getName().equals(hotelName));
-    }
-
-    @Test
-    public void checkIfHotelNameIsInvalid() {
+    public void checkInvalidHotelName() {
         //given
         String hotelName = null;
         String nameHotel = "";
@@ -116,6 +94,6 @@ public class HotelTest {
         assertThrows(MissingArgumentException.class, () -> hotel.setName(hotelName));
 
         // when 2 and then 2
-        assertThrows(MissingArgumentException.class, () -> hotel.setName(hotelName));
+        assertThrows(MissingArgumentException.class, () -> hotel.setName(nameHotel));
     }
 }

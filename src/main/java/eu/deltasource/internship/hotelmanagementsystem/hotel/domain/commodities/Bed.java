@@ -21,6 +21,10 @@ public class Bed extends AbstractCommodity {
         return bedType;
     }
 
+    public void setBedType(BedType bedType) {
+        this.bedType = bedType;
+    }
+
     /**
      * {@inheritDoc}
      */

@@ -63,7 +63,7 @@ public class Hotel {
      * @param name hotel's name
      */
     public void setName(String name) {
-        if (name == null || name.isEmpty())  {
+        if (name == null || name.isEmpty()) {
             throw new MissingArgumentException("Invalid name !");
         }
         this.name = name;
@@ -77,14 +77,14 @@ public class Hotel {
      * @param numOfPeople number of people
      * @return list of available rooms
      */
-    public List<Room> findAvailableRooms(LocalDate fromDate, LocalDate toDate, int numOfPeople) {
+    public List<Room> findAvailableRooms(LocalDate fromDate, LocalDate toDate, int numOfPeople, int days) {
 
         List<Room> availableRooms = new ArrayList<>();
         Set<Booking> availableBookings;
 
         for (Room room : rooms) {
             if ((findCommoditiesRooms(room.getCommodities(), numOfPeople))) {
-                availableBookings = room.findAvailableDatesForIntervalAndSize(fromDate, toDate);
+                availableBookings = room.findAvailableDatesForIntervalAndSize(fromDate, toDate, days);
                 addAvailableRoom(availableBookings, availableRooms, room);
             }
         }
