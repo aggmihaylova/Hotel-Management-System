@@ -22,44 +22,30 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class CaseTest {
 
-    private Set<LocalDate> maintenanceDates;
+    private String hotelName = "Rose";
+    private Set<LocalDate> maintenanceDates = new HashSet<>();
     private List<Room> rooms;
-    private Set<AbstractCommodity> commodities;
-    private Set<Booking> bookings;
-    private Hotel hotel;
+    private Set<AbstractCommodity> commodities = new HashSet<>();
+    private Set<Booking> bookings = new HashSet<>();
+    private Hotel hotel = new Hotel(hotelName);
     private Manager manager;
-    private LocalDate intervalFrom;
-    private LocalDate intervalTo;
+    private LocalDate intervalFrom = LocalDate.of(2020, 1, 1);
+    private LocalDate intervalTo = LocalDate.of(2020, 1, 2);
+
     private int roomID;
 
     @BeforeEach
     public void SetUp() {
 
-        // set of commodities
-        commodities = new HashSet<>();
-
-        // set of bookings
-        bookings = new HashSet<>();
-
         LocalDate firstFromDate = LocalDate.of(2019, 04, 30);
         LocalDate firstToDate = LocalDate.of(2019, 05, 6);
 
+        String guestName = "John Miller";
         long guestID = 9405123453L;
-        Booking booking = new Booking(guestID, firstFromDate, firstToDate);
+        Booking booking = new Booking(bookings.size() + 1, guestName, guestID, firstFromDate, firstToDate);
         bookings.add(booking);
 
-        // requested interval
-        intervalFrom = LocalDate.of(2019, 1, 1);
-        intervalTo = LocalDate.of(2019, 1, 2);
-
-        // set of maintenance dates
-        maintenanceDates = new HashSet<>();
-        LocalDate maintenanceDate = LocalDate.of(2019, 5, 21);
-        maintenanceDates.add(maintenanceDate);
-
         rooms = new ArrayList<>();
-
-        hotel = new Hotel("Bordeaux");
 
         manager = new Manager("John", "Johnson", hotel);
     }
@@ -70,14 +56,13 @@ public class CaseTest {
         AbstractCommodity commodity = new Bed(commodities.size() + 1, BedType.DOUBLE);
         commodities.add(commodity);
         rooms.add(new Room(rooms.size() + 1, commodities, maintenanceDates, bookings));
-        rooms.get(0).saveCapacity(commodity);
+        int numberOfPeople = 2, days = 1;
+        long guestID = 9603134632L;
         hotel.setRooms(rooms);
         manager.setHotel(hotel);
-        int numberOfPeople = 2;
-        int reserveID = 586;
 
         // when
-        roomID = manager.createBooking(intervalFrom, intervalTo, numberOfPeople, reserveID, 2);
+        roomID = manager.createBooking(intervalFrom, intervalTo, numberOfPeople, guestID, days);
 
         //then
         assertEquals(rooms.get(0).getID(), roomID);
@@ -88,11 +73,11 @@ public class CaseTest {
         // given
         hotel.setRooms(rooms);
         manager.setHotel(hotel);
-        int numberOfPeople = 2;
-        int reserveID = 586;
+        int numberOfPeople = 2, days = 1;
+        long guestID = 586;
 
         // when and then
-        assertThrows(NoRoomsAvailableException.class, () -> manager.createBooking(intervalFrom, intervalTo, numberOfPeople, reserveID, 2));
+        assertThrows(NoRoomsAvailableException.class, () -> manager.createBooking(intervalFrom, intervalTo, numberOfPeople, guestID, days));
     }
 
     @Test
@@ -101,13 +86,14 @@ public class CaseTest {
         AbstractCommodity commodity = new Bed(commodities.size() + 1, BedType.SINGLE);
         commodities.add(commodity);
         rooms.add(new Room(rooms.size() + 1, commodities, maintenanceDates, bookings));
-        rooms.get(0).saveCapacity(commodity);
         hotel.setRooms(rooms);
         manager.setHotel(hotel);
-        int numberOfPeople = 7;
-        int reserveID = 324;
+        int numberOfPeople = 7, days = 1;
+        long guestID = 324;
 
         // when and then
-        assertThrows(NoRoomsAvailableException.class, () -> manager.createBooking(intervalFrom, intervalTo, numberOfPeople, reserveID, 1));
+        assertThrows(NoRoomsAvailableException.class, () -> manager.createBooking(intervalFrom, intervalTo, numberOfPeople, guestID, days));
     }
+
+
 }

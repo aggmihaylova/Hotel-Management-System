@@ -61,14 +61,16 @@ public class Room {
         return commodities;
     }
 
-    public Set<LocalDate> getMaintenanceDates() {
-        return maintenanceDates;
-    }
-
     public Set<Booking> getBookings() {
         return bookings;
     }
 
+    /**
+     * Method that initializes/set the set of maintenance dates
+     *
+     * @param maintenanceDates the maintenance dates
+     * @throw MissingArgumentException if the set is null
+     */
     public void setMaintenanceDates(Set<LocalDate> maintenanceDates) {
         if (maintenanceDates == null) {
             throw new MissingArgumentException("Invalid set of maintenance dates !");
@@ -76,6 +78,12 @@ public class Room {
         this.maintenanceDates = new HashSet<>(maintenanceDates);
     }
 
+    /**
+     * Method that initializes/set the set of bookings
+     *
+     * @param bookings set of bookings
+     * @throw MissingArgumentException if the set  is null
+     */
     public void setBookings(Set<Booking> bookings) {
         if (bookings == null) {
             throw new MissingArgumentException("Invalid set of bookings !");
@@ -83,6 +91,12 @@ public class Room {
         this.bookings = new HashSet<>(bookings);
     }
 
+    /**
+     * Method that initializes/set the set of commodities
+     *
+     * @param commodities manager's first name
+     * @throw MissingArgumentException if the set is null
+     */
     public void setCommodities(Set<AbstractCommodity> commodities) {
         if (commodities == null) {
             throw new MissingArgumentException("Invalid set of commodities !");
@@ -93,13 +107,13 @@ public class Room {
     /**
      * Adds a commodity
      *
-     * @param commodity new commodity
+     * @param commodity the new commodity
      */
     public void addCommodity(AbstractCommodity commodity) {
         if (commodity == null) {
             throw new MissingArgumentException("Invalid commodity !");
         }
-        saveCapacity(commodity);
+        calculateCapacity(commodity);
         commodities.add(commodity);
     }
 
@@ -108,23 +122,23 @@ public class Room {
      *
      * @param commodity
      */
-    public void saveCapacity(AbstractCommodity commodity) {
+    public void calculateCapacity(AbstractCommodity commodity) {
         if (commodity instanceof Bed)
             capacity += ((Bed) commodity).getBedType().getSize();
     }
 
     /**
-     * Calls saveCapacity() method for each commodity
+     * Calls calculateCapacity() method for each commodity
      *
      * @param commodities set of commodities
      */
-    public void findCapacity(Set<AbstractCommodity> commodities) {
+    private void findCapacity(Set<AbstractCommodity> commodities) {
         for (AbstractCommodity commodity : commodities)
-            saveCapacity(commodity);
+            calculateCapacity(commodity);
     }
 
     /**
-     * Prepare room
+     * Prepares room
      *
      * @param date - the date on which the room is ready to be booked
      */
@@ -138,6 +152,7 @@ public class Room {
      *
      * @param newBooking new reservation
      * @return the number of the room that has been booked
+     * @throw InvalidBookingException if the @param is null
      */
     public int createBooking(Booking newBooking) {
         if (newBooking == null) {
@@ -152,13 +167,13 @@ public class Room {
      * Removes booking
      *
      * @param removeBooking the booking that will be removed
-     * @throws Exception - if the there is no such booking
+     * @throw InvalidBookingException - if the bookings does not exists
      */
     public void removeBooking(Booking removeBooking) {
-        if (!checkForAvailability(removeBooking)) {
-            bookings.remove(removeBooking);
-        } else {
+        if (checkForAvailability(removeBooking)) {
             throw new InvalidBookingException("Such booking does not exist!");
+        } else {
+            bookings.remove(removeBooking);
         }
     }
 
@@ -170,52 +185,60 @@ public class Room {
      */
     public boolean checkForAvailability(Booking newBooking) {
         for (Booking book : bookings) {
-            if (book.equals(newBooking))
+            if (book.equals(newBooking)) {
                 return false;
+            }
         }
         return true;
     }
 
     /**
-     * Searches for free dates
-     * ---------------------
-     * Under construction
-     * --------------------
+     * Searches for free bookings /dates/
      *
      * @param fromDate date
      * @param toDate   date
-     * @return available dates
+     * @param days     duration of the booking
+     * @return available bookings /dates/
      */
-    public Set<Booking> findAvailableDatesForIntervalAndSize(LocalDate fromDate, LocalDate toDate, int days) {
+    public Set<Booking> findAvailableBookings(LocalDate fromDate, LocalDate toDate, int days) {
 
-        LocalDate prevTo = LocalDate.of(2000, 12, 31);
-
-        Set<Booking> freeDates = new HashSet<>();
+        LocalDate previousBookingToDate = fromDate;
+        Set<Booking> freeBookings = new HashSet<>();
 
         for (Booking bookedDate : bookings) {
-            if (fromDate.isBefore(bookedDate.getFrom()) && toDate.isAfter(bookedDate.getTo())) {
-                if (freeDates.size() >= 1) {
-                    checkOverlapping(prevTo.plusDays(days), prevTo, bookedDate.getFrom(), freeDates);
+            if (!checkIntervalMatch(fromDate, bookedDate.getFrom(), toDate, bookedDate.getTo())) {
+                continue;
+            } else {
+                if (freeBookings.size() == 0) {
+                    addFreeBookingsIfNoTOverlapping(fromDate.plusDays(days), fromDate, bookedDate.getFrom(), freeBookings);
                 } else {
-                    checkOverlapping(fromDate.plusDays(days), fromDate, bookedDate.getFrom(), freeDates);
+                    addFreeBookingsIfNoTOverlapping(previousBookingToDate.plusDays(days), previousBookingToDate, bookedDate.getFrom(), freeBookings);
                 }
-                prevTo = bookedDate.getTo();
+                previousBookingToDate = bookedDate.getTo();
             }
         }
-        if (prevTo.isBefore(toDate)) {
-            checkOverlapping(prevTo.plusDays(days), prevTo, toDate, freeDates);
+
+        if (previousBookingToDate.isBefore(toDate)) {
+            addFreeBookingsIfNoTOverlapping(previousBookingToDate.plusDays(days), previousBookingToDate, toDate, freeBookings);
         }
-        return freeDates;
+
+        return freeBookings;
     }
 
-    private void addFreeBookingDates(LocalDate from, LocalDate to, Set<Booking> freeDates) {
+    private void addFreeBookings(LocalDate from, LocalDate to, Set<Booking> freeBookings) {
         Booking newBooking = new Booking(from, to);
-        freeDates.add(newBooking);
+        freeBookings.add(newBooking);
     }
 
-    private void checkOverlapping(LocalDate fromPlusDays, LocalDate from, LocalDate bookedFrom, Set<Booking> freeDates) {
+    private void addFreeBookingsIfNoTOverlapping(LocalDate fromPlusDays, LocalDate from, LocalDate bookedFrom, Set<Booking> freeBookings) {
         if (fromPlusDays.isBefore(bookedFrom) || fromPlusDays.isEqual(bookedFrom)) {
-            addFreeBookingDates(from, bookedFrom, freeDates);
+            addFreeBookings(from, bookedFrom, freeBookings);
         }
+    }
+
+    private boolean checkIntervalMatch(LocalDate requestedFromDate, LocalDate roomBookingFromDate, LocalDate requestedToDate, LocalDate roomBookingToDate) {
+        if (requestedFromDate.isBefore(roomBookingFromDate) && requestedToDate.isAfter(roomBookingToDate))
+            return true;
+        return false;
     }
 }

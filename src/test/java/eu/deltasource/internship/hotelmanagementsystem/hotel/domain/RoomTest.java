@@ -20,13 +20,13 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class RoomTest {
 
-    private Set<AbstractCommodity> commodities;
-    private Set<LocalDate> maintenanceDates;
+    private Set<AbstractCommodity> commodities = new HashSet<>();
+    private Set<LocalDate> maintenanceDates = new HashSet<>();
     private Room room;
     private Booking firstBooking;
     private Booking secondBooking;
     private Booking thirdBooking;
-    private Set<Booking> bookings;
+    private Set<Booking> bookings = new HashSet<>();
 
     @BeforeEach
     public void setUp() {
@@ -40,27 +40,21 @@ public class RoomTest {
         LocalDate thirdFromDate = LocalDate.of(2019, 3, 21);
         LocalDate thirdToDate = LocalDate.of(2019, 3, 26);
 
-        // set of bookings
+        // creating set of bookings
+
         long firstGuestID = 9413043456L;
-        firstBooking = new Booking(firstGuestID, firstFromDate, firstToDate);
+        firstBooking = new Booking(bookings.size() + 1, "Daniel Danielson", firstGuestID, firstFromDate, firstToDate);
+        bookings.add(firstBooking);
 
         long secondGuestID = 9413043456L;
-        secondBooking = new Booking(secondGuestID, secondFromDate, secondToDate);
+        secondBooking = new Booking(bookings.size() + 1, "Heath Heathens", secondGuestID, secondFromDate, secondToDate);
+        bookings.add(secondBooking);
 
         long thirdGuestID = 9204124563L;
-        thirdBooking = new Booking(thirdGuestID, thirdFromDate, thirdToDate);
-
-        bookings = new HashSet<>();
-        bookings.add(firstBooking);
-        bookings.add(secondBooking);
+        thirdBooking = new Booking(bookings.size() + 1, "John Miller", thirdGuestID, thirdFromDate, thirdToDate);
         bookings.add(thirdBooking);
 
-        // set of maintenance dates
-        maintenanceDates = new HashSet<>();
-        maintenanceDates.add(LocalDate.of(2019, 5, 26));
-
         // set of commodities
-        commodities = new HashSet<>();
         AbstractCommodity bed = new Bed(commodities.size() + 1, BedType.DOUBLE);
         AbstractCommodity toilet = new Toilet(commodities.size() + 1, "Blue");
         commodities.add(toilet);
@@ -87,7 +81,7 @@ public class RoomTest {
         LocalDate fromDate = LocalDate.of(2019, 12, 6);
         LocalDate toDate = LocalDate.of(2019, 12, 12);
         long removeBookingGuestID = 9704123456L;
-        Booking removeBooking = new Booking(removeBookingGuestID, fromDate, toDate);
+        Booking removeBooking = new Booking(bookings.size() + 1, "John Johnson", removeBookingGuestID, fromDate, toDate);
 
         //when and then
         assertThrows(InvalidBookingException.class, () -> room.removeBooking(removeBooking));
@@ -99,7 +93,7 @@ public class RoomTest {
         LocalDate fromDate = LocalDate.of(2019, 3, 16);
         LocalDate toDate = LocalDate.of(2019, 3, 25);
         long guestID = 9413043456L;
-        Booking newBooking = new Booking(guestID, fromDate, toDate);
+        Booking newBooking = new Booking(bookings.size() + 1, "John Johnson", guestID, fromDate, toDate);
 
         // when
         boolean check = room.checkForAvailability(newBooking);
@@ -114,7 +108,7 @@ public class RoomTest {
         LocalDate fromDate = LocalDate.of(2019, 5, 21);
         LocalDate toDate = LocalDate.of(2019, 5, 23);
         long guestID = 9604231345L;
-        Booking newBooking = new Booking(guestID, fromDate, toDate);
+        Booking newBooking = new Booking(bookings.size() + 1, "John Johnson", guestID, fromDate, toDate);
 
         // when
         boolean check = room.checkForAvailability(newBooking);
@@ -127,12 +121,12 @@ public class RoomTest {
     public void findAvailableDatesForIntervalAndSize() {
         // given
         LocalDate fromDate = LocalDate.of(2019, 05, 10);
-        LocalDate toDate = LocalDate.of(2019, 05, 23);
+        LocalDate toDate = LocalDate.of(2019, 05, 30);
         Set<Booking> freeInterval;
-        int size = 2;
+        int size = 3, days = 3;
 
         // when
-        freeInterval = room.findAvailableDatesForIntervalAndSize(fromDate, toDate, 3);
+        freeInterval = room.findAvailableBookings(fromDate, toDate, days);
 
         // then
         assertThat(freeInterval.size(), is((equalTo(size))));
@@ -163,7 +157,7 @@ public class RoomTest {
         LocalDate fromDate = LocalDate.of(2019, 7, 13);
         LocalDate toDate = LocalDate.of(2019, 7, 25);
         long guestID = 9304012345L;
-        Booking newBooking = new Booking(guestID, fromDate, toDate);
+        Booking newBooking = new Booking(bookings.size() + 1, "Mariya Mariya", guestID, fromDate, toDate);
 
         // when and then
         assertThat(room.createBooking(newBooking), is(equalTo(roomID)));
@@ -214,10 +208,10 @@ public class RoomTest {
         LocalDate fromDate = LocalDate.of(2019, 05, 21);
         LocalDate toDate = LocalDate.of(2019, 05, 23);
         Set<Booking> freeInterval;
-        int size = 1;
+        int size = 0;
 
         // when
-        freeInterval = room.findAvailableDatesForIntervalAndSize(fromDate, toDate, 3);
+        freeInterval = room.findAvailableBookings(fromDate, toDate, 3);
 
         // then
         assertThat(freeInterval.size(), is((equalTo(size))));

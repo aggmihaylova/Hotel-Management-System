@@ -1,11 +1,10 @@
 package eu.deltasource.internship.hotelmanagementsystem.hotel.domain;
 
-import eu.deltasource.internship.hotelmanagementsystem.hotel.domain.commodities.AbstractCommodity;
-import eu.deltasource.internship.hotelmanagementsystem.hotel.domain.commodities.Bed;
 import eu.deltasource.internship.hotelmanagementsystem.hotel.exceptions.MissingArgumentException;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -24,7 +23,7 @@ public class Hotel {
      * @param rooms hotel rooms
      */
     public Hotel(String name, List<Room> rooms) {
-        setName(name);
+        this(name);
         setRooms(rooms);
     }
 
@@ -37,18 +36,11 @@ public class Hotel {
         setName(name);
     }
 
-    public List<Room> getRooms() {
-        return rooms;
-    }
-
-    public String getName() {
-        return name;
-    }
-
     /**
-     * Checks if the rooms are valid
+     * Method that initializes/set the list of rooms
      *
-     * @param rooms hotel rooms
+     * @param rooms list of rooms
+     * @throw MissingArgumentException if the list of rooms is null
      */
     public void setRooms(List<Room> rooms) {
         if (rooms == null) {
@@ -58,9 +50,10 @@ public class Hotel {
     }
 
     /**
-     * Checks if the name is valid
+     * Method that initializes/set the hotel's name
      *
      * @param name hotel's name
+     * @throw MissingArgumentException if the name is null
      */
     public void setName(String name) {
         if (name == null || name.isEmpty()) {
@@ -80,45 +73,28 @@ public class Hotel {
     public List<Room> findAvailableRooms(LocalDate fromDate, LocalDate toDate, int numOfPeople, int days) {
 
         List<Room> availableRooms = new ArrayList<>();
-        Set<Booking> availableBookings;
+        Set<Booking> availableBookings = new HashSet<>();
 
         for (Room room : rooms) {
-            if ((findCommoditiesRooms(room.getCommodities(), numOfPeople))) {
-                availableBookings = room.findAvailableDatesForIntervalAndSize(fromDate, toDate, days);
-                addAvailableRoom(availableBookings, availableRooms, room);
+            if ((room.getCapacity() >= numOfPeople)) {
+                findFreeBookings(room, availableBookings, availableRooms, fromDate, toDate, days);
             }
         }
         return availableRooms;
     }
 
-    /**
-     * Checks if the room has bed/beds with certain capacity
-     *
-     * @param commodities all commodities in a room
-     * @param numOfPeople number of people
-     * @return true/false for having/not having beds
-     */
-    private boolean findCommoditiesRooms(Set<AbstractCommodity> commodities, int numOfPeople) {
-        for (AbstractCommodity commodity : commodities) {
-            if ((commodity instanceof Bed)) {
-                if (((Bed) commodity).getBedType().getSize() == numOfPeople) {
-                    return true;
-                }
-            }
+    private void addAvailableRoom(Set<Booking> availableBookings, List<Room> availableRooms, Room room) {
+        if (availableBookings.size() != 0) {
+            availableRooms.add(room);
         }
-        return false;
     }
 
-    /**
-     * Adds room to the array list of available rooms
-     *
-     * @param availableBookings free dates for the room
-     * @param availableRooms    list of available rooms
-     * @param room              added room
-     */
-    private void addAvailableRoom(Set<Booking> availableBookings, List<Room> availableRooms, Room room) {
-        if (room.getBookings().size() == 0 || availableBookings != null) {
+    private void findFreeBookings(Room room, Set<Booking> availableBookings, List<Room> availableRooms, LocalDate fromDate, LocalDate toDate, int days) {
+        if (room.getBookings().size() == 0) {
             availableRooms.add(room);
+        } else {
+            availableBookings = room.findAvailableBookings(fromDate, toDate, days);
+            addAvailableRoom(availableBookings, availableRooms, room);
         }
     }
 
@@ -128,8 +104,12 @@ public class Hotel {
      * @param newBooking the new booking
      * @param room       the room that will be booked
      * @return ID of the room that has been booked
+     * @throw MissingArgumentException if the booking or the room is null
      */
     public int createReservation(Booking newBooking, Room room) {
+        if (newBooking == null || room == null) {
+            throw new MissingArgumentException("Invalid argument !");
+        }
         return room.createBooking(newBooking);
     }
 }

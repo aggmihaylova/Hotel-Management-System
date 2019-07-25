@@ -20,7 +20,8 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class HotelTest {
 
-    private Hotel hotel;
+    private String hotelName = "Rose";
+    private Hotel hotel = new Hotel(hotelName);
     private Set<AbstractCommodity> commodities = new HashSet<>();
     private Set<Booking> bookings = new HashSet<>();
     private List<Room> rooms = new ArrayList<>();
@@ -32,7 +33,7 @@ public class HotelTest {
         long guestID = 9504124582L;
         LocalDate fromDate = LocalDate.of(2019, 05, 23);
         LocalDate toDate = LocalDate.of(2019, 05, 27);
-        Booking newBooking = new Booking(guestID, fromDate, toDate);
+        Booking newBooking = new Booking(bookings.size() + 1, "John Miller", guestID, fromDate, toDate);
 
         Bed bed = new Bed(commodities.size() + 1, BedType.TRIPLE);
         commodities.add(bed);
@@ -41,7 +42,7 @@ public class HotelTest {
 
         rooms.add(new Room(rooms.size() + 1, commodities, maintenanceDates, bookings));
 
-        hotel = new Hotel("Bordeaux", rooms);
+        hotel.setRooms(rooms);
     }
 
     @Test
@@ -95,5 +96,19 @@ public class HotelTest {
 
         // when 2 and then 2
         assertThrows(MissingArgumentException.class, () -> hotel.setName(nameHotel));
+    }
+
+    @Test
+    public void checkIfBookingUnsuccessful() {
+        //given
+        Room room = null;
+        String guestName = "Maya Miller";
+        LocalDate from = LocalDate.of(2019, 4, 21);
+        LocalDate to = LocalDate.of(2019, 4, 27);
+        long guestID = 9103124562L;
+        Booking booking = new Booking(bookings.size() + 1, guestName, guestID, from, to);
+
+        //when and then
+        assertThrows(MissingArgumentException.class, () -> hotel.createReservation(booking, room));
     }
 }

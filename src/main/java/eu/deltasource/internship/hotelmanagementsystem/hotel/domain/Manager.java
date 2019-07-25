@@ -5,7 +5,9 @@ import eu.deltasource.internship.hotelmanagementsystem.hotel.exceptions.MissingA
 import eu.deltasource.internship.hotelmanagementsystem.hotel.exceptions.NoRoomsAvailableException;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Represents a manager who manages a hotel
@@ -35,8 +37,7 @@ public class Manager {
      * @param hotel     the hotel managed by the manager
      */
     public Manager(String firstName, String lastName, Hotel hotel) {
-        setFirstName(firstName);
-        setLastName(lastName);
+        this(firstName, lastName);
         setHotel(hotel);
     }
 
@@ -52,6 +53,12 @@ public class Manager {
         return hotel;
     }
 
+    /**
+     * Method that initializes/set the manager's first name
+     *
+     * @param firstName manager's first name
+     * @throw InvalidBookingException if the first name is null
+     */
     public void setFirstName(String firstName) {
         if (firstName == null || firstName.isEmpty()) {
             throw new MissingArgumentException("Invalid first name !");
@@ -59,6 +66,12 @@ public class Manager {
         this.firstName = firstName;
     }
 
+    /**
+     * Method that initializes/set the manager's last name
+     *
+     * @param lastName manager's first name
+     * @throw InvalidBookingException if the last name is null
+     */
     public void setLastName(String lastName) {
         if (lastName == null || lastName.isEmpty()) {
             throw new MissingArgumentException("Invalid last name !");
@@ -66,6 +79,12 @@ public class Manager {
         this.lastName = lastName;
     }
 
+    /**
+     * Method that initializes/set the hotel
+     *
+     * @param hotel the hotel
+     * @throw InvalidBookingException if the hotel is null
+     */
     public void setHotel(Hotel hotel) {
         if (hotel == null) {
             throw new MissingArgumentException("Invalid hotel");
@@ -79,7 +98,7 @@ public class Manager {
      * @param fromDate       date
      * @param toDate         date
      * @param numberOfPeople number of people
-     * @param guestID      ID of the guest
+     * @param guestID        ID of the guest
      * @return the number of the room that has beed booked
      * @throws NoRoomsAvailableException if there is no appropriate room
      */
@@ -92,10 +111,7 @@ public class Manager {
         if (freeRooms.size() == 0) {
             throw new NoRoomsAvailableException("There is no appropriate room for you! ");
         } else {
-            LocalDate from = fromDate;
-            LocalDate to = from.plusDays(days);
-            Booking newBooking = new Booking(guestID, from, to);
-            return hotel.createReservation(newBooking, freeRooms.get(0));
+            return hotel.createReservation(chooseBooking(freeRooms.get(0), guestID, fromDate, toDate, days), freeRooms.get(0));
         }
     }
 
@@ -103,5 +119,22 @@ public class Manager {
         if (fromDate == null || toDate == null || days <= 0) {
             throw new InvalidBookingException("Invalid dates !");
         }
+    }
+
+    private Booking chooseBooking(Room room, long guestID, LocalDate from, LocalDate to, int days) {
+
+        Booking newBooking;
+        Set<Booking> bookings = room.findAvailableBookings(from, to, days);
+
+        if (bookings.size() == 0) {
+            newBooking = new Booking(room.getBookings().size() + 1, "John Miller", guestID, from, from.plusDays(days));
+        } else {
+            List<Booking> freeBookings = new ArrayList<>(room.findAvailableBookings(from, to, days));
+            LocalDate fromDate = freeBookings.get(0).getFrom();
+            LocalDate toDate = freeBookings.get(0).getTo();
+
+            newBooking = new Booking(room.getBookings().size() + 1, "John Miller", guestID, fromDate, toDate);
+        }
+        return newBooking;
     }
 }

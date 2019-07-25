@@ -1,6 +1,7 @@
 package eu.deltasource.internship.hotelmanagementsystem.hotel.domain;
 
 import eu.deltasource.internship.hotelmanagementsystem.hotel.exceptions.InvalidBookingException;
+import eu.deltasource.internship.hotelmanagementsystem.hotel.exceptions.MissingArgumentException;
 
 import java.time.LocalDate;
 
@@ -9,8 +10,9 @@ import java.time.LocalDate;
  */
 public class Booking {
 
-    //  private long ID;
+    private long ID;
     private long guestID;
+    private String guestName;
     private LocalDate from;
     private LocalDate to;
 
@@ -21,17 +23,21 @@ public class Booking {
      * @param from    date
      * @param to      date
      */
-    public Booking(long guestID, LocalDate from, LocalDate to) {
-        this.guestID = guestID;
+    public Booking(long ID, String guestName, long guestID, LocalDate from, LocalDate to) {
+        setID(ID);
+        setGuestID(guestID);
+        setGuestName(guestName);
         saveDate(from, to);
     }
 
+    /**
+     * This is a constructor
+     *
+     * @param from date
+     * @param to   date
+     */
     public Booking(LocalDate from, LocalDate to) {
         saveDate(from, to);
-    }
-
-    public long getGuestID() {
-        return guestID;
     }
 
     public LocalDate getFrom() {
@@ -42,27 +48,73 @@ public class Booking {
         return to;
     }
 
-
     /**
-     * Checks if from date is null
+     * Method that initializes/set the starting date
      *
      * @param from starting date
+     * @throw InvalidBookingException if the date is null
      */
     public void setFrom(LocalDate from) {
-        if (from == null)
+        if (from == null) {
             throw new InvalidBookingException("Invalid date !");
+        }
+
         this.from = from;
     }
 
     /**
-     * Checks if to date is null
+     * Method that initializes/set the ending date
      *
      * @param to ending date
+     * @throw InvalidBookingException if the date is null
      */
     public void setTo(LocalDate to) {
-        if (to == null)
+        if (to == null) {
             throw new InvalidBookingException("Invalid date !");
+        }
         this.to = to;
+    }
+
+    /**
+     * Method that initializes/set the guest's ID
+     *
+     * @param guestID guest's ID
+     * @throw MissingArgumentException if the guestID is less than 10 digits
+     */
+    public void setGuestID(long guestID) {
+        final long TEN_BILLION = 10_000_000_000L;
+        if (guestID / TEN_BILLION != 0) {
+            throw new MissingArgumentException("Invalid booking ID ");
+        }
+        this.guestID = guestID;
+
+    }
+
+    /**
+     * Method that initializes/set the guest's name
+     *
+     * @param guestName guest's name
+     * @throw MissingArgumentException if the name is null or empty
+     */
+    public void setGuestName(String guestName) {
+        if (guestName == null || guestName.isEmpty()) {
+            throw new MissingArgumentException("Invalid guest name");
+        } else {
+            this.guestName = guestName;
+        }
+    }
+
+    /**
+     * Method that initializes/set the booking ID
+     *
+     * @param ID booking ID
+     * @throw MissingArgumentException() if the ID is negative
+     */
+    public void setID(long ID) {
+        if (ID < 0) {
+            throw new MissingArgumentException("Invalid booking ID !");
+        }
+        this.ID = ID;
     }
 
     /**
