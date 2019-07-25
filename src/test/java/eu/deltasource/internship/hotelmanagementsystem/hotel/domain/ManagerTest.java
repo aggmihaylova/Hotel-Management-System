@@ -43,10 +43,12 @@ public class ManagerTest {
         String firstGuestID = "9405154582";
         String secondGuestID = "9407124563";
 
-        Booking firstBooking = new Booking(bookings.size() + 1, "John Miller", firstGuestID, firstFromDate, firstToDate);
+        Booking firstBooking = new Booking(bookings.size() + 1, "John Miller",
+                firstGuestID, firstFromDate, firstToDate);
         bookings.add(firstBooking);
 
-        Booking secondBooking = new Booking(bookings.size() + 1, "Peter Jackson", secondGuestID, secondFromDate, secondToDate);
+        Booking secondBooking = new Booking(bookings.size() + 1, "Peter Jackson",
+                secondGuestID, secondFromDate, secondToDate);
         bookings.add(secondBooking);
 
         // adding commodity in the set of commodities
@@ -69,9 +71,10 @@ public class ManagerTest {
         LocalDate toDate = LocalDate.of(2019, 5, 25);
         int numberOfPeople = 2, expectedRoomID = 1;
         String guestID = "9405121343";
+        String guestName="John Miller";
 
         // when
-        int roomID = manager.createBooking(fromDate, toDate, numberOfPeople, guestID, 3);
+        int roomID = manager.createBooking(fromDate, toDate, numberOfPeople, guestID, 3,guestName);
 
         //then
         assertThat(roomID, is(equalTo(expectedRoomID)));
@@ -84,15 +87,18 @@ public class ManagerTest {
         LocalDate toDate = LocalDate.of(2019, 5, 14);
         int numberOfPeople = 7, days = 3;
         String guestID = "9503123452";
+        String guestName="John Miller";
 
         // when and then I
-        assertThrows(NoRoomsAvailableException.class, () -> manager.createBooking(fromDate, toDate, numberOfPeople, guestID, days));
+        assertThrows(NoRoomsAvailableException.class,
+                () -> manager.createBooking(fromDate, toDate, numberOfPeople, guestID, days,guestName));
 
         // given II
         LocalDate from = null;
 
         //when and then II
-        assertThrows(InvalidBookingException.class, () -> manager.createBooking(from, toDate, numberOfPeople, guestID, days));
+        assertThrows(InvalidBookingException.class,
+                () -> manager.createBooking(from, toDate, numberOfPeople, guestID, days,guestName));
     }
 
     @Test
@@ -141,9 +147,10 @@ public class ManagerTest {
         Hotel hotel = new Hotel("Rose", rooms);
         Manager manager = new Manager("John", "Peterson", hotel);
         String guestID = "9504243212";
+        String guestName="John Miller";
 
         // when
-        int bookedRoomID = manager.createBooking(fromDate, toDate, numOfPeople, guestID, days);
+        int bookedRoomID = manager.createBooking(fromDate, toDate, numOfPeople, guestID, days,guestName);
 
         //then
         assertTrue(bookedRoomID == roomID);

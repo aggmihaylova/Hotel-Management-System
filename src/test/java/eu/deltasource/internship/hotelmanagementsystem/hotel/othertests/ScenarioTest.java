@@ -114,25 +114,28 @@ public class ScenarioTest {
         Booking thirdBookingInterval = new Booking(3, "Missy M", "7908124532",
                 thirdFromDate, thirdToDate);
 
+        String guestName = "Kate Johnson";
         // when 1
         int roomID = manager.createBooking(firstBookingInterval.getFrom(), firstBookingInterval.getTo(),
-                2, "9604124562", 5);
+                2, "9604124562", 5, guestName);
 
         // then 1
         assertThat(roomID, is(equalTo(1)));
 
 
+        guestName = "Pete Danielson";
         // when 2
         roomID = manager.createBooking(secondBookingInterval.getFrom(), secondBookingInterval.getTo(),
-                1, "9604124562", 1);
+                1, "9604124562", 1, guestName);
 
         // then 2
         assertThat(roomID, is(equalTo(1)));
 
 
+        guestName = "Mike Bratson";
         // when
         roomID = manager.createBooking(thirdBookingInterval.getFrom(), thirdBookingInterval.getTo(),
-                1, "9604124562", 1);
+                1, "9604124562", 1, guestName);
 
         // then 3
         assertThat(roomID, is(equalTo(1)));

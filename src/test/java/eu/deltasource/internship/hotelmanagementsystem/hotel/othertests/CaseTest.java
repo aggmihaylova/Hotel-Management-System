@@ -59,9 +59,10 @@ public class CaseTest {
         String guestID = "9603134632";
         hotel.setRooms(rooms);
         manager.setHotel(hotel);
+        String guestName = "Kate Johnson";
 
         // when
-        roomID = manager.createBooking(intervalFrom, intervalTo, numberOfPeople, guestID, days);
+        roomID = manager.createBooking(intervalFrom, intervalTo, numberOfPeople, guestID, days, guestName);
 
         //then
         assertEquals(rooms.get(0).getID(), roomID);
@@ -74,9 +75,11 @@ public class CaseTest {
         manager.setHotel(hotel);
         int numberOfPeople = 2, days = 1;
         String guestID = "9604123452";
+        String guestName = "Kate Johnson";
 
         // when and then
-        assertThrows(NoRoomsAvailableException.class, () -> manager.createBooking(intervalFrom, intervalTo, numberOfPeople, guestID, days));
+        assertThrows(NoRoomsAvailableException.class,
+                () -> manager.createBooking(intervalFrom, intervalTo, numberOfPeople, guestID, days, guestName));
     }
 
     @Test
@@ -89,8 +92,10 @@ public class CaseTest {
         manager.setHotel(hotel);
         int numberOfPeople = 7, days = 1;
         String guestID = "9604123462";
+        String guestName="Kate Johnson";
 
         // when and then
-        assertThrows(NoRoomsAvailableException.class, () -> manager.createBooking(intervalFrom, intervalTo, numberOfPeople, guestID, days));
+        assertThrows(NoRoomsAvailableException.class,
+                () -> manager.createBooking(intervalFrom, intervalTo, numberOfPeople, guestID, days,guestName));
     }
 }

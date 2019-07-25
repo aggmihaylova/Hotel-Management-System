@@ -210,16 +210,16 @@ public class Room {
                 continue;
             } else {
                 if (freeBookings.size() == 0) {
-                    addFreeBookingsIfNoTOverlapping(fromDate.plusDays(days), fromDate, bookedDate.getFrom(), freeBookings);
+                    addFreeBookingsIfNotOverlapping(fromDate.plusDays(days), fromDate, bookedDate.getFrom(), freeBookings);
                 } else {
-                    addFreeBookingsIfNoTOverlapping(previousBookingToDate.plusDays(days), previousBookingToDate, bookedDate.getFrom(), freeBookings);
+                    addFreeBookingsIfNotOverlapping(previousBookingToDate.plusDays(days), previousBookingToDate, bookedDate.getFrom(), freeBookings);
                 }
                 previousBookingToDate = bookedDate.getTo();
             }
         }
 
         if (previousBookingToDate.isBefore(toDate)) {
-            addFreeBookingsIfNoTOverlapping(previousBookingToDate.plusDays(days), previousBookingToDate, toDate, freeBookings);
+            addFreeBookingsIfNotOverlapping(previousBookingToDate.plusDays(days), previousBookingToDate, toDate, freeBookings);
         }
 
         return freeBookings;
@@ -230,7 +230,7 @@ public class Room {
         freeBookings.add(newBooking);
     }
 
-    private void addFreeBookingsIfNoTOverlapping(LocalDate fromPlusDays, LocalDate from, LocalDate bookedFrom, Set<Booking> freeBookings) {
+    private void addFreeBookingsIfNotOverlapping(LocalDate fromPlusDays, LocalDate from, LocalDate bookedFrom, Set<Booking> freeBookings) {
         if (fromPlusDays.isBefore(bookedFrom) || fromPlusDays.isEqual(bookedFrom)) {
             addFreeBookings(from, bookedFrom, freeBookings);
         }

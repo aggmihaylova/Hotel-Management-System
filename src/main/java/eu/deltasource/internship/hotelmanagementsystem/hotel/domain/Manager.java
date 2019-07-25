@@ -102,7 +102,8 @@ public class Manager {
      * @return the number of the room that has been booked
      * @throws NoRoomsAvailableException if there is no appropriate room
      */
-    public int createBooking(LocalDate fromDate, LocalDate toDate, int numberOfPeople, String guestID, int days) {
+    public int createBooking(LocalDate fromDate, LocalDate toDate, int numberOfPeople, String guestID,
+                             int days, String guestName) {
 
         checkIfDatesValid(fromDate, toDate, days);
 
@@ -112,7 +113,7 @@ public class Manager {
             throw new NoRoomsAvailableException("There is no appropriate room for you! ");
         } else {
             return hotel.createReservation(chooseBooking(freeRooms.get(0),
-                    guestID, fromDate, toDate, days), freeRooms.get(0));
+                    guestID, fromDate, toDate, days, guestName), freeRooms.get(0));
         }
     }
 
@@ -122,24 +123,22 @@ public class Manager {
         }
     }
 
-    private Booking chooseBooking(Room room, String guestID, LocalDate from, LocalDate to, int days) {
+    private Booking chooseBooking(Room room, String guestID, LocalDate from, LocalDate to, int days, String guestName) {
 
         Set<Booking> bookings = room.findAvailableBookings(from, to, days);
 
         if (bookings.size() == 0) {
-            return createNewBooking(room, guestID, from, from.plusDays(days));
+            return createNewBooking(room, guestID, from, from.plusDays(days), guestName);
         } else {
             List<Booking> freeBookings = new ArrayList<>(room.findAvailableBookings(from, to, days));
             LocalDate fromDate = freeBookings.get(0).getFrom();
             LocalDate toDate = freeBookings.get(0).getTo();
 
-            return createNewBooking(room, guestID, fromDate, toDate);
+            return createNewBooking(room, guestID, fromDate, toDate, guestName);
         }
     }
 
-    private Booking createNewBooking(Room room, String guestID, LocalDate from, LocalDate to) {
-
-        String guestName = "John Miller";
+    private Booking createNewBooking(Room room, String guestID, LocalDate from, LocalDate to, String guestName) {
 
         Booking newBooking = new Booking(room.getBookings().size() + 1, guestName, guestID, from, to);
 
