@@ -66,7 +66,7 @@ public class Room {
     }
 
     /**
-     * Method that initializes/set the set of maintenance dates
+     * Method that initializes/sets the set of maintenance dates
      *
      * @param maintenanceDates the maintenance dates
      * @throw MissingArgumentException if the set is null
@@ -79,7 +79,7 @@ public class Room {
     }
 
     /**
-     * Method that initializes/set the set of bookings
+     * Method that initializes/sets the set of bookings
      *
      * @param bookings set of bookings
      * @throw MissingArgumentException if the set  is null
@@ -92,7 +92,7 @@ public class Room {
     }
 
     /**
-     * Method that initializes/set the set of commodities
+     * Method that initializes/sets the set of commodities
      *
      * @param commodities manager's first name
      * @throw MissingArgumentException if the set is null

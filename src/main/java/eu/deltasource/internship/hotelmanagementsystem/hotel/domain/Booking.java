@@ -11,7 +11,7 @@ import java.time.LocalDate;
 public class Booking {
 
     private long ID;
-    private long guestID;
+    private String guestID;
     private String guestName;
     private LocalDate from;
     private LocalDate to;
@@ -23,7 +23,7 @@ public class Booking {
      * @param from    date
      * @param to      date
      */
-    public Booking(long ID, String guestName, long guestID, LocalDate from, LocalDate to) {
+    public Booking(long ID, String guestName, String guestID, LocalDate from, LocalDate to) {
         setID(ID);
         setGuestID(guestID);
         setGuestName(guestName);
@@ -49,7 +49,7 @@ public class Booking {
     }
 
     /**
-     * Method that initializes/set the starting date
+     * Method that initializes/sets the starting date
      *
      * @param from starting date
      * @throw InvalidBookingException if the date is null
@@ -58,12 +58,11 @@ public class Booking {
         if (from == null) {
             throw new InvalidBookingException("Invalid date !");
         }
-
         this.from = from;
     }
 
     /**
-     * Method that initializes/set the ending date
+     * Method that initializes/sets the ending date
      *
      * @param to ending date
      * @throw InvalidBookingException if the date is null
@@ -76,22 +75,20 @@ public class Booking {
     }
 
     /**
-     * Method that initializes/set the guest's ID
+     * Method that initializes/sets the guest's ID
      *
      * @param guestID guest's ID
      * @throw MissingArgumentException if the guestID is less than 10 digits
      */
-    public void setGuestID(long guestID) {
-        final long TEN_BILLION = 10_000_000_000L;
-        if (guestID / TEN_BILLION != 0) {
+    public void setGuestID(String guestID) {
+        if (guestID.length() < 10) {
             throw new MissingArgumentException("Invalid booking ID ");
         }
         this.guestID = guestID;
-
     }
 
     /**
-     * Method that initializes/set the guest's name
+     * Method that initializes/sets the guest's name
      *
      * @param guestName guest's name
      * @throw MissingArgumentException if the name is null or empty
@@ -105,7 +102,7 @@ public class Booking {
     }
 
     /**
-     * Method that initializes/set the booking ID
+     * Method that initializes/sets the booking ID
      *
      * @param ID booking ID
      * @throw MissingArgumentException() if the ID is negative
@@ -118,7 +115,7 @@ public class Booking {
     }
 
     /**
-     * Guarantees that starting date is before ending date
+     * Guarantees that that starting date is before the ending date or they are the same
      *
      * @param from date
      * @param to   date
@@ -126,7 +123,7 @@ public class Booking {
     public void saveDate(LocalDate from, LocalDate to) {
         setFrom(from);
         setTo(to);
-        if (from.isAfter(to)) {
+        if (from.isAfter(to) || from.isEqual(to)) {
             throw new InvalidBookingException("Invalid reservation date");
         }
     }

@@ -42,15 +42,15 @@ public class RoomTest {
 
         // creating set of bookings
 
-        long firstGuestID = 9413043456L;
+        String firstGuestID = "9413043456";
         firstBooking = new Booking(bookings.size() + 1, "Daniel Danielson", firstGuestID, firstFromDate, firstToDate);
         bookings.add(firstBooking);
 
-        long secondGuestID = 9413043456L;
+        String secondGuestID = "9413043456";
         secondBooking = new Booking(bookings.size() + 1, "Heath Heathens", secondGuestID, secondFromDate, secondToDate);
         bookings.add(secondBooking);
 
-        long thirdGuestID = 9204124563L;
+        String thirdGuestID = "9204124563";
         thirdBooking = new Booking(bookings.size() + 1, "John Miller", thirdGuestID, thirdFromDate, thirdToDate);
         bookings.add(thirdBooking);
 
@@ -80,7 +80,7 @@ public class RoomTest {
         // given
         LocalDate fromDate = LocalDate.of(2019, 12, 6);
         LocalDate toDate = LocalDate.of(2019, 12, 12);
-        long removeBookingGuestID = 9704123456L;
+        String removeBookingGuestID = "9704123456";
         Booking removeBooking = new Booking(bookings.size() + 1, "John Johnson", removeBookingGuestID, fromDate, toDate);
 
         //when and then
@@ -92,7 +92,7 @@ public class RoomTest {
         // given
         LocalDate fromDate = LocalDate.of(2019, 3, 16);
         LocalDate toDate = LocalDate.of(2019, 3, 25);
-        long guestID = 9413043456L;
+        String guestID = "9413043456";
         Booking newBooking = new Booking(bookings.size() + 1, "John Johnson", guestID, fromDate, toDate);
 
         // when
@@ -107,7 +107,7 @@ public class RoomTest {
         // given
         LocalDate fromDate = LocalDate.of(2019, 5, 21);
         LocalDate toDate = LocalDate.of(2019, 5, 23);
-        long guestID = 9604231345L;
+        String guestID = "9604231345";
         Booking newBooking = new Booking(bookings.size() + 1, "John Johnson", guestID, fromDate, toDate);
 
         // when
@@ -156,7 +156,7 @@ public class RoomTest {
         int roomID = 1;
         LocalDate fromDate = LocalDate.of(2019, 7, 13);
         LocalDate toDate = LocalDate.of(2019, 7, 25);
-        long guestID = 9304012345L;
+        String guestID = "9304012345";
         Booking newBooking = new Booking(bookings.size() + 1, "Mariya Mariya", guestID, fromDate, toDate);
 
         // when and then

@@ -37,7 +37,7 @@ public class Hotel {
     }
 
     /**
-     * Method that initializes/set the list of rooms
+     * Method that initializes/sets the list of rooms
      *
      * @param rooms list of rooms
      * @throw MissingArgumentException if the list of rooms is null
@@ -50,7 +50,7 @@ public class Hotel {
     }
 
     /**
-     * Method that initializes/set the hotel's name
+     * Method that initializes/sets the hotel's name
      *
      * @param name hotel's name
      * @throw MissingArgumentException if the name is null
@@ -65,8 +65,8 @@ public class Hotel {
     /**
      * Searches for available rooms
      *
-     * @param fromDate    date
-     * @param toDate      date
+     * @param fromDate    starting date
+     * @param toDate      ending date
      * @param numOfPeople number of people
      * @return list of available rooms
      */
@@ -83,18 +83,23 @@ public class Hotel {
         return availableRooms;
     }
 
-    private void addAvailableRoom(Set<Booking> availableBookings, List<Room> availableRooms, Room room) {
-        if (availableBookings.size() != 0) {
-            availableRooms.add(room);
+    private void findFreeBookings(Room room, Set<Booking> availableBookings, List<Room> availableRooms,
+                                  LocalDate fromDate, LocalDate toDate, int days) {
+        if (room.getBookings().size() == 0) {
+            addAvailableRooms(availableRooms, room);
+        } else {
+            availableBookings = room.findAvailableBookings(fromDate, toDate, days);
+            checkAvailableBookings(availableBookings, availableRooms, room);
         }
     }
 
-    private void findFreeBookings(Room room, Set<Booking> availableBookings, List<Room> availableRooms, LocalDate fromDate, LocalDate toDate, int days) {
-        if (room.getBookings().size() == 0) {
-            availableRooms.add(room);
-        } else {
-            availableBookings = room.findAvailableBookings(fromDate, toDate, days);
-            addAvailableRoom(availableBookings, availableRooms, room);
+    private void addAvailableRooms(List<Room> availableRooms, Room room) {
+        availableRooms.add(room);
+    }
+
+    private void checkAvailableBookings(Set<Booking> availableBookings, List<Room> availableRooms, Room room) {
+        if (availableBookings.size() != 0) {
+            addAvailableRooms(availableRooms, room);
         }
     }
 

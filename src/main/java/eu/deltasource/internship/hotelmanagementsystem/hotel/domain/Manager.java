@@ -54,7 +54,7 @@ public class Manager {
     }
 
     /**
-     * Method that initializes/set the manager's first name
+     * Method that initializes/sets the manager's first name
      *
      * @param firstName manager's first name
      * @throw InvalidBookingException if the first name is null
@@ -67,7 +67,7 @@ public class Manager {
     }
 
     /**
-     * Method that initializes/set the manager's last name
+     * Method that initializes/sets the manager's last name
      *
      * @param lastName manager's first name
      * @throw InvalidBookingException if the last name is null
@@ -80,7 +80,7 @@ public class Manager {
     }
 
     /**
-     * Method that initializes/set the hotel
+     * Method that initializes/sets the hotel
      *
      * @param hotel the hotel
      * @throw InvalidBookingException if the hotel is null
@@ -95,14 +95,14 @@ public class Manager {
     /**
      * Creates booking
      *
-     * @param fromDate       date
-     * @param toDate         date
+     * @param fromDate       starting date
+     * @param toDate         ending date
      * @param numberOfPeople number of people
      * @param guestID        ID of the guest
-     * @return the number of the room that has beed booked
+     * @return the number of the room that has been booked
      * @throws NoRoomsAvailableException if there is no appropriate room
      */
-    public int createBooking(LocalDate fromDate, LocalDate toDate, int numberOfPeople, long guestID, int days) {
+    public int createBooking(LocalDate fromDate, LocalDate toDate, int numberOfPeople, String guestID, int days) {
 
         checkIfDatesValid(fromDate, toDate, days);
 
@@ -111,7 +111,8 @@ public class Manager {
         if (freeRooms.size() == 0) {
             throw new NoRoomsAvailableException("There is no appropriate room for you! ");
         } else {
-            return hotel.createReservation(chooseBooking(freeRooms.get(0), guestID, fromDate, toDate, days), freeRooms.get(0));
+            return hotel.createReservation(chooseBooking(freeRooms.get(0),
+                    guestID, fromDate, toDate, days), freeRooms.get(0));
         }
     }
 
@@ -121,20 +122,27 @@ public class Manager {
         }
     }
 
-    private Booking chooseBooking(Room room, long guestID, LocalDate from, LocalDate to, int days) {
+    private Booking chooseBooking(Room room, String guestID, LocalDate from, LocalDate to, int days) {
 
-        Booking newBooking;
         Set<Booking> bookings = room.findAvailableBookings(from, to, days);
 
         if (bookings.size() == 0) {
-            newBooking = new Booking(room.getBookings().size() + 1, "John Miller", guestID, from, from.plusDays(days));
+            return createNewBooking(room, guestID, from, from.plusDays(days));
         } else {
             List<Booking> freeBookings = new ArrayList<>(room.findAvailableBookings(from, to, days));
             LocalDate fromDate = freeBookings.get(0).getFrom();
             LocalDate toDate = freeBookings.get(0).getTo();
 
-            newBooking = new Booking(room.getBookings().size() + 1, "John Miller", guestID, fromDate, toDate);
+            return createNewBooking(room, guestID, fromDate, toDate);
         }
+    }
+
+    private Booking createNewBooking(Room room, String guestID, LocalDate from, LocalDate to) {
+
+        String guestName = "John Miller";
+
+        Booking newBooking = new Booking(room.getBookings().size() + 1, guestName, guestID, from, to);
+
         return newBooking;
     }
 }

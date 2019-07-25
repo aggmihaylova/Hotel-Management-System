@@ -17,6 +17,7 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.IsEqual.equalTo;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class HotelTest {
 
@@ -30,7 +31,7 @@ public class HotelTest {
     @BeforeEach
     public void setUp() {
         // set of bookings
-        long guestID = 9504124582L;
+        String guestID = "9504124582";
         LocalDate fromDate = LocalDate.of(2019, 05, 23);
         LocalDate toDate = LocalDate.of(2019, 05, 27);
         Booking newBooking = new Booking(bookings.size() + 1, "John Miller", guestID, fromDate, toDate);
@@ -58,7 +59,7 @@ public class HotelTest {
         freeRooms = hotel.findAvailableRooms(from, to, numberOfPeople, 5);
 
         // then
-        assertThat("There is no available room", freeRooms.size(), is(equalTo(sizeOfFreeRooms)));
+        assertThat(freeRooms.size(), is(equalTo(sizeOfFreeRooms)));
     }
 
     @Test
@@ -73,7 +74,7 @@ public class HotelTest {
         List<Room> freeRoom = hotel.findAvailableRooms(from, to, numberOfPeople, 6);
 
         // then
-        assertThat("There are available room", freeRoom.size(), is(equalTo(size)));
+        assertThat(freeRoom.size(), is(equalTo(size)));
     }
 
     @Test
@@ -91,10 +92,10 @@ public class HotelTest {
         String hotelName = null;
         String nameHotel = "";
 
-        //when 1 and then 1
+        //when I and then I
         assertThrows(MissingArgumentException.class, () -> hotel.setName(hotelName));
 
-        // when 2 and then 2
+        // when II and then II
         assertThrows(MissingArgumentException.class, () -> hotel.setName(nameHotel));
     }
 
@@ -105,10 +106,29 @@ public class HotelTest {
         String guestName = "Maya Miller";
         LocalDate from = LocalDate.of(2019, 4, 21);
         LocalDate to = LocalDate.of(2019, 4, 27);
-        long guestID = 9103124562L;
+        String guestID = "9103124562";
         Booking booking = new Booking(bookings.size() + 1, guestName, guestID, from, to);
 
         //when and then
         assertThrows(MissingArgumentException.class, () -> hotel.createReservation(booking, room));
+    }
+
+    @Test
+    public void checkIfBookingSuccessful() {
+        //given
+        int roomID = 1;
+        Set<Booking> bookings = new HashSet<>();
+        Room room = new Room(roomID, commodities, maintenanceDates, bookings);
+        String guestName = "Maya Miller";
+        LocalDate from = LocalDate.of(2019, 4, 21);
+        LocalDate to = LocalDate.of(2019, 4, 27);
+        String guestID = "9103124562";
+        Booking booking = new Booking(bookings.size() + 1, guestName, guestID, from, to);
+
+        //when
+        int bookedRoomID = hotel.createReservation(booking, room);
+
+        //then
+        assertTrue(bookedRoomID == roomID);
     }
 }

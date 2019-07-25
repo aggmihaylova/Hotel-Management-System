@@ -19,6 +19,7 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.IsEqual.equalTo;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class ManagerTest {
 
@@ -33,15 +34,14 @@ public class ManagerTest {
 
     @BeforeEach
     public void SetUp() {
-
         // creating and adding bookings in the set of bookings
         LocalDate firstFromDate = LocalDate.of(2019, 04, 30);
         LocalDate firstToDate = LocalDate.of(2019, 05, 6);
         LocalDate secondFromDate = LocalDate.of(2019, 05, 15);
         LocalDate secondToDate = LocalDate.of(2019, 05, 20);
 
-        long firstGuestID = 9405154582L;
-        long secondGuestID = 9407124563L;
+        String firstGuestID = "9405154582";
+        String secondGuestID = "9407124563";
 
         Booking firstBooking = new Booking(bookings.size() + 1, "John Miller", firstGuestID, firstFromDate, firstToDate);
         bookings.add(firstBooking);
@@ -63,12 +63,12 @@ public class ManagerTest {
     }
 
     @Test
-    public void checkIfBookingSuccessfull() {
+    public void checkIfBookingSuccessful() {
         // given
         LocalDate fromDate = LocalDate.of(2019, 5, 7);
         LocalDate toDate = LocalDate.of(2019, 5, 25);
         int numberOfPeople = 2, expectedRoomID = 1;
-        long guestID = 9405121343L;
+        String guestID = "9405121343";
 
         // when
         int roomID = manager.createBooking(fromDate, toDate, numberOfPeople, guestID, 3);
@@ -83,7 +83,7 @@ public class ManagerTest {
         LocalDate fromDate = LocalDate.of(2019, 5, 3);
         LocalDate toDate = LocalDate.of(2019, 5, 14);
         int numberOfPeople = 7, days = 3;
-        long guestID = 9503123452L;
+        String guestID = "9503123452";
 
         // when and then I
         assertThrows(NoRoomsAvailableException.class, () -> manager.createBooking(fromDate, toDate, numberOfPeople, guestID, days));
@@ -94,7 +94,6 @@ public class ManagerTest {
         //when and then II
         assertThrows(InvalidBookingException.class, () -> manager.createBooking(from, toDate, numberOfPeople, guestID, days));
     }
-
 
     @Test
     public void checkInvalidHotel() {
@@ -129,5 +128,24 @@ public class ManagerTest {
         // when and then
         assertThrows(MissingArgumentException.class, () -> manager.setFirstName(firstName));
         assertThrows(MissingArgumentException.class, () -> manager.setLastName(lastName));
+    }
+
+    @Test
+    public void roomThatHasNoBookings() {
+        //given
+        List<Room> rooms = new ArrayList<>();
+        LocalDate fromDate = LocalDate.of(2019, 04, 30);
+        LocalDate toDate = LocalDate.of(2019, 05, 6);
+        int roomID = rooms.size() + 1, days = 3, numOfPeople = 2;
+        rooms.add(new Room(roomID, commodities));
+        Hotel hotel = new Hotel("Rose", rooms);
+        Manager manager = new Manager("John", "Peterson", hotel);
+        String guestID = "9504243212";
+
+        // when
+        int bookedRoomID = manager.createBooking(fromDate, toDate, numOfPeople, guestID, days);
+
+        //then
+        assertTrue(bookedRoomID == roomID);
     }
 }

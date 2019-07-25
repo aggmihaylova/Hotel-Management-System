@@ -34,8 +34,10 @@ public class ScenarioTest {
         LocalDate firstRoomSecondToDate = LocalDate.of(2019, 7, 21);
 
         Set<Booking> bookingsFirstRoom = new HashSet<>();
-        bookingsFirstRoom.add(new Booking(bookingsFirstRoom.size() + 1, "John M.", 8902123453L, firstRoomFirstFromDate, firstRoomFristToDate));
-        bookingsFirstRoom.add(new Booking(bookingsFirstRoom.size() + 1, "Mariya M.", 7304123452L, firstRoomSecondFromDate, firstRoomSecondToDate));
+        bookingsFirstRoom.add(new Booking(bookingsFirstRoom.size() + 1, "John M.",
+                "8902123453", firstRoomFirstFromDate, firstRoomFristToDate));
+        bookingsFirstRoom.add(new Booking(bookingsFirstRoom.size() + 1, "Mariya M.",
+                "7304123452", firstRoomSecondFromDate, firstRoomSecondToDate));
 
         // bookings for the second room
 
@@ -43,7 +45,8 @@ public class ScenarioTest {
         LocalDate secondRoomToDate = LocalDate.of(2019, 7, 17);
 
         Set<Booking> bookingsSecondRoom = new HashSet<>();
-        bookingsSecondRoom.add(new Booking(bookingsSecondRoom.size() + 1, "Kate K.", 7804123452L, secondRoomFromDate, secondRoomToDate));
+        bookingsSecondRoom.add(new Booking(bookingsSecondRoom.size() + 1, "Kate K.",
+                "7804123452", secondRoomFromDate, secondRoomToDate));
 
         //bookings the third room
 
@@ -51,7 +54,8 @@ public class ScenarioTest {
         LocalDate thirdRoomToDate = LocalDate.of(2019, 7, 29);
 
         Set<Booking> bookingsThirdRoom = new HashSet<>();
-        bookingsThirdRoom.add(new Booking(bookingsThirdRoom.size() + 1, "Chris C.", 9407124562L, thirdRoomFromDate, thirdRoomToDate));
+        bookingsThirdRoom.add(new Booking(bookingsThirdRoom.size() + 1, "Chris C.",
+                "9407124562", thirdRoomFromDate, thirdRoomToDate));
 
 
         // commodities for the first room
@@ -103,32 +107,34 @@ public class ScenarioTest {
         LocalDate thirdFromDate = LocalDate.of(2019, 7, 19);
         LocalDate thirdToDate = LocalDate.of(2019, 7, 21);
 
-        Booking firstBookingInterval = new Booking(1, "Than T.", 9405120432L, firstFromDate, firstToDate);
-        Booking secondBookingInterval = new Booking(2, "Peter P", 9503211234L, secondFromDate, secondToDate);
-        Booking thirdBookingInterval = new Booking(3, "Missy M", 7908124532L, thirdFromDate, thirdToDate);
-
+        Booking firstBookingInterval = new Booking(1, "Than T.", "9405120432",
+                firstFromDate, firstToDate);
+        Booking secondBookingInterval = new Booking(2, "Peter P", "9503211234",
+                secondFromDate, secondToDate);
+        Booking thirdBookingInterval = new Booking(3, "Missy M", "7908124532",
+                thirdFromDate, thirdToDate);
 
         // when 1
-        int roomID = manager.createBooking(firstBookingInterval.getFrom(), firstBookingInterval.getTo(), 2, 567, 5);
+        int roomID = manager.createBooking(firstBookingInterval.getFrom(), firstBookingInterval.getTo(),
+                2, "9604124562", 5);
 
         // then 1
-        assertThat("Unavailable room with bed for 2", roomID, is(equalTo(1)));
+        assertThat(roomID, is(equalTo(1)));
 
 
         // when 2
         roomID = manager.createBooking(secondBookingInterval.getFrom(), secondBookingInterval.getTo(),
-                1, 482, 1);
+                1, "9604124562", 1);
 
         // then 2
-        assertThat("Available rooms ", roomID, is(equalTo(1)));
+        assertThat(roomID, is(equalTo(1)));
 
 
         // when
         roomID = manager.createBooking(thirdBookingInterval.getFrom(), thirdBookingInterval.getTo(),
-                1, 482, 1);
+                1, "9604124562", 1);
 
         // then 3
-        assertThat("Available rooms ", roomID, is(equalTo(1)));
-
+        assertThat(roomID, is(equalTo(1)));
     }
 }

@@ -31,7 +31,6 @@ public class CaseTest {
     private Manager manager;
     private LocalDate intervalFrom = LocalDate.of(2020, 1, 1);
     private LocalDate intervalTo = LocalDate.of(2020, 1, 2);
-
     private int roomID;
 
     @BeforeEach
@@ -41,7 +40,7 @@ public class CaseTest {
         LocalDate firstToDate = LocalDate.of(2019, 05, 6);
 
         String guestName = "John Miller";
-        long guestID = 9405123453L;
+        String guestID = "9405123453";
         Booking booking = new Booking(bookings.size() + 1, guestName, guestID, firstFromDate, firstToDate);
         bookings.add(booking);
 
@@ -57,7 +56,7 @@ public class CaseTest {
         commodities.add(commodity);
         rooms.add(new Room(rooms.size() + 1, commodities, maintenanceDates, bookings));
         int numberOfPeople = 2, days = 1;
-        long guestID = 9603134632L;
+        String guestID = "9603134632";
         hotel.setRooms(rooms);
         manager.setHotel(hotel);
 
@@ -74,7 +73,7 @@ public class CaseTest {
         hotel.setRooms(rooms);
         manager.setHotel(hotel);
         int numberOfPeople = 2, days = 1;
-        long guestID = 586;
+        String guestID = "9604123452";
 
         // when and then
         assertThrows(NoRoomsAvailableException.class, () -> manager.createBooking(intervalFrom, intervalTo, numberOfPeople, guestID, days));
@@ -89,11 +88,9 @@ public class CaseTest {
         hotel.setRooms(rooms);
         manager.setHotel(hotel);
         int numberOfPeople = 7, days = 1;
-        long guestID = 324;
+        String guestID = "9604123462";
 
         // when and then
         assertThrows(NoRoomsAvailableException.class, () -> manager.createBooking(intervalFrom, intervalTo, numberOfPeople, guestID, days));
     }
-
-
 }

@@ -8,4 +8,5 @@ public class NoRoomsAvailableException extends RuntimeException {
     public NoRoomsAvailableException(String exceptionMessage) {
         super(exceptionMessage);
     }
+
 }

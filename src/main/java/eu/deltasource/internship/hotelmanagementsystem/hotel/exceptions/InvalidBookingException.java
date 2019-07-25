@@ -1,7 +1,7 @@
 package eu.deltasource.internship.hotelmanagementsystem.hotel.exceptions;
 
 /**
- * Exception for unsuccessful booking
+ * Exception for invalid booking
  */
 public class InvalidBookingException extends RuntimeException {
 
