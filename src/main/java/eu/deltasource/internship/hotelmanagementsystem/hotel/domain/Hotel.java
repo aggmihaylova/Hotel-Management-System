@@ -104,6 +104,16 @@ public class Hotel {
     }
 
     /**
+     * Removes booking
+     *
+     * @param room    the room that has been booked
+     * @param booking the booking that must be removed/canceled
+     */
+    public void removeCurrentBooking(Room room, Booking booking) {
+        room.removeBooking(booking);
+    }
+
+    /**
      * calls createBooking() method
      *
      * @param newBooking the new booking

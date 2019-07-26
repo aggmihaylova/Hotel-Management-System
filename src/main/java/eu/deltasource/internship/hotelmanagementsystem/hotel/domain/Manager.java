@@ -57,10 +57,13 @@ public class Manager {
      * Removes booking
      *
      * @param room    the room that has been booked
-     * @param booking the booking that must be removed
+     * @param booking the booking that must be removed/canceled
      */
-    public void removeBooking(Room room, Booking booking) {
-        room.removeBooking(booking);
+    public void removeCreatedBooking(Room room, Booking booking) {
+        if (room == null || booking == null) {
+            throw new MissingArgumentException("Invalid room or booking");
+        }
+        hotel.removeCurrentBooking(room, booking);
     }
 
     /**
