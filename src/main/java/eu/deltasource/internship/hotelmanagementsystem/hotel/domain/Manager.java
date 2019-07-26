@@ -54,6 +54,16 @@ public class Manager {
     }
 
     /**
+     * Removes booking
+     *
+     * @param room    the room that has been booked
+     * @param booking the booking that must be removed
+     */
+    public void removeBooking(Room room, Booking booking) {
+        room.removeBooking(booking);
+    }
+
+    /**
      * Method that initializes/sets the manager's first name
      *
      * @param firstName manager's first name
