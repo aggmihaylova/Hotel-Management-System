@@ -1,16 +1,17 @@
 package eu.deltasource.internship.hotelmanagementsystem.hotel.domain;
 
-import eu.deltasource.internship.hotelmanagementsystem.hotel.exceptions.MissingArgumentException;
+import eu.deltasource.internship.hotelmanagementsystem.hotel.exceptions.InvalidArgumentException;
+import lombok.Getter;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 /**
  * Represents a hotel with rooms
  */
+@Getter
 public class Hotel {
 
     private String name;
@@ -37,27 +38,25 @@ public class Hotel {
     }
 
     /**
-     * Method that initializes/sets the list of rooms
+     * Initializes the list of rooms
      *
      * @param rooms list of rooms
-     * @throw MissingArgumentException if the list of rooms is null
      */
     public void setRooms(List<Room> rooms) {
-        if (rooms == null) {
-            throw new MissingArgumentException("Invalid rooms !");
+        if (rooms == null || rooms.contains(null)) {
+            throw new InvalidArgumentException("Invalid rooms");
         }
         this.rooms = new ArrayList<>(rooms);
     }
 
     /**
-     * Method that initializes/sets the hotel's name
+     * Initializes the hotel's name
      *
      * @param name hotel's name
-     * @throw MissingArgumentException if the name is null
      */
     public void setName(String name) {
         if (name == null || name.isEmpty()) {
-            throw new MissingArgumentException("Invalid name !");
+            throw new InvalidArgumentException("Invalid name");
         }
         this.name = name;
     }
@@ -71,60 +70,61 @@ public class Hotel {
      * @return list of available rooms
      */
     public List<Room> findAvailableRooms(LocalDate fromDate, LocalDate toDate, int numOfPeople, int days) {
-
         List<Room> availableRooms = new ArrayList<>();
-        Set<Booking> availableBookings = new HashSet<>();
 
         for (Room room : rooms) {
             if ((room.getCapacity() >= numOfPeople)) {
-                findFreeBookings(room, availableBookings, availableRooms, fromDate, toDate, days);
+                findAvailableBookings(room, availableRooms, fromDate, toDate, days);
             }
         }
         return availableRooms;
     }
 
-    private void findFreeBookings(Room room, Set<Booking> availableBookings, List<Room> availableRooms,
-                                  LocalDate fromDate, LocalDate toDate, int days) {
-        if (room.getBookings().size() == 0) {
-            addAvailableRooms(availableRooms, room);
+    /**
+     * Removes booking
+     *
+     * @param room    the room that has that booking
+     * @param booking the booking that must be removed
+     */
+    public void removeCurrentBooking(Room room, Booking booking) {
+        if (booking == null || room == null) {
+            throw new InvalidArgumentException("Invalid argument");
+        }
+        room.removeBooking(booking);
+    }
+
+    /**
+     * Creates booking
+     *
+     * @param booking the new booking
+     * @param room    the room that is going to be booked
+     * @return ID of the room that has been booked
+     */
+    public int createReservation(Booking booking, Room room) {
+        if (booking == null || room == null) {
+            throw new InvalidArgumentException("Invalid argument");
+        }
+        return room.createBooking(booking);
+    }
+
+    private void findAvailableBookings(Room room, List<Room> availableRooms, LocalDate fromDate, LocalDate toDate, int days) {
+        Set<Booking> availableBookings;
+
+        if (room.getBookings().isEmpty()) {
+            addToAvailableRooms(availableRooms, room);
         } else {
             availableBookings = room.findAvailableBookings(fromDate, toDate, days);
             checkAvailableBookings(availableBookings, availableRooms, room);
         }
     }
 
-    private void addAvailableRooms(List<Room> availableRooms, Room room) {
+    private void addToAvailableRooms(List<Room> availableRooms, Room room) {
         availableRooms.add(room);
     }
 
     private void checkAvailableBookings(Set<Booking> availableBookings, List<Room> availableRooms, Room room) {
-        if (availableBookings.size() != 0) {
-            addAvailableRooms(availableRooms, room);
+        if (!availableBookings.isEmpty()) {
+            addToAvailableRooms(availableRooms, room);
         }
-    }
-
-    /**
-     * Removes booking
-     *
-     * @param room    the room that has been booked
-     * @param booking the booking that must be removed/canceled
-     */
-    public void removeCurrentBooking(Room room, Booking booking) {
-        room.removeBooking(booking);
-    }
-
-    /**
-     * calls createBooking() method
-     *
-     * @param newBooking the new booking
-     * @param room       the room that will be booked
-     * @return ID of the room that has been booked
-     * @throw MissingArgumentException if the booking or the room is null
-     */
-    public int createReservation(Booking newBooking, Room room) {
-        if (newBooking == null || room == null) {
-            throw new MissingArgumentException("Invalid argument !");
-        }
-        return room.createBooking(newBooking);
     }
 }

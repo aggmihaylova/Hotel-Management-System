@@ -3,37 +3,22 @@ package eu.deltasource.internship.hotelmanagementsystem.hotel.domain;
 import eu.deltasource.internship.hotelmanagementsystem.hotel.domain.commodities.AbstractCommodity;
 import eu.deltasource.internship.hotelmanagementsystem.hotel.domain.commodities.Bed;
 import eu.deltasource.internship.hotelmanagementsystem.hotel.exceptions.InvalidBookingException;
-import eu.deltasource.internship.hotelmanagementsystem.hotel.exceptions.MissingArgumentException;
+import eu.deltasource.internship.hotelmanagementsystem.hotel.exceptions.InvalidArgumentException;
+import lombok.Getter;
 
 import java.time.LocalDate;
 import java.util.*;
 
+@Getter
 /**
  * Represents a room in a hotel
  */
 public class Room {
 
     private int ID;
-    private int capacity;
     private Set<AbstractCommodity> commodities;
     private Set<LocalDate> maintenanceDates;
     private Set<Booking> bookings;
-
-    /**
-     * This is a constructor
-     *
-     * @param ID               room's ID
-     * @param commodities      room commodities
-     * @param maintenanceDates room maintenance dates
-     * @param bookings         room bookings
-     */
-    public Room(int ID, Set<AbstractCommodity> commodities, Set<LocalDate> maintenanceDates, Set<Booking> bookings) {
-        this.ID = ID;
-        setCommodities(commodities);
-        findCapacity(commodities);
-        setMaintenanceDates(maintenanceDates);
-        setBookings(bookings);
-    }
 
     /**
      * This is a constructor
@@ -44,62 +29,18 @@ public class Room {
     public Room(int ID, Set<AbstractCommodity> commodities) {
         this.ID = ID;
         setCommodities(commodities);
-        findCapacity(commodities);
         maintenanceDates = new HashSet<>();
         bookings = new HashSet<>();
     }
 
-    public int getID() {
-        return ID;
-    }
-
-    public int getCapacity() {
-        return capacity;
-    }
-
-    public Set<AbstractCommodity> getCommodities() {
-        return commodities;
-    }
-
-    public Set<Booking> getBookings() {
-        return bookings;
-    }
-
     /**
-     * Method that initializes/sets the set of maintenance dates
-     *
-     * @param maintenanceDates the maintenance dates
-     * @throw MissingArgumentException if the set is null
-     */
-    public void setMaintenanceDates(Set<LocalDate> maintenanceDates) {
-        if (maintenanceDates == null) {
-            throw new MissingArgumentException("Invalid set of maintenance dates !");
-        }
-        this.maintenanceDates = new HashSet<>(maintenanceDates);
-    }
-
-    /**
-     * Method that initializes/sets the set of bookings
-     *
-     * @param bookings set of bookings
-     * @throw MissingArgumentException if the set  is null
-     */
-    public void setBookings(Set<Booking> bookings) {
-        if (bookings == null) {
-            throw new MissingArgumentException("Invalid set of bookings !");
-        }
-        this.bookings = new HashSet<>(bookings);
-    }
-
-    /**
-     * Method that initializes/sets the set of commodities
+     * Initializes the set of commodities
      *
      * @param commodities manager's first name
-     * @throw MissingArgumentException if the set is null
      */
     public void setCommodities(Set<AbstractCommodity> commodities) {
-        if (commodities == null) {
-            throw new MissingArgumentException("Invalid set of commodities !");
+        if (commodities == null || commodities.contains(null)) {
+            throw new InvalidArgumentException("Invalid set of commodities !");
         }
         this.commodities = new HashSet<>(commodities);
     }
@@ -111,55 +52,38 @@ public class Room {
      */
     public void addCommodity(AbstractCommodity commodity) {
         if (commodity == null) {
-            throw new MissingArgumentException("Invalid commodity !");
+            throw new InvalidArgumentException("Invalid commodity !");
         }
-        calculateCapacity(commodity);
         commodities.add(commodity);
     }
 
     /**
-     * Calculates the capacity
+     * Calculates room's capacity
      *
-     * @param commodity
+     * @return room's capacity
      */
-    public void calculateCapacity(AbstractCommodity commodity) {
-        if (commodity instanceof Bed)
-            capacity += ((Bed) commodity).getBedType().getSize();
-    }
-
-    /**
-     * Calls calculateCapacity() method for each commodity
-     *
-     * @param commodities set of commodities
-     */
-    private void findCapacity(Set<AbstractCommodity> commodities) {
-        for (AbstractCommodity commodity : commodities)
-            calculateCapacity(commodity);
-    }
-
-    /**
-     * Prepares room
-     *
-     * @param date - the date on which the room is ready to be booked
-     */
-    public void prepareRoom(LocalDate date) {
-        for (LocalDate maintenanceDate : maintenanceDates) ;
-        maintenanceDates.add(date);
+    public int getCapacity() {
+        int capacity = 0;
+        for (AbstractCommodity commodity : commodities) {
+            if (commodity instanceof Bed) {
+                capacity += ((Bed) commodity).getBedType().getSize();
+            }
+        }
+        return capacity;
     }
 
     /**
      * Adds new booking to the set of bookings
      *
-     * @param newBooking new reservation
+     * @param booking new reservation
      * @return the number of the room that has been booked
-     * @throw InvalidBookingException if the @param is null
      */
-    public int createBooking(Booking newBooking) {
-        if (newBooking == null) {
+    public int createBooking(Booking booking) {
+        if (booking == null) {
             throw new InvalidBookingException("Invalid date");
         }
-        bookings.add(newBooking);
-        prepareRoom(newBooking.getFrom());
+        bookings.add(booking);
+        prepareRoom(booking.getFrom());
         return ID;
     }
 
@@ -167,25 +91,24 @@ public class Room {
      * Removes booking
      *
      * @param removeBooking the booking that will be removed
-     * @throw InvalidBookingException - if the bookings does not exists
      */
     public void removeBooking(Booking removeBooking) {
-        if (checkForAvailability(removeBooking)) {
-            throw new InvalidBookingException("Such booking does not exist!");
-        } else {
+        if (bookings.contains(removeBooking)) {
             bookings.remove(removeBooking);
+        } else {
+            throw new InvalidBookingException("Such booking does not exist!");
         }
     }
 
     /**
-     * Checks if the booking exists in the set of bookings
+     * Checks if the booking exists in the set of bookings in order to create booking
      *
      * @param newBooking requested booking
-     * @return true if the booking can be made
+     * @return true if the room can be booked for this period because there is no duplicate bookings
      */
     public boolean checkForAvailability(Booking newBooking) {
-        for (Booking book : bookings) {
-            if (book.equals(newBooking)) {
+        for (Booking booking : bookings) {
+            if (booking.equals(newBooking)) {
                 return false;
             }
         }
@@ -209,7 +132,7 @@ public class Room {
             if (!checkIntervalMatch(fromDate, bookedDate.getFrom(), toDate, bookedDate.getTo())) {
                 continue;
             } else {
-                if (freeBookings.size() == 0) {
+                if (freeBookings.isEmpty()) {
                     addFreeBookingsIfNotOverlapping(fromDate.plusDays(days), fromDate, bookedDate.getFrom(), freeBookings);
                 } else {
                     addFreeBookingsIfNotOverlapping(previousBookingToDate.plusDays(days), previousBookingToDate, bookedDate.getFrom(), freeBookings);
@@ -237,8 +160,13 @@ public class Room {
     }
 
     private boolean checkIntervalMatch(LocalDate requestedFromDate, LocalDate roomBookingFromDate, LocalDate requestedToDate, LocalDate roomBookingToDate) {
-        if (requestedFromDate.isBefore(roomBookingFromDate) && requestedToDate.isAfter(roomBookingToDate))
-            return true;
-        return false;
+        return (requestedFromDate.isBefore(roomBookingFromDate) && requestedToDate.isAfter(roomBookingToDate));
+    }
+
+    private void prepareRoom(LocalDate date) {
+        for (AbstractCommodity commodity : commodities) {
+            commodity.prepare();
+        }
+        maintenanceDates.add(date);
     }
 }

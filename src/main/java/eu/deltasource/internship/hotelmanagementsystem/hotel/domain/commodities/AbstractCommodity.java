@@ -1,12 +1,14 @@
 package eu.deltasource.internship.hotelmanagementsystem.hotel.domain.commodities;
 
 import eu.deltasource.internship.hotelmanagementsystem.hotel.domain.Booking;
+import lombok.Getter;
 
 /**
  * The class AbstractCommodity represents set of commodities in each room
  */
 abstract public class AbstractCommodity {
 
+    @Getter
     protected int inventoryNumber;
 
     /**

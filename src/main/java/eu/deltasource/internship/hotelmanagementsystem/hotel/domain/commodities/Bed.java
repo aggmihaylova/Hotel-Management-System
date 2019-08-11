@@ -1,10 +1,13 @@
 package eu.deltasource.internship.hotelmanagementsystem.hotel.domain.commodities;
 
+import lombok.Getter;
+
 /**
  * Bed is part of the set of commodities
  */
 public class Bed extends AbstractCommodity {
 
+    @Getter
     private BedType bedType;
 
     /**
@@ -14,14 +17,6 @@ public class Bed extends AbstractCommodity {
      */
     public Bed(int inventoryNumber, BedType bedType) {
         super(inventoryNumber);
-        this.bedType = bedType;
-    }
-
-    public BedType getBedType() {
-        return bedType;
-    }
-
-    public void setBedType(BedType bedType) {
         this.bedType = bedType;
     }
 

@@ -1,13 +1,15 @@
 package eu.deltasource.internship.hotelmanagementsystem.hotel.domain;
 
+import eu.deltasource.internship.hotelmanagementsystem.hotel.exceptions.InvalidArgumentException;
 import eu.deltasource.internship.hotelmanagementsystem.hotel.exceptions.InvalidBookingException;
-import eu.deltasource.internship.hotelmanagementsystem.hotel.exceptions.MissingArgumentException;
+import lombok.Getter;
 
 import java.time.LocalDate;
 
 /**
  * Represents booking for a room
  */
+@Getter
 public class Booking {
 
     private long ID;
@@ -20,8 +22,8 @@ public class Booking {
      * This is a constructor
      *
      * @param guestID guest's ID
-     * @param from    date
-     * @param to      date
+     * @param from    starting date
+     * @param to      ending date
      */
     public Booking(long ID, String guestName, String guestID, LocalDate from, LocalDate to) {
         setID(ID);
@@ -33,92 +35,79 @@ public class Booking {
     /**
      * This is a constructor
      *
-     * @param from date
-     * @param to   date
+     * @param from starting date
+     * @param to   ending date
      */
     public Booking(LocalDate from, LocalDate to) {
         saveDate(from, to);
     }
 
-    public LocalDate getFrom() {
-        return from;
-    }
-
-    public LocalDate getTo() {
-        return to;
-    }
-
     /**
-     * Method that initializes/sets the starting date
+     * Initializes the starting date
      *
      * @param from starting date
-     * @throw InvalidBookingException if the date is null
      */
     public void setFrom(LocalDate from) {
         if (from == null) {
-            throw new InvalidBookingException("Invalid date !");
+            throw new InvalidBookingException("Invalid starting date");
         }
         this.from = from;
     }
 
     /**
-     * Method that initializes/sets the ending date
+     * Initializes the ending date
      *
      * @param to ending date
-     * @throw InvalidBookingException if the date is null
      */
     public void setTo(LocalDate to) {
         if (to == null) {
-            throw new InvalidBookingException("Invalid date !");
+            throw new InvalidBookingException("Invalid ending date");
         }
         this.to = to;
     }
 
     /**
-     * Method that initializes/sets the guest's ID
+     * Initializes the guest's ID
      *
      * @param guestID guest's ID
-     * @throw MissingArgumentException if the guestID is less than 10 digits
+     * @throw InvalidArgumentException if the guestID is less than 10 digits
      */
     public void setGuestID(String guestID) {
         if (guestID.length() < 10) {
-            throw new MissingArgumentException("Invalid booking ID ");
+            throw new InvalidArgumentException("Invalid guest ID");
         }
         this.guestID = guestID;
     }
 
     /**
-     * Method that initializes/sets the guest's name
+     * Initializes/sets the guest's name
      *
      * @param guestName guest's name
-     * @throw MissingArgumentException if the name is null or empty
      */
     public void setGuestName(String guestName) {
         if (guestName == null || guestName.isEmpty()) {
-            throw new MissingArgumentException("Invalid guest name");
-        } else {
-            this.guestName = guestName;
+            throw new InvalidArgumentException("Invalid guest name");
         }
+        this.guestName = guestName;
     }
 
     /**
-     * Method that initializes/sets the booking ID
+     * Initializes the booking ID
      *
      * @param ID booking ID
-     * @throw MissingArgumentException() if the ID is negative
      */
     public void setID(long ID) {
         if (ID < 0) {
-            throw new MissingArgumentException("Invalid booking ID !");
+            throw new InvalidArgumentException("Invalid booking ID");
         }
         this.ID = ID;
     }
 
     /**
-     * Guarantees that that starting date is before the ending date or they are the same
+     * Validates dates
      *
-     * @param from date
-     * @param to   date
+     * @param from starting date
+     * @param to   ending date
      */
     public void saveDate(LocalDate from, LocalDate to) {
         setFrom(from);
@@ -130,9 +119,6 @@ public class Booking {
 
     @Override
     public boolean equals(Object obj) {
-        if (obj == null)
-            return false;
-
         if (!(obj instanceof Booking))
             return false;
 
