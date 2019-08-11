@@ -15,7 +15,7 @@
         <junit.version>5.4.2</junit.version>
         <hamcrest.version>2.1</hamcrest.version>
         <maven.surefire.version>2.22.0</maven.surefire.version>
-
+        <lombok.version>1.18.8</lombok.version>
     </properties>
 
     <dependencies>
@@ -31,6 +31,12 @@
             <artifactId>hamcrest-library</artifactId>
             <version>${hamcrest.version}</version>
             <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>${lombok.version}</version>
+            <scope>provided</scope>
         </dependency>
     </dependencies>
 

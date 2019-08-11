@@ -1,7 +1,8 @@
 package eu.deltasource.internship.hotelmanagementsystem.hotel.domain;
 
+import eu.deltasource.internship.hotelmanagementsystem.hotel.exceptions.InvalidArgumentException;
 import eu.deltasource.internship.hotelmanagementsystem.hotel.exceptions.InvalidBookingException;
-import eu.deltasource.internship.hotelmanagementsystem.hotel.exceptions.MissingArgumentException;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -13,116 +14,131 @@ public class BookingTest {
 
     private LocalDate from;
     private LocalDate to;
-    private String guestName = "Mariya Miller";
-    private String guestID = "9405124562";
-
 
     @BeforeEach
     public void setUp() {
-
         from = LocalDate.of(2019, 8, 10);
         to = LocalDate.of(2019, 8, 14);
     }
 
     @Test
-    public void checkIfFromIsBeforeTo() {
+    public void createBookingWithInvalidId() {
         // given
-        long ID = 0L;
+        String guestName = "John Peterson";
+        String guestId = "9105124562";
+        long id = -5;
+
+        // when and then
+        assertThrows(InvalidArgumentException.class, () -> new Booking(id, guestName, guestId, from, to));
+    }
+
+    @Test
+    public void createBookingWithValidDates() {
+        // given
+        // from and to dates already exist
+        String guestName = "Mariya Miller";
+        String guestId = "9405124562";
+        long id = 0L;
 
         //when
-        Booking newBooking = new Booking(ID, guestName, guestID, from, to);
+        Booking newBooking = new Booking(id, guestName, guestId, from, to);
 
         //then
-        assertTrue(newBooking.getFrom().equals(from));
+        assertEquals(newBooking.getFrom(), from);
     }
 
     @Test
-    public void checkIfFromIsAfterTo() {
+    public void createBookingWithInvalidDates() {
         // given
+        // from and to dates already exist
+        String guestName = "Mariya Miller";
+        String guestId = "9405124562";
         LocalDate from = LocalDate.of(2019, 8, 24);
         LocalDate fromDate = to;
-        long ID = 1L;
+        long id = 1L;
 
-        //when and then I
-        assertThrows(InvalidBookingException.class, () -> new Booking(ID, guestName, guestID, from, to));
-
-        // when and then II
-        assertThrows(InvalidBookingException.class,()->new Booking(ID,guestName,guestID,fromDate,to));
+        //when and then
+        // starting date is after ending date
+        assertThrows(InvalidBookingException.class, () -> new Booking(id, guestName, guestId, from, to));
+        // booking starts and ends on the same days
+        assertThrows(InvalidBookingException.class, () -> new Booking(id, guestName, guestId, fromDate, to));
     }
 
     @Test
-    public void checkIfFromIsInvalid() {
+    public void fromDateNullCheck() {
         // given
+        //to date already exists
+        String guestName = "Mariya Miller";
+        String guestId = "9405124562";
         LocalDate from = null;
-        long ID = 2L;
+        long id = 1L;
 
         // when and then
-        assertThrows(InvalidBookingException.class, () -> new Booking(ID, guestName, guestID, from, to));
+        assertThrows(InvalidBookingException.class, () -> new Booking(id, guestName, guestId, from, to));
     }
 
     @Test
-    public void checkIfFromIsValid() {
+    public void toDateNullCheck() {
         // given
-        long ID = 3L;
-
-        // when and then
-        assertDoesNotThrow(() -> new Booking(ID, guestName, guestID, from, to));
-    }
-
-    @Test
-    public void checkIfToIsInvalid() {
-        // given
+        // from date already exists
+        String guestName = "Mariya Miller";
+        String guestId = "9405124562";
         LocalDate to = null;
-        long ID = 4L;
+        long id = 1L;
 
         // when and then
-        assertThrows(InvalidBookingException.class, () -> new Booking(ID, guestName, guestID, from, to));
+        assertThrows(InvalidBookingException.class, () -> new Booking(id, guestName, guestId, from, to));
     }
 
     @Test
-    public void checkIfToIsValid() {
+    public void createBookingWithValidGuestName() {
         // given
-        long ID = 5L;
+        // from and to dates already exist
+        String guestName = "John Peterson";
+        String guesttId = "9105124562";
+        long id = 1L;
 
         // when and then
-        assertDoesNotThrow(() -> new Booking(ID, guestName, guestID, from, to));
+        assertDoesNotThrow(() -> new Booking(id, guestName, guesttId, from, to));
     }
 
     @Test
-    public void checkIfGuestNameIsValid() {
+    public void createBookingWithInvalidGuestName() {
         // given
-        long ID = 6L;
-
-        // when and then
-        assertDoesNotThrow(() -> new Booking(ID, guestName, guestID, from, to));
-    }
-
-    @Test
-    public void checkIfGuestNameIsInvalid() {
-        // given
+        // from and to dates already exist
+        String guestId = "9405124562";
         String guestName = "";
-        long ID = 7L;
+        long id = 1L;
 
         // when and then
-        assertThrows(MissingArgumentException.class, () -> new Booking(ID, guestName, guestID, from, to));
+        assertThrows(InvalidArgumentException.class, () -> new Booking(id, guestName, guestId, from, to));
     }
 
     @Test
-    public void checkIfGuestIDIsInvalid() {
+    public void createBookingWithInvalidGuestId() {
         // given
-        String guestID = "9123L";
-        long ID = 8L;
+        String guestName = "John Peterson";
+        String guestId = "9123L";
+        long id = 8L;
 
         // when and then
-        assertThrows(MissingArgumentException.class, () -> new Booking(ID, guestName, guestID, from, to));
+        assertThrows(InvalidArgumentException.class, () -> new Booking(id, guestName, guestId, from, to));
     }
 
     @Test
-    public void checkIfGuestIDIsValid() {
+    public void createBookingWithValidGuestId() {
         // given
-        long ID = 9L;
+        String guestName = "John Peterson";
+        String guestID = "9105124562";
+        long id = 1L;
 
         // when and then
-        assertDoesNotThrow(() -> new Booking(ID, guestName, guestID, from, to));
+        assertDoesNotThrow(() -> new Booking(id, guestName, guestID, from, to));
+    }
+
+    @AfterEach
+    void tearDown() {
+        from = null;
+        to = null;
     }
 }
