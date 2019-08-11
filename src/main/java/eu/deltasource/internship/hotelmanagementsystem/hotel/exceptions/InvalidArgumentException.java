@@ -4,9 +4,9 @@ package eu.deltasource.internship.hotelmanagementsystem.hotel.exceptions;
  * Exception for null values
  */
 
-public class MissingArgumentException extends RuntimeException {
+public class InvalidArgumentException extends RuntimeException {
 
-    public MissingArgumentException(String message) {
+    public InvalidArgumentException(String message) {
         super(message);
     }
 }
